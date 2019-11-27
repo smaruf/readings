@@ -9,6 +9,8 @@
 8. Elasticsearch analyzer and tokenizer
 9. AOP @annotation with spring boot
 1. Docker + YML
+1. Kafka + elastic-search hook
+1. GraphQL
 
 ### Need to read/implementation:--->
 1. AOP weaving code with spring boot
@@ -19,4 +21,5 @@
 6. Elasticsearch tokenizer and index creation
 7. Go: simple runnable application and available modules
 8. Gin: apply and deploy
-1. Kafka + elastic-search connector
+1. Amazon Kinesis streaming
+2. Implement GraphQL
