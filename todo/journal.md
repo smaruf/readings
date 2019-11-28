@@ -11,6 +11,8 @@
 1. Docker + YML
 1. Kafka + elastic-search hook
 1. GraphQL
+1. TDD by example
+1. BDD: Cucumber & Concordian
 
 ### Need to read/implementation:--->
 1. AOP weaving code with spring boot
