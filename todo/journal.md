@@ -28,3 +28,5 @@
 2. Implement GraphQL --- priority 1
 1. Implement checkstyle
 1. Implement SonarQube
+1. OpenApi editor in visual-studio-code for api document generation
+1. Code genratorion from api doc with generator tool
