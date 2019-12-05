@@ -16,3 +16,4 @@
 1. https://www.mit.edu/~xela/tao.html
 1. https://kafka.apache.org
 1. https://www.baeldung.com/spring-graphql
+1. https://dzone.com/articles/rest-api-best-practices-with-design-examples-from
