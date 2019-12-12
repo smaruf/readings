@@ -14,6 +14,7 @@
 1. TDD by example
 1. BDD: Cucumber & Concordian
 1. Technical Debt, Code Smell, Software Rot and Anti-pattern
+1. Redis-Lettuce and genrating sequence from redis by 'INCR'
 
 ### Need to read/implementation:--->
 1. AOP weaving code with spring boot
