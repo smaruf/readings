@@ -15,6 +15,7 @@
 1. BDD: Cucumber & Concordian
 1. Technical Debt, Code Smell, Software Rot and Anti-pattern
 1. Redis-Lettuce and genrating sequence from redis by 'INCR'
+1. Tested checkstyle and JaCoCo
 
 ### Need to read/implementation:--->
 1. AOP weaving code with spring boot
@@ -27,7 +28,7 @@
 8. Gin: apply and deploy
 1. Amazon Kinesis streaming
 2. Implement GraphQL --- priority 1
-1. Implement checkstyle
 1. Implement SonarQube
 1. OpenApi editor in visual-studio-code for api document generation
 1. Code genratorion from api doc with generator tool
+1. Mythical Man Months
