@@ -16,6 +16,8 @@
 1. Technical Debt, Code Smell, Software Rot and Anti-pattern
 1. Redis-Lettuce and genrating sequence from redis by 'INCR'
 1. Tested checkstyle and JaCoCo
+1. NGINX and micro-service deployment
+1. Performance optimization in java & linux
 
 ### Need to read/implementation:--->
 1. AOP weaving code with spring boot
