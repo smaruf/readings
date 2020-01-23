@@ -18,6 +18,8 @@
 1. Tested checkstyle and JaCoCo
 1. NGINX and micro-service deployment
 1. Performance optimization in java & linux
+1. Oracle parallel insert update and merge operation
+1. Spring boot caching and annotated scheduler
 
 ### Need to read/implementation:--->
 1. AOP weaving code with spring boot
@@ -34,3 +36,4 @@
 1. OpenApi editor in visual-studio-code for api document generation
 1. Code genratorion from api doc with generator tool
 1. Mythical Man Months
+1. Software craftsman
