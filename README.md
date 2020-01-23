@@ -17,3 +17,8 @@
 1. https://kafka.apache.org
 1. https://www.baeldung.com/spring-graphql
 1. https://dzone.com/articles/rest-api-best-practices-with-design-examples-from
+1. https://mkyong.com/docker/docker-and-java-application-examples/
+1. https://www.vinsguru.com/kafka-streams-real-time-data-processing-using-spring-boot/
+1. https://newspaint.wordpress.com/2012/11/28/creating-a-java-sampler-for-jmeter/
+1. https://docs.oracle.com/database/121/VLDBG/GUID-2627DC19-7EBE-4C45-A758-711BDB5E37EC.htm
+1. https://howtodoinjava.com/swagger2/code-generation-for-rest-api/
