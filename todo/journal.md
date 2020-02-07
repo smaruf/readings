@@ -20,6 +20,8 @@
 1. Performance optimization in java & linux
 1. Oracle parallel insert update and merge operation
 1. Spring boot caching and annotated scheduler
+1. Spring application even pubisher and consumer
+1. Kafka event published and consumer
 
 ### Need to read/implementation:--->
 1. AOP weaving code with spring boot
@@ -37,3 +39,4 @@
 1. Code genratorion from api doc with generator tool
 1. Mythical Man Months
 1. Software craftsman
+1. Pragmatic Developer
