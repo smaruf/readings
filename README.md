@@ -23,4 +23,4 @@
 1. https://docs.oracle.com/database/121/VLDBG/GUID-2627DC19-7EBE-4C45-A758-711BDB5E37EC.htm
 1. https://howtodoinjava.com/swagger2/code-generation-for-rest-api/
 1. https://www.geeksforgeeks.org/go-vs-c-plus-plus/
-1.https://docs.aws.amazon.com/lambda/latest/dg/with-on-demand-https-example-configure-event-source_1.html
+1. https://docs.aws.amazon.com/lambda/latest/dg/with-on-demand-https-example-configure-event-source_1.html
