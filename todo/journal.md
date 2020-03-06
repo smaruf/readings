@@ -40,4 +40,4 @@
 1. Mythical Man Months
 1. Software craftsman
 1. Pragmatic Developer
-1.Kafka stream analysis and avro listener
+1. Kafka stream analysis and avro listener
