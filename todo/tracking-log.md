@@ -7,4 +7,4 @@
 1. Working with legacy code: refactoring: start: 188 end: 193
 1. Refactoring: Improving design: start: 1 end: 48
 1. Don't let me think: start: 65 end: 77
-1. Code by Charlse Petzold: start: 219 end: 227
+1. Code by Charlse Petzold: start: 227 end: 237
