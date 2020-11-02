@@ -6,5 +6,5 @@
 1. Clean Code start: 1
 1. Working with legacy code: refactoring: start: 193 end: 203
 1. Refactoring: Improving design: start: 1 end: 48
-1. Don't let me think: start: 77 end: 82
+1. Don't let me think: start: 82 end: 88
 1. Code by Charlse Petzold: start: 237 end: 250
