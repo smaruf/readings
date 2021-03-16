@@ -8,5 +8,5 @@
 1. Refactoring: Improving design: start: 1 end: 48
 1. _Don't let me think: start: 169 end: 183 (End)_
 1. _Code by Charlse Petzold: start: 350 end: 363 (End)_
-1. __Head First Software Development: start: 139 end: 150__
+1. __Head First Software Development: start: 150 end: 160__
 1. Spring Security 3: start: 1 end:
