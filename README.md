@@ -25,3 +25,4 @@
 1. https://www.geeksforgeeks.org/go-vs-c-plus-plus/
 1. https://docs.aws.amazon.com/lambda/latest/dg/with-on-demand-https-example-configure-event-source_1.html
 1. https://docs.oracle.com/javase/10/security/toc.htm
+1. http://cran.r-project.org/other-docs.html
