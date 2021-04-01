@@ -10,3 +10,4 @@
 1. _Code by Charlse Petzold: start: 350 end: 363 (End)_
 1. __Head First Software Development: start: 186 end: 196__
 1. Spring Security 3: start: 1 end:
+1. Statistical Rethinking: start: 19 end:  
