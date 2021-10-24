@@ -6,6 +6,10 @@
 5. Cloud computing books
 6. Futuristic technology books
 7. Software design principle books
+8. Golang Books
+9. Python Books
+10. Data Engineering manual
+11. Golang and Python gRPC links
 
 ## Links
 1. https://en.wikibooks.org/wiki/Java_Persistence
@@ -26,3 +30,8 @@
 1. https://docs.aws.amazon.com/lambda/latest/dg/with-on-demand-https-example-configure-event-source_1.html
 1. https://docs.oracle.com/javase/10/security/toc.htm
 1. http://cran.r-project.org/other-docs.html
+2. https://tour.golang.org/welcome/1
+1. https://golang.org/ref/spec
+2. https://gorm.io/docs/models.html
+3. https://grpc.io/docs/languages/python/basics/
+4. https://tour.golang.org/concurrency/1
