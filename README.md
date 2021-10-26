@@ -38,3 +38,6 @@
 5. https://realpython.com/inheritance-composition-python/
 6. https://dave.cheney.net/2013/05/28/go-11-performance-improvements-part-3
 7. https://pg.uptrace.dev/tracing/
+8. https://stackabuse.com/reading-and-writing-files-in-java/
+9. https://www.w3schools.com/java/java_files_create.asp
+10. https://www.w3schools.com/java/java_user_input.asp
