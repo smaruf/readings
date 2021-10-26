@@ -35,3 +35,6 @@
 2. https://gorm.io/docs/models.html
 3. https://grpc.io/docs/languages/python/basics/
 4. https://tour.golang.org/concurrency/1
+5. https://realpython.com/inheritance-composition-python/
+6. https://dave.cheney.net/2013/05/28/go-11-performance-improvements-part-3
+7. https://pg.uptrace.dev/tracing/
