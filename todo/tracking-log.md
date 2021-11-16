@@ -11,4 +11,4 @@
 1. __Head First Software Development: start: 214 end: 231__
 1. Spring Security 3: start: 1 end:
 1. Statistical Rethinking: start: 19 end:  
-1. __The Design of Everyday Things: start:1 end: 16__
+1. __The Design of Everyday Things: start:16 end: 29__
