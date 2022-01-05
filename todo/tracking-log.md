@@ -12,3 +12,4 @@
 1. Spring Security 3: start: 1 end:
 1. Statistical Rethinking: start: 19 end:  
 1. __The Design of Everyday Things: start:74 end: 80__
+2. _Microservices vs SOA from NGINX paper: start:1 end: 55_
