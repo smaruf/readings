@@ -11,6 +11,6 @@
 1. __Head First Software Development: start: 214 end: 231__
 1. Spring Security 3: start: 1 end:
 1. Statistical Rethinking: start: 19 end:  
-1. __The Design of Everyday Things: start:89 end: 113__
+1. __The Design of Everyday Things: start:113 end: 124__
 2. _Microservices vs SOA from NGINX paper: start: 1 end: 55_
 3. _NGINX: Microservice up and running with kubernate: start: 1 end: 91_
