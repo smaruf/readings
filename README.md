@@ -8,8 +8,10 @@
 7. Software design principle books
 8. Golang Books
 9. Python Books
-10. Data Engineering manual
+10. Data Engineering Manual
 11. Golang and Python gRPC links
+12. Node Tool Chain (Like: volta)
+13. Windows Tool Chain (Like: scoop)
 
 ## Links
 1. https://en.wikibooks.org/wiki/Java_Persistence
@@ -41,3 +43,5 @@
 8. https://stackabuse.com/reading-and-writing-files-in-java/
 9. https://www.w3schools.com/java/java_files_create.asp
 10. https://www.w3schools.com/java/java_user_input.asp
+11. https://docs.volta.sh/guide/understanding
+12. https://scoop.sh/
