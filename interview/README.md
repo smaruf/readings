@@ -1,6 +1,6 @@
 # Interactive Flash Card Game for Interview Preparation
 
-This repository contains an interactive flash card game designed to help users prepare for Java and Spring Framework interviews. The game uses dialog boxes to present questions and answers, and leverages GitHub AI to enrich the content with each run.
+This repository contains an interactive flashcard game to help users prepare for Java and Spring Framework interviews. The game uses dialog boxes to present questions and answers, and leverages GitHub AI to enrich the content with each run.
 
 ## Features
 - Fetches and randomizes interview questions from a markdown file.
@@ -11,7 +11,7 @@ This repository contains an interactive flash card game designed to help users p
 ## Contents
 - `interview/java_spring_preparation.md`: A guide with essential Java and Spring Framework interview topics.
 - `questions.json`: A JSON file containing the extracted questions and answers from the guide.
-- `flash_card_game.py`: A Python script to run the interactive flash card game.
+- `java_spring_interview.py`: A Python script to run the interactive flashcard game.
 
 ## How to Use
 
@@ -25,5 +25,5 @@ This repository contains an interactive flash card game designed to help users p
 3. **Run the Flash Card Game**: Execute the Python script to start the game:
 
    ```sh 
-   python flash_card_game.py
+   python java_spring_interview.py
    ```
