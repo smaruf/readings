@@ -14,12 +14,16 @@
    - [Software Engineers Handbook](https://en.wikibooks.org/wiki/Software_Engineers_Handbook)
 
 4. **Pragmatic Books**
+   - [Pragmatic Programmer](https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary-edition/)
+   - [Mythical Man-Month](https://www.amazon.com/Mythical-Man-Month-Software-Engineering-Anniversary/dp/0201835959)
 
 5. **Cloud Computing Books**
    - [Kafka](https://kafka.apache.org)
    - [AWS Lambda Example](https://docs.aws.amazon.com/lambda/latest/dg/with-on-demand-https-example-configure-event-source_1.html)
 
 6. **Futuristic Technology Books**
+   - [Clean Code](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882)
+   - [Refactoring](https://martinfowler.com/books/refactoring.html)
 
 7. **Software Design Principle Books**
    - [REST API Best Practices](https://dzone.com/articles/rest-api-best-practices-with-design-examples-from)
@@ -37,8 +41,11 @@
    - [gRPC for Python](https://grpc.io/docs/languages/python/basics/)
 
 10. **Data Engineering Manual**
+   - [Designing Data-Intensive Applications](https://dataintensive.net/)
 
 11. **Golang and Python gRPC Links**
+   - [gRPC for Go](https://grpc.io/docs/languages/go/quickstart/)
+   - [gRPC for Python](https://grpc.io/docs/languages/python/quickstart/)
 
 12. **Node Tool Chain**
    - [Volta](https://docs.volta.sh/guide/understanding)
