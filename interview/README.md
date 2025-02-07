@@ -20,3 +20,10 @@ This repository contains an interactive flash card game designed to help users p
    git clone https://github.com/smaruf/readings.git
    cd readings
    ```
+2. **Extract Questions and Answers**: Ensure that the questions from `interview/java_spring_preparation.md` are extracted into `questions.json`.
+
+3. **Run the Flash Card Game**: Execute the Python script to start the game:
+
+   ```sh 
+   python flash_card_game.py
+   ```
