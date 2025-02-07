@@ -1,0 +1,120 @@
+[
+    {
+        "section": "Java Essentials",
+        "subsections": [
+            {
+                "title": "Basics",
+                "items": [
+                    "Data types, operators, control structures.",
+                    "Classes, objects, inheritance, polymorphism, encapsulation."
+                ]
+            },
+            {
+                "title": "Core Concepts",
+                "items": [
+                    "Interfaces vs. Abstract Classes.",
+                    "Exception handling: Checked vs. Unchecked.",
+                    "Generics: Purpose, usage, and type erasure.",
+                    "Collections: List, Set, Map (focus on major implementations).",
+                    "Streams API: Functional-style operations on collections."
+                ]
+            },
+            {
+                "title": "Concurrency",
+                "items": [
+                    "Threads vs. Runnable.",
+                    "Synchronization, Locks.",
+                    "Concurrent Collections (e.g., ConcurrentHashMap).",
+                    "ExecutorService and Thread Pools.",
+                    "Futures and Callable."
+                ]
+            },
+            {
+                "title": "Java 8 and Beyond",
+                "items": [
+                    "Lambda Expressions.",
+                    "Optional class.",
+                    "New Date and Time API.",
+                    "Interface enhancements: Default and static methods."
+                ]
+            }
+        ]
+    },
+    {
+        "section": "Spring Framework Essentials",
+        "subsections": [
+            {
+                "title": "Core Concepts",
+                "items": [
+                    "Dependency Injection (DI) and Inversion of Control (IoC).",
+                    "Bean Lifecycle.",
+                    "ApplicationContext: Role and Usage."
+                ]
+            },
+            {
+                "title": "Spring Boot",
+                "items": [
+                    "Auto-configuration and Starters.",
+                    "@SpringBootApplication, application.properties/application.yml.",
+                    "Bean Customization, Profiles management."
+                ]
+            },
+            {
+                "title": "Data Access",
+                "items": [
+                    "Spring Data JPA: Repositories, @Entity, @Transactional.",
+                    "JDBC Template for database operations."
+                ]
+            },
+            {
+                "title": "Web Development",
+                "items": [
+                    "@RestController and Request Mappings (@RequestMapping, etc.).",
+                    "Spring MVC workflow.",
+                    "Exception Handling: @ControllerAdvice, @ExceptionHandler."
+                ]
+            },
+            {
+                "title": "Security",
+                "items": [
+                    "Configurations for Basic Authentication, OAuth2.",
+                    "WebSecurityConfigurerAdapter for security settings."
+                ]
+            },
+            {
+                "title": "Testing",
+                "items": [
+                    "@SpringBootTest for comprehensive testing.",
+                    "MockMvc for MVC tests.",
+                    "@DataJpaTest for testing the data layer."
+                ]
+            },
+            {
+                "title": "Advanced Topics",
+                "items": [
+                    "Messaging integration (RabbitMQ, Kafka).",
+                    "Caching configurations (Redis, EhCache).",
+                    "Reactive Programming with WebFlux.",
+                    "Batch Processing with Spring Batch.",
+                    "Real-time communication via WebSocket."
+                ]
+            },
+            {
+                "title": "Performance Monitoring",
+                "items": [
+                    "Integration with tools like Micrometer or Dynatrace.",
+                    "Exploring Spring Boot Actuator."
+                ]
+            }
+        ]
+    },
+    {
+        "section": "Interview Preparation Tips",
+        "items": [
+            "Understand the problem before coding.",
+            "Regularly practice data structures and algorithms.",
+            "Engage in mock interviews.",
+            "Discuss projects comprehensively: roles, technologies, challenges."
+        ]
+    }
+]
