@@ -4,6 +4,19 @@ import tkinter as tk
 from tkinter import simpledialog, messagebox
 import openai
 
+# Documentation for obtaining OpenAI API key
+"""
+To use the OpenAI API, you need to obtain an API key. Follow these steps to get your key:
+
+1. Sign up for an OpenAI account at https://beta.openai.com/signup/.
+2. log in to the OpenAI platform once you have an account.
+3. Navigate to the API section: https://beta.openai.com/account/api-keys.
+4. Click "Create new secret key" to generate a new API key.
+5. Copy the generated API key and replace 'your_openai_api_key' in the script with your actual API key.
+
+Make sure to keep your API key secure and do not share it publicly.
+"""
+
 # Initialize OpenAI with your API key
 openai.api_key = 'your_openai_api_key'
 
