@@ -150,3 +150,53 @@
 148. Discuss the concept of Java Bytecode Verifiers and their role in ensuring the security and integrity of code execution in the JVM.
 149. How do annotations manage dependency injection in Java frameworks like Spring, and what are the common annotations used?
 150. Explain the role and implementation of the Template Method pattern in Java and its application in framework design.
+1. What are the main differences between List, Set, and Map in the Java Collections Framework?
+2. How does the implementation of HashMap work in Java?
+3. Explain the difference between ArrayList and LinkedList.
+4. What is the difference between HashSet and TreeSet?
+5. How can you make a collection thread-safe in Java?
+6. What are the advantages of using the ConcurrentHashMap over a synchronized HashMap?
+7. Explain the concept of fail-fast and fail-safe iterators in Java collections.
+8. How do you sort a collection in Java?
+9. What is the difference between Iterator and ListIterator?
+10. How do you remove duplicates from a collection in Java?
+11. What are the main differences between Thread and Runnable in Java?
+2. How does the synchronized keyword work and when should it be used?
+3. Explain the concept of a thread pool and its advantages.
+4. What is the difference between the wait() and sleep() methods in Java?
+5. How can you avoid deadlock in a multi-threaded Java application?
+6. What is the purpose of the java.util.concurrent package?
+7. Explain the difference between the Executor framework and creating new threads manually.
+8. What are the benefits of using the java.util.concurrent.locks.ReentrantLock over synchronized blocks?
+9. How do you implement a producer-consumer problem using blocking queues?
+10. What is the difference between a CyclicBarrier and a CountDownLatch?
+1. What is the difference between a shallow copy and a deep copy in Java?
+2. How do you implement a deep copy of an object in Java?
+3. What is the purpose of the Cloneable interface in Java?
+4. How does the `clone()` method work in Java, and what are its limitations?
+5. Explain the difference between the `clone()` method and a copy constructor.
+6. What are the potential issues with using the `clone()` method for object copying?
+7. How can you achieve a deep copy of a Java object that contains nested objects?
+8. Discuss the pros and cons of using serialization for deep copying in Java.
+9. How do you handle copying of objects that are not Cloneable?
+10. What are the best practices for implementing the `clone()` method in a class?
+11. What is the difference between `String`, `StringBuilder`, and `StringBuffer` in Java?
+2. How do you compare two strings in Java?
+3. Explain the concept of string immutability in Java and its benefits.
+4. How can you convert a string to an integer and vice versa in Java?
+5. What is the use of the `intern()` method in the `String` class?
+6. How do you split a string in Java?
+7. What are the various ways to concatenate strings in Java?
+8. Explain the difference between `equals()` and `==` when comparing strings in Java.
+9. How do you check if a string contains a particular substring in Java?
+10. What are some common performance considerations when working with strings in Java?
+11. How do you connect to a database in Java?
+2. What is JDBC and how is it used in Java?
+3. Explain the difference between Statement and PreparedStatement in JDBC.
+4. How do you perform a transaction in JDBC?
+5. What is the role of the ResultSet interface in JDBC?
+6. How do you handle SQL exceptions in Java?
+7. What is an ORM (Object-Relational Mapping) and how does it work in Java?
+8. Explain the use of JPA (Java Persistence API) in Java.
+9. How do you configure a connection pool in a Java application?
+10. What are the benefits of using Hibernate in Java for database operations?
