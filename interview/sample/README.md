@@ -17,7 +17,7 @@ This secure Spring Boot application integrates Google Authenticator for generati
    - Fill in your Twilio account details and Redis configuration in `src/main/resources/application.properties`.
 
 3. **Build the Application**
-  -  `mvn clean install`
+   -  `mvn clean install`
 
 4. **Run the Application**
    - `mvn spring-boot:run`
