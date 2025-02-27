@@ -49,7 +49,7 @@
 47. Explain the role of JavaBeans in Java development and how they differ from regular classes.
 48. How does Java support the Model-View-Controller (MVC) design pattern?
 49. What are Java applets and how have they been used historically in web applications?
-50. Discuss the advancements in Java for handling date and time with the introduction of the java.time package.
+50. Discuss the advancements in Java for handling date and time with the introduction of the `java.time package`.
 51. How does Java handle regular expressions and what are some common use cases?
 52. Explain Java's support for network programming and how to implement socket communication.
 53. What is the significance of the Java keyword `synchronized` and how does it help in concurrency control?
@@ -74,7 +74,7 @@
 72. Explain the key improvements and features introduced in Java's concurrent API in recent versions.
 73. Discuss Java's support for reactive programming and how frameworks like Reactor and RxJava are used.
 74. What is Java's Checkstyle tool, and how does it help maintain coding standards in Java development?
-75. How can Java’s CompletableFuture be used to handle asynchronous programming, and what are its advantages over traditional Future?
+75. How can Java’s CompletableFuture be used to handle asynchronous programming, and what are its advantages over the traditional Future?
 76. Explain the concept and usage of Java’s method references and how they simplify lambda expressions.
 77. What is the role of the Java Architecture for XML Binding (JAXB) in data binding XML schema in Java applications?
 78. Discuss the impact and handling of Java’s End-of-Life (EOL) versions in enterprise environments.
@@ -102,7 +102,7 @@
 100. Explain the concept of JavaSpaces and how it facilitates distributed computing by providing a shared space for object exchange.
 101. How does Java manage thread pools using the `java.util.concurrent` package, and what are the key classes involved?
 102. Discuss the role of Java Management Extensions (JMX) in managing and monitoring Java applications.
-103. Explain the use of Java's serialization mechanism and potential security concerns associated with it.
+103. Explain the use of Java's serialization mechanism and the potential security concerns associated with it.
 104. What are JVM tuning and optimization techniques, and how do they improve application performance?
 105. Discuss the role of the Java Security Manager and how it provides a sandbox environment for Java applications.
 106. Explain the process and benefits of unit testing in Java with frameworks like JUnit and Mockito.
@@ -167,9 +167,9 @@
 5. How can you avoid deadlock in a multi-threaded Java application?
 6. What is the purpose of the java.util.concurrent package?
 7. Explain the difference between the Executor framework and creating new threads manually.
-8. What are the benefits of using the java.util.concurrent.locks.ReentrantLock over synchronized blocks?
+8. What are the benefits of using the `java.util.concurrent.locks.ReentrantLock` over `synchronized` blocks?
 9. How do you implement a producer-consumer problem using blocking queues?
-10. What is the difference between a CyclicBarrier and a CountDownLatch?
+10. What is the difference between a` CyclicBarrier` and a `CountDownLatch`?
 1. What is the difference between a shallow copy and a deep copy in Java?
 2. How do you implement a deep copy of an object in Java?
 3. What is the purpose of the Cloneable interface in Java?
@@ -234,3 +234,23 @@
 8. Provide examples of how to achieve the FIRST principle in unit testing.
 9. Discuss challenges in implementing the FIRST principle in a large codebase.
 10. How can the FIRST principle improve the maintainability of test suites?
+1. What is OAuth2, and how is it used for authentication and authorization in microservices?
+2. How does JSON Web Token (JWT) work, and why is it commonly used in microservices architectures?
+3. Explain the role of an API Gateway in microservices and how it helps with centralized authentication.
+4. What are the benefits and challenges of implementing Single Sign-On (SSO) in a microservices architecture?
+5. Describe how HTTPS ensures secure communication between microservices.
+6. How can service-to-service authentication be implemented in a microservices environment?
+7. What is the role of OpenID Connect in microservices authentication, and how does it differ from OAuth2?
+8. Discuss the concept of token expiration and refresh tokens in the context of microservices authentication.
+9. How do you handle user roles and permissions in a microservices-based application?
+10. Explain the importance of securing microservice endpoints and the common strategies to achieve this.
+11.. What is the difference between authentication and authorization?
+2. Explain how OAuth2 works and its common use cases.
+3. How does JSON Web Token (JWT) authentication work?
+4. What are the benefits of using Single Sign-On (SSO) in an application?
+5. Describe the role of an API Gateway in securing microservices.
+6. What is OpenID Connect and how does it relate to OAuth2?
+7. Explain how HTTPS ensures secure communication between clients and servers.
+8. What are some common vulnerabilities in web applications and how can they be mitigated?
+9. How do you implement an application's role-based access control (RBAC)?
+10. Discuss the importance of token expiration and refresh tokens in maintaining security.
