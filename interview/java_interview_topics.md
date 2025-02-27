@@ -193,6 +193,30 @@
 11. How do you connect to a database in Java?
 2. What is JDBC and how is it used in Java?
 3. Explain the difference between Statement and PreparedStatement in JDBC.
+1. Explain the concept of Object-Oriented Programming in Java.
+2. Discuss the differences between an abstract class and an interface in Java.
+3. How can polymorphism be implemented and utilized in Java?
+4. Explain Java's method overloading and method overriding, and how they differ.
+5. Discuss the concept of immutability in Java and how to create immutable objects.
+6. Explain the principles and implementation of the Singleton design pattern in Java.
+7. How does Java support the Model-View-Controller (MVC) design pattern?
+8. Explain the role of JavaBeans in Java development and how they differ from regular classes.
+9. What are the SOLID principles in software development?
+10. How does the Single Responsibility Principle apply to Java classes?
+11. Explain the Open/Closed Principle with an example in Java.
+12. Discuss the Liskov Substitution Principle and its importance in OOP.
+13. How can the Interface Segregation Principle be implemented in Java?
+14. Explain the Dependency Inversion Principle and its benefits in software design.
+1. What is the DRY principle and why is it important in software development?
+2. How can the DRY principle be applied to reduce code duplication in Java?
+3. What are some common techniques to avoid code duplication and adhere to the DRY principle?
+4. Explain how refactoring can help in implementing the DRY principle.
+5. Discuss the relationship between the DRY principle and code maintainability.
+6. How can the use of design patterns support the DRY principle?
+7. Provide an example of a code snippet that violates the DRY principle and explain how to refactor it.
+8. What are the potential drawbacks of not following the DRY principle in large codebases?
+9. How can the DRY principle be applied to database schema design?
+10. Discuss the balance between the DRY principle and code readability.
 4. How do you perform a transaction in JDBC?
 5. What is the role of the ResultSet interface in JDBC?
 6. How do you handle SQL exceptions in Java?
@@ -200,3 +224,13 @@
 8. Explain the use of JPA (Java Persistence API) in Java.
 9. How do you configure a connection pool in a Java application?
 10. What are the benefits of using Hibernate in Java for database operations?
+1. What is the FIRST principle in software testing?
+2. How does the FIRST principle ensure effective unit testing?
+3. Explain the importance of the "Fast" aspect of the FIRST principle.
+4. What does the "Independent" aspect of the FIRST principle entail?
+5. How does the "Repeatable" aspect of the FIRST principle benefit testing?
+6. Describe the "Self-Validating" aspect of the FIRST principle.
+7. Why is the "Timely" aspect of the FIRST principle crucial in software development?
+8. Provide examples of how to achieve the FIRST principle in unit testing.
+9. Discuss challenges in implementing the FIRST principle in a large codebase.
+10. How can the FIRST principle improve the maintainability of test suites?
