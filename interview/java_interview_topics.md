@@ -269,4 +269,24 @@
 34. What are some common security concerns with RESTful web services and how can they be mitigated?
 35. How do you handle errors in RESTful web services?
 36. What are Idempotent and Safe methods in REST?
+22. What are design patterns and why are they important in software development?
+23. Explain the Singleton design pattern and provide a Java implementation.
+24. What is the Factory Method pattern? Could you provide an example in Java?
+25. Describe the Observer pattern and give a real-world example where it might be used.
+26. Explain the Strategy design pattern and how it can be implemented in Java.
+27. What is the Decorator pattern and how does it differ from inheritance?
+28. Describe the Adapter pattern and its use cases.
+29. Explain the difference between the Proxy and Decorator patterns.
+30. What is the Builder pattern, and how does it help create objects?
+31. Discuss the Command pattern and its advantages in implementing undoable operations.
+32. What is the Template Method pattern and how can it be used in Java?
+33. Explain the Composite pattern and provide an example of its usage.
+34. What is the Chain of Responsibility pattern and when would you use it?
+35. Describe the Flyweight pattern and how it helps in optimizing memory usage.
+36. How does the MVC (Model-View-Controller) pattern work and where is it commonly used?
+37. Explain the Prototype pattern and how it can be implemented in Java.
+38. What is the State pattern and how does it help in state management?
+39. Discuss the Mediator pattern and its role in reducing dependencies between objects.
+40. What is the Iterator pattern and how is it used to traverse collections in Java?
+41. Explain the Visitor pattern and provide an example of when it might be useful.
 
