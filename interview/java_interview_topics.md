@@ -289,4 +289,23 @@
 39. Discuss the Mediator pattern and its role in reducing dependencies between objects.
 40. What is the Iterator pattern and how is it used to traverse collections in Java?
 41. Explain the Visitor pattern and provide an example of when it might be useful.
-
+1. Explain the use of JPA (Java Persistence API) in Java.
+2. What are the benefits of using JPA over traditional JDBC?
+3. How does JPA handle object-relational mapping (ORM)?
+4. What is an Entity in JPA and how is it defined?
+5. How do you configure JPA in a Java application?
+6. What are the different types of relationships in JPA and how are they mapped?
+7. Explain the role of the `@Entity` annotation in JPA.
+8. How do you define a primary key in JPA?
+9. What is the purpose of the `@GeneratedValue` annotation in JPA?
+10. How do you perform CRUD operations using JPA?
+11. Explain the `EntityManager` interface in JPA.
+12. What is a JPQL (Java Persistence Query Language) and how is it used in JPA?
+13. How do you handle transactions in JPA?
+14. What is the difference between `EntityManager` and `EntityManagerFactory` in JPA?
+15. How do you configure a connection pool in a JPA application?
+16. What are the different fetching strategies in JPA and how do they affect performance?
+17. Explain the concept of a JPA cache and its types.
+18. How do you implement pagination in JPA?
+19. What are the common annotations used in JPA for mapping entities to database tables?
+20. How do you handle inheritance in JPA?
