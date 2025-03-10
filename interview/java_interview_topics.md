@@ -254,3 +254,19 @@
 8. What are some common vulnerabilities in web applications and how can they be mitigated?
 9. How do you implement an application's role-based access control (RBAC)?
 10. Discuss the importance of token expiration and refresh tokens in maintaining security.
+22. What is REST and how does it differ from SOAP?
+23. Explain the principles of RESTful web services.
+24. What are the core components of a RESTful web service?
+25. How do you implement RESTful web services in Java?
+26. What HTTP methods are commonly used in RESTful web services and what are their purposes?
+27. Explain the concept of statelessness in REST.
+28. What is the role of HTTP status codes in RESTful services? Provide examples.
+29. How do you handle authentication and authorization in RESTful web services?
+30. Discuss the use of RESTful web services with JSON and XML.
+31. What are some best practices for designing RESTful APIs?
+32. How do you version RESTful APIs?
+33. Explain how you can test RESTful web services.
+34. What are some common security concerns with RESTful web services and how can they be mitigated?
+35. How do you handle errors in RESTful web services?
+36. What are Idempotent and Safe methods in REST?
+
