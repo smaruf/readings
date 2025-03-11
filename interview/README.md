@@ -13,10 +13,10 @@ This repository contains an interactive flashcard game to help users prepare for
 - `questions.json`: A JSON file containing the extracted questions and answers from the guide.
 - `java_spring_interview.py`: A Python script to run the interactive flashcard game.
 ## Links
-- [java_memory_model.md](https://github.com/smaruf/readings/blob/main/interview/java_memory_model.md)
-- [java_interview_topics.md](https://github.com/smaruf/readings/blob/main/interview/java_interview_topics.md)
-- [java_spring_preparation.md](https://github.com/smaruf/readings/blob/main/interview/java_spring_preparation.md)
-- [java_gc_operations.md](https://github.com/smaruf/readings/blob/main/interview/java_gc_operations.md)
+- [java_memory_model.md](java_memory_model.md)
+- [java_interview_topics.md](java_interview_topics.md)
+- [java_spring_preparation.md](java_spring_preparation.md)
+- [java_gc_operations.md](java_gc_operations.md)
 ## How to Use
 
 1. **Clone the Repository**:
