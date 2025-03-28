@@ -1,0 +1,72 @@
+Muhammad Shamsul Maruf
+Senior Software Engineer | Java, Spring, Cloud, Full-Stack Development
+
+Location: Gdańsk, Poland
+Email: muhammad_shamsul_maruf@epam.com
+Phone: +48 733 822 180
+LinkedIn: https://www.linkedin.com/in/muhammad-shamsul-maruf-79905161
+GitHub: https://github.com/smaruf
+
+Professional Summary
+--------------------
+Passionate Senior Software Engineer with extensive experience in Java, Spring Boot, Angular, Node.js, TypeScript, AWS, and Kubernetes. 
+Skilled in full-stack development, cloud-native architectures, cryptography, and fintech applications. Experienced in health management, banking, government services, and innovation management.
+
+Technical Skills
+----------------
+- Backend: Java (Spring Boot, Java EE), Python, GoLang
+- Frontend: Angular, React, JavaScript, TypeScript, Bootstrap
+- Databases: MySQL, PostgreSQL, Oracle, Redis, Elasticsearch
+- Cloud & DevOps: AWS, Kubernetes, Docker, CI/CD (TeamCity, Jenkins)
+- Others: FIX/ITCH/Fast Protocol, Cryptography, Secure Communication
+
+Professional Experience
+-----------------------
+
+EPAM Systems, Poland
+Senior Software Engineer (May 2023 – March 2025)
+- Developed Java-based backend solutions using Java 17, Spring Boot, AWS, and Python.
+- Built front-end applications with Angular, TypeScript, and Bootstrap.
+- Conducted R&D on data visualization using Plotly.js and D3.js.
+
+EcoSoftBD, Bangladesh
+Principal Software Engineer (April 2022 – April 2023)
+- Researched and integrated NASDAQ matching engine with FIX/ITCH/Fast protocol for stock exchanges.
+
+TigerIT Bangladesh Ltd.
+Senior Software Engineer (June 2021 – February 2023)
+- Worked on government projects including NID, passport systems, and secure communication using Java, Spring, Python, and GoLang.
+
+Kona Software Lab Ltd.
+Senior Software Engineer L-2 (August 2019 – June 2021)
+- Developed e-money banking solutions and VISA-compliant e-card software using Java, GoLang, Oracle.
+- Supported NAGAD and NEXUS Pay platforms.
+
+IdeaScale Ltd.
+Senior Software Engineer (December 2015 – August 2019)
+- Built idea management platforms for DARPA, NASA, and US Navy using Java, Elasticsearch, ChartJS, and Docker.
+
+Therap Services, LLC
+Senior Software Engineer (January 2008 – December 2015)
+- Developed HIPAA-compliant SaaS applications for the developmental disability field using Spring and J2EE.
+
+IICT, BUET, Bangladesh
+Programmer (August 2006 – July 2007)
+- Developed applications for BUET, DESCO, and gas supply companies using Java, C#, and SQL databases.
+
+Education
+---------
+BSc in Computer Science & Engineering | Rajshahi University of Engineering & Technology (RUET) | 2000 - 2005
+
+Certifications
+--------------
+- Spring Cloud: Cloud-Native Architecture & Distributed Systems
+- Java EE: Design Patterns & Architecture
+- Securing Containers & Kubernetes Ecosystem
+- Jakarta EE Overview
+
+Languages
+---------
+- English (Professional)
+- Bangla (Native)
+- Arabic (Limited)
