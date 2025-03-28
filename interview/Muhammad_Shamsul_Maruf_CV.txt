@@ -1,5 +1,5 @@
 Muhammad Shamsul Maruf
-Senior Software Engineer | Java, Spring, Cloud, Full-Stack Development
+Senior Software Engineer | Java, Spring, Cloud, jQuery, AngularJS, ReactJS Full-Stack Development
 
 Location: Gdańsk, Poland
 Email: muhammad_shamsul_maruf@epam.com
@@ -39,16 +39,16 @@ Senior Software Engineer (June 2021 – February 2023)
 
 Kona Software Lab Ltd.
 Senior Software Engineer L-2 (August 2019 – June 2021)
-- Developed e-money banking solutions and VISA-compliant e-card software using Java, GoLang, Oracle.
+- Developed e-money banking solutions and VISA-compliant e-card software using Java, GoLang, Oracle, AngularJS, ReactJS.
 - Supported NAGAD and NEXUS Pay platforms.
 
 IdeaScale Ltd.
 Senior Software Engineer (December 2015 – August 2019)
-- Built idea management platforms for DARPA, NASA, and US Navy using Java, Elasticsearch, ChartJS, and Docker.
+- Built idea management platforms for DARPA, NASA, and US Navy using Java, Spring, jQuery, MySQL, Elasticsearch, ChartJS, and Docker.
 
 Therap Services, LLC
 Senior Software Engineer (January 2008 – December 2015)
-- Developed HIPAA-compliant SaaS applications for the developmental disability field using Spring and J2EE.
+- Developed HIPAA-compliant SaaS applications for the developmental disability field using Spring and J2EE with Oracle DB and Groovy on Grails.
 
 IICT, BUET, Bangladesh
 Programmer (August 2006 – July 2007)
