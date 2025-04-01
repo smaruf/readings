@@ -192,3 +192,60 @@
     - How do you implement pagination in JPA?
     - What are the common annotations used in JPA for mapping entities to database tables?
     - How do you handle inheritance in JPA?
+
+15. **J2EE Basics**
+    - What is J2EE and how does it differ from the standard Java SE?
+    - Explain the key components of J2EE architecture.
+    - What are the advantages of using J2EE for enterprise applications?
+
+16. **Servlets and JSP**
+    - What is a servlet and how does it work?
+    - Explain the lifecycle of a servlet.
+    - What is JSP and how does it differ from servlets?
+    - How do you handle form data in a JSP?
+    - What is the difference between JSP and JSTL?
+
+17. **Enterprise JavaBeans (EJB)**
+    - What are Enterprise JavaBeans (EJB) and what are their types?
+    - Explain the lifecycle of a stateful and stateless session bean.
+    - What is the difference between session beans and entity beans?
+    - How do you use dependency injection in EJB?
+    - What are the benefits of using EJB over traditional Java classes?
+
+18. **Java Message Service (JMS)**
+    - What is JMS and how is it used in J2EE?
+    - Explain the difference between point-to-point and publish-subscribe messaging models.
+    - How do you implement messaging in a J2EE application using JMS?
+
+18. **Java Persistence API (JPA)**
+    - What is JPA and how does it simplify database interactions in J2EE?
+    - Explain the role of the EntityManager in JPA.
+    - How do you map relationships between entities in JPA?
+    - What are the different fetching strategies in JPA and when would you use them?
+
+19. **Java Transaction API (JTA)**
+    - What is JTA and how does it manage transactions in J2EE?
+    - Explain the difference between programmatic and declarative transaction management.
+    - How do you handle distributed transactions in J2EE?
+
+20. **Web Services**
+    - What are the different types of web services in J2EE?
+    - Explain the difference between SOAP and RESTful web services.
+    - How do you implement a RESTful web service in J2EE?
+    - What are the best practices for securing web services in J2EE?
+
+21. **J2EE Security**
+    - How do you implement authentication and authorization in a J2EE application?
+    - What is JAAS and how is it used in J2EE?
+    - Explain the role of an application server in managing security for J2EE applications.
+
+22. **J2EE Deployment and Performance**
+    - How do you deploy a J2EE application?
+    - What are some common performance tuning techniques for J2EE applications?
+    - How do you monitor and troubleshoot a J2EE application in a production environment?
+
+23. **J2EE Design Patterns**
+    - What are some common design patterns used in J2EE development?
+    - Explain the Model-View-Controller (MVC) pattern and how it is implemented in J2EE.
+    - What is the Front Controller pattern and how is it used in J2EE applications?
+    - Discuss the Service Locator pattern and its advantages in J2EE.
