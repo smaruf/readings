@@ -1,7 +1,8 @@
 # Java Interview Topics
 
 1. **Object-Oriented Programming**
-    - Explain the concept of Object-Oriented Programming in Java.
+    - Explain the cocodeview
+    - t of Object-Oriented Programming in Java.
     - Discuss the differences between an abstract class and an interface in Java.
     - How can polymorphism be implemented and utilized in Java?
     - Explain Java's method overloading and method overriding, and how they differ.
@@ -43,6 +44,14 @@
 5. **Exception Handling**
     - Explain exception handling in Java and the difference between checked and unchecked exceptions.
     - What are the best practices for exception handling in Java?
+    - How do you create a custom exception in Java? Provide an example.
+    - Explain the use of try, catch, and finally blocks in Java.
+    - What is the purpose of the throw and throws keywords in Java?
+    - Discuss the concept of exception chaining in Java.
+    - How can you handle multiple exceptions in a single catch block in Java?
+    - What is the difference between the Error and Exception classes in Java?
+    - Explain the concept of suppression of exceptions in Java.
+    - How do you log exceptions in Java?
 
 6. **Generics and Collections**
     - What are Java generics and how are they beneficial for type safety?
