@@ -1,8 +1,7 @@
 # Java Interview Topics
 
 1. **Object-Oriented Programming**
-    - Explain the cocodeview
-    - t of Object-Oriented Programming in Java.
+    - Explain the code of Object-Oriented Programming in Java.
     - Discuss the differences between an abstract class and an interface in Java.
     - How can polymorphism be implemented and utilized in Java?
     - Explain Java's method overloading and method overriding, and how they differ.
