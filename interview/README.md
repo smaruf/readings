@@ -15,6 +15,12 @@ This repository contains an interactive flashcard game to help users prepare for
 ## Links
 - [java_memory_model.md](java_memory_model.md)
 - [java_interview_topics.md](java_interview_topics.md)
+- [Python_interview_topics.md](Python_interview_topics.md)
+- [AWS_interview_topics.md](AWS_interview_topics.md)
+- [Azure_interview_topics.md](Azure_interview_topics.md)
+- [GCP_interview_topics.md](GCP_interview_topics.md)
+- [Angular_React_interview_topics.md](Angular_React_interview_topics.md)
+- [NodeJS_interview_topics.md](NodeJS_interview_topics.md)
 - [java_spring_preparation.md](java_spring_preparation.md)
 - [java_gc_operations.md](java_gc_operations.md)
 ## How to Use
