@@ -21,6 +21,7 @@ This repository contains an interactive flashcard game to help users prepare for
 - [GCP_interview_topics.md](GCP_interview_topics.md)
 - [Angular_React_interview_topics.md](Angular_React_interview_topics.md)
 - [NodeJS_interview_topics.md](NodeJS_interview_topics.md)
+- [Docker and K8S_interview_topics.md](Docker_K8S_interview_topics.md)
 - [java_spring_preparation.md](java_spring_preparation.md)
 - [java_gc_operations.md](java_gc_operations.md)
 ## How to Use
