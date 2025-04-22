@@ -809,3 +809,309 @@ boolean contains = str.contains("World"); // true
 - Use `StringBuilder` or `StringBuffer` for concatenation in loops.
 - Avoid excessive string creation to reduce memory overhead.
 - Use `intern()` to reuse strings from the string pool where appropriate.
+
+# Database and JDBC
+
+### 1. How do you connect to a database in Java?
+You can connect to a database in Java using the JDBC API. The key steps are:
+1. Load the database driver.
+2. Establish a connection using `DriverManager.getConnection()`.
+3. Create and execute SQL statements.
+
+Example:
+Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_name", "username", "password");
+
+---
+
+### 2. What is JDBC and how is it used in Java?
+JDBC (Java Database Connectivity) is an API that allows Java applications to interact with databases. It provides methods for querying, updating, and managing relational databases.
+
+---
+
+### 3. Explain the difference between Statement and PreparedStatement in JDBC.
+- **Statement**: Used for executing static SQL queries. Does not prevent SQL injection.
+- **PreparedStatement**: Used for executing parameterized queries. Prevents SQL injection and improves performance for repeated executions.
+
+---
+
+### 4. How do you perform a transaction in JDBC?
+To perform a transaction:
+1. Disable auto-commit using `connection.setAutoCommit(false)`.
+2. Execute the required queries.
+3. Commit or rollback the transaction using `connection.commit()` or `connection.rollback()`.
+
+---
+
+### 5. What is the role of the ResultSet interface in JDBC?
+The `ResultSet` interface represents the result of a database query. It provides methods to traverse and retrieve data from the result set.
+
+Example:
+ResultSet rs = statement.executeQuery("SELECT * FROM table_name");  
+while (rs.next()) {  
+    System.out.println(rs.getString("column_name"));  
+}
+
+---
+
+### 6. How do you handle SQL exceptions in Java?
+Use a try-catch block to catch `SQLException` and log the details using `e.getMessage()`, `e.getSQLState()`, and `e.getErrorCode()`.
+
+Example:
+try {  
+    Connection connection = DriverManager.getConnection(...);  
+} catch (SQLException e) {  
+    System.out.println("Error: " + e.getMessage());  
+}
+
+---
+
+### 7. What is an ORM (Object-Relational Mapping) and how does it work in Java?
+ORM is a technique that maps Java objects to database tables. Tools like Hibernate and JPA automate the process of converting Java objects into SQL queries and vice versa.
+
+---
+
+### 8. Explain the use of JPA (Java Persistence API) in Java.
+JPA is a specification for ORM in Java. It provides annotations like `@Entity`, `@Table`, and `@Column` to map Java objects to database tables.
+
+---
+
+### 9. How do you configure a connection pool in a Java application?
+You can configure a connection pool using libraries like HikariCP or Apache DBCP. These libraries manage a pool of database connections for improved performance.
+
+---
+
+### 10. What are the benefits of using Hibernate in Java for database operations?
+- Simplifies database interactions using HQL (Hibernate Query Language).
+- Provides built-in caching for improved performance.
+- Supports automatic schema generation and transaction management.
+
+# Software Design Principles
+
+### 1. What are the SOLID principles in software development?
+The SOLID principles are a set of design principles that improve software maintainability and scalability:
+- **S**: Single Responsibility Principle (SRP)
+- **O**: Open/Closed Principle (OCP)
+- **L**: Liskov Substitution Principle (LSP)
+- **I**: Interface Segregation Principle (ISP)
+- **D**: Dependency Inversion Principle (DIP)
+
+---
+
+### 2. How does the Single Responsibility Principle apply to Java classes?
+The Single Responsibility Principle states that a class should have only one reason to change. Each class should handle one specific functionality.
+
+Example:
+class InvoicePrinter {  
+    public void printInvoice(Invoice invoice) {  
+        // Printing logic here  
+    }  
+}
+
+---
+
+### 3. Explain the Open/Closed Principle with an example in Java.
+The Open/Closed Principle states that software entities (classes, methods) should be open for extension but closed for modification.
+
+Example:
+abstract class Shape {  
+    abstract void draw();  
+}
+
+class Circle extends Shape {  
+    @Override  
+    void draw() {  
+        // Drawing circle logic  
+    }  
+}
+
+---
+
+### 4. Discuss the Liskov Substitution Principle and its importance in OOP.
+The Liskov Substitution Principle states that objects of a superclass should be replaceable with objects of a subclass without changing the behavior of the program.
+
+---
+
+### 5. How can the Interface Segregation Principle be implemented in Java?
+The Interface Segregation Principle states that no client should be forced to depend on methods it does not use. Large interfaces should be broken into smaller, more specific ones.
+
+Example:
+interface Printer {  
+    void print();  
+}
+
+interface Scanner {  
+    void scan();  
+}
+
+class MultiFunctionPrinter implements Printer, Scanner {  
+    public void print() {  
+        // Print logic  
+    }  
+
+    public void scan() {  
+        // Scan logic  
+    }  
+}
+
+---
+
+### 6. Explain the Dependency Inversion Principle and its benefits in software design.
+The Dependency Inversion Principle states that high-level modules should not depend on low-level modules; both should depend on abstractions. This reduces coupling and improves flexibility.
+
+Example:
+interface NotificationService {  
+    void sendNotification(String message);  
+}
+
+class EmailNotificationService implements NotificationService {  
+    public void sendNotification(String message) {  
+        // Email logic  
+    }  
+}
+
+class Notification {  
+    private final NotificationService service;  
+
+    public Notification(NotificationService service) {  
+        this.service = service;  
+    }  
+
+    public void notifyUser(String message) {  
+        service.sendNotification(message);  
+    }  
+}
+
+---
+
+# Authentication and Security
+
+### 1. What is OAuth2, and how is it used for authentication and authorization in microservices?
+OAuth2 is an authorization framework that allows applications to access resources on behalf of users without sharing their credentials. It is widely used in microservices for secure token-based authentication and authorization.
+
+---
+
+### 2. How does JSON Web Token (JWT) work, and why is it commonly used in microservices architectures?
+JWT is a compact, self-contained token containing claims about a user or system. In microservices, it is used for stateless authentication, as the token can be verified without storing session data.
+
+---
+
+### 3. Explain the role of an API Gateway in microservices and how it helps with centralized authentication.
+An API Gateway acts as a single entry point for multiple microservices. It handles authentication, request routing, rate-limiting, and other cross-cutting concerns.
+
+---
+
+### 4. What are the benefits and challenges of implementing Single Sign-On (SSO) in a microservices architecture?
+- **Benefits**: Simplifies user experience by requiring one login for all services, improves security, and reduces password fatigue.
+- **Challenges**: Involves complex setup, dependency on central identity providers, and potential single points of failure.
+
+---
+
+### 5. Describe how HTTPS ensures secure communication between microservices.
+HTTPS uses SSL/TLS to encrypt data transmitted between clients and servers, ensuring confidentiality, integrity, and authenticity of the communication.
+
+---
+
+### 6. How can service-to-service authentication be implemented in a microservices environment?
+Service-to-service authentication can be implemented using mutual TLS, API keys, or token-based mechanisms like JWT or OAuth2.
+
+---
+
+### 7. What is the role of OpenID Connect in microservices authentication, and how does it differ from OAuth2?
+OpenID Connect is an identity layer built on top of OAuth2, providing additional capabilities for user authentication. While OAuth2 focuses on authorization, OpenID Connect handles authentication.
+
+---
+
+### 8. Discuss the concept of token expiration and refresh tokens in the context of microservices authentication.
+Tokens in microservices have an expiration time to enhance security. Refresh tokens are issued to allow clients to request new access tokens without re-authenticating the user.
+
+---
+
+### 9. How do you handle user roles and permissions in a microservices-based application?
+User roles and permissions can be managed using RBAC (Role-Based Access Control) or ABAC (Attribute-Based Access Control). These roles and permissions are typically stored in a central identity provider or database.
+
+---
+
+### 10. Explain the importance of securing microservice endpoints and the common strategies to achieve this.
+Securing endpoints ensures that only authorized clients or users can access the microservices. Common strategies include:
+- Using HTTPS for encrypted communication.
+- Implementing authentication and authorization mechanisms like OAuth2 or JWT.
+- Rate-limiting and IP whitelisting.
+
+# RESTful Web Services
+
+1. **What is REST and how does it differ from SOAP?**  
+   REST (Representational State Transfer) is an architectural style that uses standard HTTP methods for communication, whereas SOAP (Simple Object Access Protocol) is a protocol that uses XML for messaging and has stricter standards.
+
+2. **Explain the principles of RESTful web services.**  
+   The principles of RESTful web services include:  
+   - Statelessness  
+   - Client-server architecture  
+   - Cacheability  
+   - Layered system  
+   - Uniform interface  
+   - Code on demand (optional)
+
+3. **What are the core components of a RESTful web service?**  
+   The core components are:  
+   - Resources (identified by URIs)  
+   - Representations (data formats like JSON or XML)  
+   - HTTP methods (GET, POST, PUT, DELETE, etc.)  
+   - HTTP status codes (e.g., 200, 404)
+
+4. **How do you implement RESTful web services in Java?**  
+   RESTful web services can be implemented using frameworks like JAX-RS (Java API for RESTful Web Services) or Spring MVC.
+
+5. **What HTTP methods are commonly used in RESTful web services and what are their purposes?**  
+   - **GET**: Retrieve data  
+   - **POST**: Create a resource  
+   - **PUT**: Update a resource  
+   - **DELETE**: Delete a resource  
+   - **PATCH**: Partially update a resource
+
+6. **Explain the concept of statelessness in REST.**  
+   Statelessness means that each client-server interaction is independent, and the server does not store any client context between requests.
+
+7. **What is the role of HTTP status codes in RESTful services? Provide examples.**  
+   HTTP status codes indicate the result of an HTTP request. Examples:  
+   - 200 OK: Request succeeded  
+   - 201 Created: Resource created  
+   - 404 Not Found: Resource not found  
+   - 500 Internal Server Error: Server encountered an error
+
+8. **How do you handle authentication and authorization in RESTful web services?**  
+   Authentication and authorization can be handled using:  
+   - Basic authentication  
+   - OAuth2  
+   - JWT (JSON Web Token)
+
+9. **Discuss the use of RESTful web services with JSON and XML.**  
+   RESTful services commonly use JSON or XML for data representation. JSON is preferred for its lightweight and faster parsing, while XML is used for more complex data structures.
+
+10. **What are some best practices for designing RESTful APIs?**  
+    - Use meaningful resource names  
+    - Follow standard HTTP methods and status codes  
+    - Implement versioning  
+    - Use pagination for large datasets  
+    - Ensure secure communication with HTTPS
+
+11. **How do you version RESTful APIs?**  
+    Versioning can be achieved using:  
+    - URI versioning: `/v1/resource`  
+    - Query parameters: `?version=1`  
+    - HTTP headers: `Accept: application/vnd.api+json; version=1.0`
+
+12. **Explain how you can test RESTful web services.**  
+    RESTful services can be tested using tools like Postman, cURL, or automated testing frameworks like RestAssured.
+
+13. **What are some common security concerns with RESTful web services and how can they be mitigated?**  
+    - **Security Concerns**: Injection attacks, data exposure, lack of HTTPS  
+    - **Mitigation**: Input validation, encryption, secure authentication, and authorization
+
+14. **How do you handle errors in RESTful web services?**  
+    Return appropriate HTTP status codes and include error details in the response body. Example:  
+    - Error: Resource not found  
+    - Code: 404
+
+15. **What are Idempotent and Safe methods in REST?**  
+    - **Idempotent Methods**: Multiple identical requests have the same effect (e.g., GET, PUT, DELETE)  
+    - **Safe Methods**: Methods that do not modify resources (e.g., GET, HEAD)
