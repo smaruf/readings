@@ -846,23 +846,25 @@ To perform a transaction:
 The `ResultSet` interface represents the result of a database query. It provides methods to traverse and retrieve data from the result set.
 
 Example:
+```
 ResultSet rs = statement.executeQuery("SELECT * FROM table_name");  
 while (rs.next()) {  
     System.out.println(rs.getString("column_name"));  
 }
-
+```
 ---
 
 ### 6. How do you handle SQL exceptions in Java?
 Use a try-catch block to catch `SQLException` and log the details using `e.getMessage()`, `e.getSQLState()`, and `e.getErrorCode()`.
 
 Example:
+```
 try {  
     Connection connection = DriverManager.getConnection(...);  
 } catch (SQLException e) {  
     System.out.println("Error: " + e.getMessage());  
 }
-
+```
 ---
 
 ### 7. What is an ORM (Object-Relational Mapping) and how does it work in Java?
@@ -901,18 +903,20 @@ The SOLID principles are a set of design principles that improve software mainta
 The Single Responsibility Principle states that a class should have only one reason to change. Each class should handle one specific functionality.
 
 Example:
+```
 class InvoicePrinter {  
     public void printInvoice(Invoice invoice) {  
         // Printing logic here  
     }  
 }
-
+```
 ---
 
 ### 3. Explain the Open/Closed Principle with an example in Java.
 The Open/Closed Principle states that software entities (classes, methods) should be open for extension but closed for modification.
 
 Example:
+```
 abstract class Shape {  
     abstract void draw();  
 }
@@ -923,7 +927,7 @@ class Circle extends Shape {
         // Drawing circle logic  
     }  
 }
-
+```
 ---
 
 ### 4. Discuss the Liskov Substitution Principle and its importance in OOP.
@@ -935,6 +939,7 @@ The Liskov Substitution Principle states that objects of a superclass should be 
 The Interface Segregation Principle states that no client should be forced to depend on methods it does not use. Large interfaces should be broken into smaller, more specific ones.
 
 Example:
+```
 interface Printer {  
     void print();  
 }
@@ -952,13 +957,14 @@ class MultiFunctionPrinter implements Printer, Scanner {
         // Scan logic  
     }  
 }
-
+```
 ---
 
 ### 6. Explain the Dependency Inversion Principle and its benefits in software design.
 The Dependency Inversion Principle states that high-level modules should not depend on low-level modules; both should depend on abstractions. This reduces coupling and improves flexibility.
 
 Example:
+```
 interface NotificationService {  
     void sendNotification(String message);  
 }
@@ -980,7 +986,7 @@ class Notification {
         service.sendNotification(message);  
     }  
 }
-
+```
 ---
 
 # Authentication and Security
@@ -1115,3 +1121,340 @@ Securing endpoints ensures that only authorized clients or users can access the 
 15. **What are Idempotent and Safe methods in REST?**  
     - **Idempotent Methods**: Multiple identical requests have the same effect (e.g., GET, PUT, DELETE)  
     - **Safe Methods**: Methods that do not modify resources (e.g., GET, HEAD)
+
+# Design Patterns
+
+1. **What are design patterns and why are they important in software development?**  
+   Design patterns are reusable solutions to common software design problems. They improve code readability, scalability, and maintainability.
+
+2. **Explain the Singleton design pattern and provide a Java implementation.**  
+   The Singleton pattern ensures that a class has only one instance and provides a global point of access to it.
+
+3. **What is the Factory Method pattern? Could you provide an example in Java?**  
+   The Factory Method pattern provides a way to create objects without specifying their exact class.
+
+4. **Describe the Observer pattern and give a real-world example where it might be used.**  
+   In the Observer pattern, an object (subject) notifies its dependents (observers) of state changes.
+
+5. **Explain the Strategy design pattern and how it can be implemented in Java.**  
+   The Strategy pattern defines a family of algorithms and allows them to be interchangeable at runtime.
+
+6. **What is the Decorator pattern and how does it differ from inheritance?**  
+   The Decorator pattern adds behavior dynamically to objects without modifying their code, unlike inheritance which adds behavior at the class level.
+
+7. **Describe the Adapter pattern and its use cases.**  
+   The Adapter pattern allows incompatible interfaces to work together by wrapping an existing class with a new interface.
+
+8. **Explain the difference between the Proxy and Decorator patterns.**  
+   While both patterns involve wrapping objects, the Proxy pattern controls access to the object (e.g., lazy initialization or security), whereas the Decorator pattern adds new behavior.
+
+9. **What is the Builder pattern, and how does it help create objects?**  
+   The Builder pattern constructs complex objects step-by-step, allowing fine control over the construction process.
+
+10. **Discuss the Command pattern and its advantages in implementing undoable operations.**  
+    The Command pattern encapsulates a request as an object, allowing easy command execution, undo, and redo functionality.
+
+11. **What is the Template Method pattern and how can it be used in Java?**  
+    The Template Method pattern defines the skeleton of an algorithm in a base class and allows subclasses to complete specific steps.
+
+12. **Explain the Composite pattern and provide an example of its usage.**  
+    The Composite pattern allows treating individual objects and compositions of objects uniformly.
+
+13. **What is the Chain of Responsibility pattern and when would you use it?**  
+    The Chain of Responsibility pattern passes a request along a chain of handlers until it is handled.
+
+14. **Describe the Flyweight pattern and how it helps in optimizing memory usage.**  
+    The Flyweight pattern minimizes memory usage by sharing common parts of objects.
+
+15. **How does the MVC (Model-View-Controller) pattern work and where is it commonly used?**  
+    The MVC pattern separates application logic into three components:  
+    - Model: Represents data and business logic.  
+    - View: Displays data to the user.  
+    - Controller: Handles user input and updates the model/view.
+
+16. **Explain the Prototype pattern and how it can be implemented in Java.**  
+    The Prototype pattern creates new objects by copying existing ones instead of creating them from scratch.
+
+17. **What is the State pattern and how does it help in state management?**  
+    The State pattern allows an object to alter its behavior when its internal state changes.
+
+18. **Discuss the Mediator pattern and its role in reducing dependencies between objects.**  
+    The Mediator pattern centralizes communication between objects, reducing their dependencies.
+
+19. **What is the Iterator pattern and how is it used to traverse collections in Java?**  
+    The Iterator pattern provides a way to sequentially access elements in a collection without exposing its underlying representation.
+
+20. **Explain the Visitor pattern and provide an example of when it might be useful.**  
+    The Visitor pattern separates operations from the objects on which they operate, allowing new operations without modifying the object structure.
+
+# Spring Framework
+
+1. **What is the Spring Framework and how does it simplify enterprise application development?**  
+   The Spring Framework is an open-source framework for Java that simplifies enterprise application development by providing features such as dependency injection, aspect-oriented programming, and declarative transaction management.
+
+2. **Explain the concepts of Inversion of Control (IoC) and Dependency Injection (DI) in Spring.**  
+   - **IoC**: A design principle where the control of object creation and lifecycle management is delegated to the Spring container.  
+   - **DI**: A technique to achieve IoC by injecting dependencies into objects at runtime rather than having objects create their dependencies.
+
+3. **What are Spring Beans and how are they managed in the Spring container?**  
+   Spring Beans are the objects that are instantiated, managed, and configured by the Spring IoC container. They are defined in configuration files, annotations, or Java-based configurations.
+
+4. **Describe the different scopes of Spring Beans.**  
+   - **Singleton**: One instance per Spring container (default).  
+   - **Prototype**: A new instance is created each time it is requested.  
+   - **Request**: One instance per HTTP request (web applications).  
+   - **Session**: One instance per HTTP session (web applications).  
+   - **Global Session**: One instance per global HTTP session (portlet-based web applications).  
+   - **Application**: Shared across the lifecycle of a ServletContext.
+
+5. **How does Spring handle transaction management?**  
+   Spring provides both programmatic and declarative transaction management. Declarative transaction management is preferred as it uses annotations or XML configuration to define transactions, reducing boilerplate code.
+
+6. **Explain the Spring AOP (Aspect-Oriented Programming) and its use cases.**  
+   Spring AOP allows developers to define cross-cutting concerns (e.g., logging, security, transactions) separately from business logic using aspects, pointcuts, and advices.
+
+7. **What is Spring Boot and how does it simplify Spring application development?**  
+   Spring Boot is a framework that simplifies Spring application development by providing features like auto-configuration, embedded servers, and starter dependencies.
+
+8. **How do you configure a Spring Boot application?**  
+   Spring Boot applications are configured using the `application.properties` or `application.yml` file. Custom configurations can also be added using Java-based configuration classes.
+
+9. **What are Spring Data JPA and its benefits for data access and manipulation?**  
+   Spring Data JPA is a Spring-based framework that simplifies data access and manipulation by providing repository interfaces, query methods, and support for JPA entities.
+
+10. **Explain the role of Spring Security in securing applications.**  
+    Spring Security is a framework that provides authentication, authorization, and protection against common security vulnerabilities (e.g., CSRF, session fixation) in Java applications.
+
+# Java Persistence API (JPA)
+
+1. **Explain the use of JPA (Java Persistence API) in Java.**  
+   JPA is a specification for managing relational data in Java applications. It simplifies database interactions by providing an object-relational mapping (ORM) framework.
+
+2. **What are the benefits of using JPA over traditional JDBC?**  
+   - Reduces boilerplate code  
+   - Supports object-relational mapping  
+   - Provides a query language (JPQL)  
+   - Simplifies transaction management  
+   - Database independence
+
+3. **How does JPA handle object-relational mapping (ORM)?**  
+   JPA maps Java objects to database tables and allows developers to perform database operations using Java objects instead of SQL queries.
+
+4. **What is an Entity in JPA and how is it defined?**  
+   An entity is a lightweight Java class that represents a table in a database. It is defined using the `@Entity` annotation.
+
+5. **How do you configure JPA in a Java application?**  
+   JPA can be configured using a `persistence.xml` file or Java-based configurations. It includes details like database connection properties, entity classes, and transaction types.
+
+6. **What are the different types of relationships in JPA and how are they mapped?**  
+   - **One-to-One**: `@OneToOne` annotation  
+   - **One-to-Many**: `@OneToMany` annotation  
+   - **Many-to-One**: `@ManyToOne` annotation  
+   - **Many-to-Many**: `@ManyToMany` annotation  
+
+7. **Explain the role of the @Entity annotation in JPA.**  
+   The `@Entity` annotation marks a class as an entity, indicating that it should be mapped to a database table.
+
+8. **How do you define a primary key in JPA?**  
+   Use the `@Id` annotation to mark a field as the primary key. You can generate primary keys using the `@GeneratedValue` annotation.
+
+9. **What is the purpose of the @GeneratedValue annotation in JPA?**  
+   The `@GeneratedValue` annotation specifies how the primary key should be generated (e.g., auto-increment, sequence, or identity).
+
+10. **How do you perform CRUD operations using JPA?**  
+    CRUD operations can be performed using the `EntityManager` interface methods:  
+    - `persist()`: Create  
+    - `find()` or `getReference()`: Read  
+    - `merge()`: Update  
+    - `remove()`: Delete  
+
+11. **Explain the EntityManager interface in JPA.**  
+    The `EntityManager` interface manages the lifecycle of entities and provides methods for performing database operations.
+
+12. **What is a JPQL (Java Persistence Query Language) and how is it used in JPA?**  
+    JPQL is a query language used to perform database operations on entities. It is similar to SQL but operates on entity objects instead of database tables.
+
+13. **How do you handle transactions in JPA?**  
+    Transactions can be managed programmatically using the `EntityTransaction` interface or declaratively using annotations like `@Transactional`.
+
+14. **What is the difference between EntityManager and EntityManagerFactory in JPA?**  
+    - **EntityManagerFactory**: A factory for creating `EntityManager` instances. It is thread-safe and expensive to create.  
+    - **EntityManager**: A lightweight, non-thread-safe object used for managing entity operations.
+
+15. **How do you configure a connection pool in a JPA application?**  
+    Configure a connection pool in the `persistence.xml` file or through Java-based configuration using connection pool libraries like HikariCP or Apache DBCP.
+
+16. **What are the different fetching strategies in JPA and how do they affect performance?**  
+    - **Eager fetching**: Loads related entities immediately.  
+    - **Lazy fetching**: Loads related entities only when accessed.  
+    Use `FetchType.EAGER` or `FetchType.LAZY` annotations to define the fetching strategy.
+
+17. **Explain the concept of a JPA cache and its types.**  
+    JPA supports two levels of caching:  
+    - **First-level cache**: Built into the `EntityManager` and used for a single transaction.  
+    - **Second-level cache**: Shared across multiple `EntityManager` instances and provided by the JPA provider.
+
+18. **How do you implement pagination in JPA?**  
+    Use the `setFirstResult()` and `setMaxResults()` methods of the `Query` or `TypedQuery` interface to implement pagination.
+
+19. **What are the common annotations used in JPA for mapping entities to database tables?**  
+    - `@Entity`: Marks a class as an entity.  
+    - `@Table`: Specifies the table name.  
+    - `@Id`: Marks the primary key.  
+    - `@GeneratedValue`: Defines key generation strategy.  
+    - `@Column`: Maps a field to a database column.  
+    - `@OneToOne`, `@OneToMany`, `@ManyToOne`, `@ManyToMany`: Maps relationships between entities.
+
+20. **How do you handle inheritance in JPA?**  
+    JPA supports three inheritance strategies:  
+    - **Single Table**: All classes are mapped to a single table.  
+    - **Joined**: Each class maps to its own table with relationships.  
+    - **Table Per Class**: Each class maps to its own table without relationships.
+
+# J2EE Basics
+
+1. **What is J2EE and how does it differ from the standard Java SE?**  
+   J2EE (Java 2 Platform, Enterprise Edition) is a platform for building enterprise-level applications, providing features like distributed computing and web services, while Java SE (Standard Edition) is used for building standalone desktop applications.
+
+2. **Explain the key components of J2EE architecture.**  
+   The key components include:  
+   - **Presentation Layer**: JSP, Servlets  
+   - **Business Layer**: EJB (Enterprise JavaBeans)  
+   - **Integration Layer**: JCA (Java Connector Architecture), JMS (Java Message Service)
+
+3. **What are the advantages of using J2EE for enterprise applications?**  
+   - Scalability  
+   - Multi-tier architecture  
+   - Platform independence  
+   - Built-in security features  
+   - Integration with web services  
+
+# Servlets and JSP
+
+1. **What is a servlet and how does it work?**  
+   A servlet is a Java class that handles HTTP requests and responses in a web application. It works by extending the `HttpServlet` class and overriding methods like `doGet()` and `doPost()`.
+
+2. **Explain the lifecycle of a servlet.**  
+   - **Initialization**: `init()` method is called.  
+   - **Request Handling**: `service()` method processes client requests.  
+   - **Destruction**: `destroy()` method is called to release resources.
+
+3. **What is JSP and how does it differ from servlets?**  
+   JSP (Java Server Pages) is a technology for creating dynamic web pages using HTML with embedded Java code. Unlike servlets, JSP focuses on presentation and allows easier integration with HTML.
+
+4. **How do you handle form data in a JSP?**  
+   Form data can be accessed using `request.getParameter()` in JSP.
+
+5. **What is the difference between JSP and JSTL?**  
+   JSP is used for embedding Java code within HTML, while JSTL (JavaServer Pages Standard Tag Library) provides tag-based solutions for common tasks like iteration and conditionals.
+
+# Enterprise JavaBeans (EJB)
+
+1. **What are Enterprise JavaBeans (EJB) and what are their types?**  
+   EJB is a server-side component for building modular, scalable, and transactional business logic. Types include:  
+   - Stateless Session Beans  
+   - Stateful Session Beans  
+   - Message-Driven Beans  
+
+2. **Explain the lifecycle of a stateful and stateless session bean.**  
+   - **Stateful**: Passivated and activated as needed, retains client state.  
+   - **Stateless**: Created and destroyed by the container without retaining state.
+
+3. **What is the difference between session beans and entity beans?**  
+   Session beans handle business logic, while entity beans are used for persistent data storage.
+
+4. **How do you use dependency injection in EJB?**  
+   Dependency injection is used with annotations like `@EJB` to inject EJB instances into other components.
+
+5. **What are the benefits of using EJB over traditional Java classes?**  
+   - Built-in transaction management  
+   - Simplified scalability  
+   - Security features  
+   - Simplified persistence  
+
+# Java Message Service (JMS)
+
+1. **What is JMS and how is it used in J2EE?**  
+   JMS (Java Message Service) is an API for sending and receiving messages between distributed systems, enabling asynchronous communication.
+
+2. **Explain the difference between point-to-point and publish-subscribe messaging models.**  
+   - **Point-to-Point**: Messages are sent to a specific queue and consumed by one receiver.  
+   - **Publish-Subscribe**: Messages are published to a topic and received by multiple subscribers.
+
+3. **How do you implement messaging in a J2EE application using JMS?**  
+   Create a `ConnectionFactory`, use `Session` to send/receive messages, and implement a `MessageListener` for asynchronous processing.
+
+# Java Transaction API (JTA)
+
+1. **What is JTA and how does it manage transactions in J2EE?**  
+   JTA (Java Transaction API) is a standard API for managing transactions in J2EE applications, ensuring consistency across multiple resources.
+
+2. **Explain the difference between programmatic and declarative transaction management.**  
+   - **Programmatic**: Transactions are managed manually using APIs.  
+   - **Declarative**: Transactions are defined using annotations or configuration files.
+
+3. **How do you handle distributed transactions in J2EE?**  
+   Distributed transactions are handled using a transaction manager that coordinates between multiple resources like databases and message brokers.
+
+# Web Services
+
+1. **What are the different types of web services in J2EE?**  
+   - SOAP-based web services  
+   - RESTful web services
+
+2. **Explain the difference between SOAP and RESTful web services.**  
+   SOAP is a protocol that uses XML for messaging, while REST is an architectural style that uses standard HTTP methods and supports multiple data formats like JSON and XML.
+
+3. **How do you implement a RESTful web service in J2EE?**  
+   Use JAX-RS (Java API for RESTful Web Services) annotations like `@Path`, `@GET`, `@POST`, and `@Produces`.
+
+4. **What are the best practices for securing web services in J2EE?**  
+   - Use HTTPS for secure communication  
+   - Implement authentication and authorization  
+   - Validate and sanitize inputs  
+   - Use secure tokens (e.g., OAuth2, JWT)  
+
+# J2EE Security
+
+1. **How do you implement authentication and authorization in a J2EE application?**  
+   Use JAAS (Java Authentication and Authorization Service) or container-based security to restrict access based on roles and permissions.
+
+2. **What is JAAS and how is it used in J2EE?**  
+   JAAS is a Java API for authentication and authorization, providing a way to securely manage user credentials and access control.
+
+3. **Explain the role of an application server in managing security for J2EE applications.**  
+   Application servers provide built-in security features like user authentication, role-based access control, and secure communication.
+
+# J2EE Deployment and Performance
+
+1. **How do you deploy a J2EE application?**  
+   Package the application into an EAR (Enterprise Archive) or WAR (Web Application Archive) file and deploy it to an application server like Apache Tomcat or JBoss.
+
+2. **What are some common performance tuning techniques for J2EE applications?**  
+   - Optimize database queries  
+   - Use caching mechanisms  
+   - Monitor and reduce memory usage  
+   - Use connection pooling  
+
+3. **How do you monitor and troubleshoot a J2EE application in a production environment?**  
+   Use monitoring tools like JMX, logging frameworks, and application performance monitoring (APM) solutions.
+
+# J2EE Design Patterns
+
+1. **What are some common design patterns used in J2EE development?**  
+   - Model-View-Controller (MVC)  
+   - Front Controller  
+   - Service Locator  
+   - Data Access Object (DAO)  
+
+2. **Explain the Model-View-Controller (MVC) pattern and how it is implemented in J2EE.**  
+   The MVC pattern separates the application into three components:  
+   - **Model**: Business logic and data  
+   - **View**: User interface  
+   - **Controller**: Handles user input and updates the model/view.
+
+3. **What is the Front Controller pattern and how is it used in J2EE applications?**  
+   The Front Controller pattern centralizes request handling using a single servlet to manage and dispatch requests.
+
+4. **Discuss the Service Locator pattern and its advantages in J2EE.**  
+   The Service Locator pattern is used to abstract the lookup of services, improving performance and reusability.
