@@ -483,9 +483,329 @@ Java's garbage collector works by marking objects that are no longer reachable a
 - **Shenandoah GC**: Reduces pause times by concurrent compaction.
 
 ---
+# Exception Handling
 
+### 1. Explain exception handling in Java and the difference between checked and unchecked exceptions.
+- **Exception Handling**: Java uses try, catch, finally blocks to handle exceptions and ensure graceful program termination.
+- **Checked Exceptions**: Must be declared in the method signature or caught in a try-catch block (e.g., IOException, SQLException).
+- **Unchecked Exceptions**: Do not need to be declared or caught; they occur due to programming errors (e.g., NullPointerException, ArrayIndexOutOfBoundsException).
+
+---
+
+### 2. What are the best practices for exception handling in Java?
+- Catch specific exceptions instead of generic ones.
+- Avoid empty catch blocks.
+- Use custom exceptions for application-specific errors.
+- Log exceptions for debugging and troubleshooting.
+- Release resources in the `finally` block or use try-with-resources.
+
+---
+
+### 3. How do you create a custom exception in Java? Provide an example.
+You can create a custom exception by extending the `Exception` or `RuntimeException` class.
+
+Example:
+```
+class MyCustomException extends Exception {  
+    public MyCustomException(String message) {  
+        super(message);  
+    }  
+}
+```
+---
+
+### 4. Explain the use of try, catch, and finally blocks in Java.
+- **try**: Code that might throw an exception is placed here.
+- **catch**: Handles the exception thrown in the try block.
+- **finally**: Executes cleanup code regardless of whether an exception occurred or not.
+
+Example:
+```
+try {  
+    int result = 10 / 0;  
+} catch (ArithmeticException e) {  
+    System.out.println("Cannot divide by zero.");  
+} finally {  
+    System.out.println("Execution complete.");  
+}
+```
+---
+
+### 5. What is the purpose of the throw and throws keywords in Java?
+- **throw**: Used to explicitly throw an exception.
+- **throws**: Declares exceptions that a method might throw.
+
+Example:
+```
+void myMethod() throws IOException {  
+    throw new IOException("An I/O error occurred.");  
+}
+```
+---
+
+### 6. Discuss the concept of exception chaining in Java.
+Exception chaining allows associating a cause (another exception) with an exception. This is useful for debugging.
+
+Example:
+```
+Throwable cause = new NullPointerException("Null value");  
+throw new IOException("I/O error caused by another exception", cause);
+```
+---
+
+### 7. How can you handle multiple exceptions in a single catch block in Java?
+You can use a multi-catch block (introduced in Java 7) to handle multiple exceptions.
+
+Example:
+```
+try {  
+    int[] arr = new int[5];  
+    arr[6] = 10;  
+} catch (ArrayIndexOutOfBoundsException | NullPointerException e) {  
+    System.out.println("An exception occurred: " + e.getMessage());  
+}
+```
+---
+
+### 8. What is the difference between the Error and Exception classes in Java?
+- **Error**: Represents serious issues that the application cannot recover from (e.g., OutOfMemoryError).
+- **Exception**: Represents conditions that the application might want to catch and handle.
+
+---
+
+### 9. Explain the concept of suppression of exceptions in Java.
+Suppressed exceptions occur when one exception is thrown but others are suppressed (e.g., in try-with-resources).
+
+Example:
+```
+try (BufferedReader br = new BufferedReader(new FileReader("file.txt"))) {  
+    // Code that might throw an exception  
+} catch (IOException e) {  
+    System.out.println("Exception: " + e.getMessage());  
+}
+```
+---
+
+### 10. How do you log exceptions in Java?
+You can use logging frameworks like Log4j, SLF4J, or Java's built-in `java.util.logging` to log exceptions.
+
+Example:
+```
+Logger logger = Logger.getLogger(MyClass.class.getName());  
+try {  
+    int result = 10 / 0;  
+} catch (ArithmeticException e) {  
+    logger.log(Level.SEVERE, "An error occurred", e);  
+}
+```
 ### 4. Discuss the continuous improvements in garbage collection mechanisms in Java, focusing on recent updates like G1 and ZGC collectors.
 - **G1 GC**: Introduced in Java 9, it divides the heap into regions and prioritizes garbage collection of regions with the most garbage. It reduces pause times compared to CMS.
 - **ZGC**: Introduced in Java 11, it performs most of the garbage collection work concurrently, resulting in low pause times even on large heaps.
 - **Shenandoah GC**: Introduced in Java 12, it reduces pause times by compacting the heap while the application is running.
 
+# Generics and Collections
+
+### 1. What are Java generics and how are they beneficial for type safety?
+Java generics enable type-checking at compile time, ensuring that only specific types are used in a collection or method. This improves type safety and eliminates the need for casting.
+
+Example:
+```
+List<String> list = new ArrayList<>();  
+list.add("Hello");  
+String value = list.get(0); // No casting needed  
+```
+---
+
+### 2. What is the difference between a shallow copy and a deep copy in Java?
+- **Shallow Copy**: Copies the references of objects; changes in the original object affect the copied object.
+- **Deep Copy**: Creates a new copy of the object and all its nested objects.
+
+Example of shallow copy using `clone()`:
+```
+List<Integer> original = new ArrayList<>(Arrays.asList(1, 2, 3));  
+List<Integer> shallowCopy = new ArrayList<>(original);  
+```
+---
+
+### 3. How do you implement a deep copy of an object in Java?
+You can implement a deep copy by manually copying all fields or using serialization.
+
+Example:
+```
+class Person implements Serializable {  
+    private String name;  
+    private Address address;  
+
+    public Person deepCopy() throws IOException, ClassNotFoundException {  
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();  
+        ObjectOutputStream out = new ObjectOutputStream(bos);  
+        out.writeObject(this);  
+        ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());  
+        ObjectInputStream in = new ObjectInputStream(bis);  
+        return (Person) in.readObject();  
+    }  
+}  
+```
+---
+
+### 4. What is the purpose of the Cloneable interface in Java?
+The `Cloneable` interface indicates that a class allows its objects to be cloned using the `clone()` method. Without implementing this interface, calling `clone()` throws `CloneNotSupportedException`.
+
+---
+
+### 5. How does the clone() method work in Java, and what are its limitations?
+The `clone()` method creates a shallow copy of an object. Its limitations include:
+1. It does not handle deep copying.
+2. It is not thread-safe.
+3. It requires implementing the `Cloneable` interface.
+
+---
+
+### 6. Explain the difference between the clone() method and a copy constructor.
+- **clone() Method**: Uses the `Cloneable` interface to create a shallow copy.
+- **Copy Constructor**: A constructor that creates a new object by copying values from another object.
+
+Example of a copy constructor:
+```
+class Person {  
+    private String name;  
+
+    public Person(Person other) {  
+        this.name = other.name;  
+    }  
+}  
+```
+---
+
+### 7. What are the potential issues with using the clone() method for object copying?
+- It creates shallow copies, which might lead to unintended side effects.
+- It requires implementing the `Cloneable` interface.
+- It is less flexible compared to other methods like copy constructors.
+
+---
+
+### 8. How can you achieve a deep copy of a Java object that contains nested objects?
+A deep copy can be achieved by:
+1. Manually copying all fields and nested objects.
+2. Using serialization to create a deep copy.
+
+---
+
+### 9. Discuss the pros and cons of using serialization for deep copying in Java.
+- **Pros**: Simple to implement, works for complex objects.
+- **Cons**: Slower performance, requires all objects to implement `Serializable`.
+
+---
+
+### 10. How do you handle copying of objects that are not Cloneable?
+For objects not implementing `Cloneable`, you can:
+1. Use a copy constructor.
+2. Manually copy fields.
+
+Example:
+```
+class Address {  
+    private String city;  
+
+    public Address(Address other) {  
+        this.city = other.city;  
+    }  
+}  
+```
+---
+
+### 11. What are the best practices for implementing the clone() method in a class?
+- Always override the `clone()` method in a class that implements `Cloneable`.
+- Use `super.clone()` to create a shallow copy of the object.
+- Ensure deep cloning for mutable fields to avoid side effects.
+
+# Strings
+
+### 1. What is the difference between String, StringBuilder, and StringBuffer in Java?
+- **String**: Immutable sequence of characters.
+- **StringBuilder**: Mutable and not synchronized, better for single-threaded operations.
+- **StringBuffer**: Mutable and synchronized, suitable for multi-threaded operations.
+
+---
+
+### 2. How do you compare two strings in Java?
+You can use:
+- **`equals()`**: Compares the content of two strings.
+- **`==`**: Compares the reference of two strings.
+- **`compareTo()`**: Compares two strings lexicographically.
+
+Example:
+```
+String s1 = "Hello";  
+String s2 = "Hello";  
+boolean isEqual = s1.equals(s2); // true  
+```
+---
+
+### 3. Explain the concept of string immutability in Java and its benefits.
+A string is immutable in Java, meaning its value cannot be changed once created. Benefits include:
+1. Thread safety.
+2. Reduced memory usage with the string pool.
+3. Easier debugging.
+
+---
+
+### 4. How can you convert a string to an integer and vice versa in Java?
+- **String to Integer**: Use `Integer.parseInt()` or `Integer.valueOf()`.
+- **Integer to String**: Use `String.valueOf()` or `Integer.toString()`.
+
+Example:
+```
+String numberStr = "123";  
+int number = Integer.parseInt(numberStr);  
+String str = String.valueOf(number);  
+```
+---
+
+### 5. What is the use of the intern() method in the String class?
+The `intern()` method stores the string in the string pool. If the string already exists in the pool, it returns the reference; otherwise, it adds the string to the pool.
+
+---
+
+### 6. How do you split a string in Java?
+You can use the `split()` method to divide a string into an array based on a regex.
+
+Example:
+```
+String str = "one,two,three";  
+String[] parts = str.split(",");  
+```
+---
+
+### 7. What are the various ways to concatenate strings in Java?
+- Using the `+` operator.
+- Using `concat()` method.
+- Using `StringBuilder` or `StringBuffer` for better performance in loops.
+
+Example:
+```
+String result = "Hello" + " World";  
+String result2 = "Hello".concat(" World");  
+```
+---
+
+### 8. Explain the difference between equals() and == when comparing strings in Java.
+- **`equals()`**: Compares the actual content of the strings.
+- **`==`**: Compares the memory reference of the strings.
+
+---
+
+### 9. How do you check if a string contains a particular substring in Java?
+Use the `contains()` method.
+
+Example:
+```
+String str = "Hello World";  
+boolean contains = str.contains("World"); // true  
+```
+---
+
+### 10. What are some common performance considerations when working with strings in Java?
+- Use `StringBuilder` or `StringBuffer` for concatenation in loops.
+- Avoid excessive string creation to reduce memory overhead.
+- Use `intern()` to reuse strings from the string pool where appropriate.
