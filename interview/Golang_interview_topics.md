@@ -77,7 +77,7 @@
 56. Explain the partitioning mechanism in Kafka and how you can control it in Go.
 57. What is the purpose of the Kafka schema registry, and how can it be integrated with Go applications?
 58. How do you handle backpressure in a Kafka-based Go application?
-59. Can you explain how to use Kafka streams with Go?
+59. Can you explain how to use Kafka Streams with Go?
 60. How do you monitor and debug Kafka producers and consumers in Go?
 
 ## **11. Messaging**
@@ -133,19 +133,36 @@
 104. Explain how gRPC handles backward compatibility.
 105. What is a gRPC gateway, and how do you use it to expose HTTP endpoints?
 
-## **15. Troubleshooting**
-106. How do you debug a Go application's runtime errors?
-107. What are common reasons for goroutines leaking, and how can you identify them?
-108. How can you debug deadlocks in a Go application?
-109. How do you trace memory allocation issues in Go?
-110. What tools can you use to profile a Go application?
-111. How do you interpret and analyze stack traces in Go?
-112. What are common reasons for high CPU usage in a Go application, and how do you resolve them?
-113. How do you handle "context deadline exceeded" errors in Go?
-114. How would you troubleshoot a Go application that crashes intermittently?
-115. What is the purpose of the `pprof` package in Go, and how do you use it?
-116. How do you handle performance bottlenecks in Go?
-117. What tools or techniques can you use to monitor goroutine count in a production environment?
-118. How do you troubleshoot slow database queries in a Go application?
-119. How do you diagnose and resolve connection pooling issues in Go?
-120. How do you log and analyze gRPC calls for debugging?
+## **15. Echo Framework**
+106. What is the Echo framework, and why is it popular in the Go community?
+107. How do you set up a basic HTTP server using the Echo framework?
+108. What are the main components of the Echo framework?
+109. How do you define and use middleware in the Echo framework?
+110. How does the Echo framework handle routing, and how do you define route groups?
+111. How do you serve static files using the Echo framework?
+112. What is the difference between middleware and handlers in the Echo framework?
+113. How do you secure an Echo application using HTTPS?
+114. How do you handle request validation in the Echo framework?
+115. How does Echo support context management, and why is it important?
+116. How would you implement error handling in an Echo application?
+117. How do you integrate third-party libraries like a database driver or logging tool with Echo?
+118. What are the techniques to optimize performance in an Echo-based application?
+119. How do you handle file uploads in the Echo framework?
+120. How can you test handlers and middleware in the Echo framework?
+
+## **16. Troubleshooting**
+121. How do you debug a Go application's runtime errors?
+122. What are common reasons for goroutines leaking, and how can you identify them?
+123. How can you debug deadlocks in a Go application?
+124. How do you trace memory allocation issues in Go?
+125. What tools can you use to profile a Go application?
+126. How do you interpret and analyze stack traces in Go?
+127. What are the common reasons for high CPU usage in a Go application, and how do you resolve them?
+128. How do you handle "context deadline exceeded" errors in Go?
+129. How would you troubleshoot a Go application that crashes intermittently?
+130. What is the purpose of the `pprof` package in Go, and how do you use it?
+131. How do you handle performance bottlenecks in Go?
+132. What tools or techniques can you use to monitor goroutine count in a production environment?
+133. How do you troubleshoot slow database queries in a Go application?
+134. How do you diagnose and resolve connection pooling issues in Go?
+135. How do you log and analyze gRPC calls for debugging?
