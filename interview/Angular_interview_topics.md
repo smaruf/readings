@@ -20,6 +20,10 @@
     - How do you create and inject a service in an Angular application?
     - What is the purpose of the @Injectable decorator in Angular?
     - How do you provide a service at different levels (e.g., root, component)?
+    - How can you integrate web-hooks into an Angular application using services?
+    - What are the best practices for handling web-hook responses in Angular?
+    - How do you use RxJS to process real-time data from web-hooks?
+    - What is hook life cycle in Angular?
 
 4. **Routing and Navigation**
     - How does routing work in Angular?
