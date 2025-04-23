@@ -65,3 +65,4 @@
 54. What is the Virtual DOM, and how does it differ from the Shadow DOM?
 55. How do you manage global state in React applications (e.g., Redux, Context API)?
 
+
