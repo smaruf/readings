@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class ExtendedCrossPatternsNoCenterEquality {
 public static List<int[]> detectExtendedCrossPatternsNoCenterEquality(int[][] matrix) {
     List<int[]> crossPositions = new ArrayList<>();
     int n = matrix.length;
@@ -46,4 +50,5 @@ public static List<int[]> detectExtendedCrossPatternsNoCenterEquality(int[][] ma
     }
 
     return crossPositions;
+}
 }
