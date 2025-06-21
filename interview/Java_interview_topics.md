@@ -21,7 +21,8 @@
     - How do you sort a collection in Java?
     - What is the difference between Iterator and ListIterator?
     - How do you remove duplicates from a collection in Java?
-
+    - 🧪 Java Coding Task: Composite Key HashMap: Create a class `Employee` with fields `id`, `name`, and `department`, and store employees in a `HashMap` using a composite key of `id` and `department`. Define this composite key using either a standard class (with proper `equals()` and `hashCode()`) or a Java `record`. Insert at least three employees into the map and retrieve one using its composite key to demonstrate correct behavior.
+- 
 3. **Java Threads and Concurrency**
     - What are Java threads and how do you create and manage them?
     - How does the synchronized keyword work and when should it be used?
