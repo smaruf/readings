@@ -1,0 +1,5 @@
+crewai
+langchain
+openai
+fastapi
+uvicorn
