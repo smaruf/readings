@@ -8,16 +8,11 @@ Follow these steps to explore and run the Spring-Embabel sample:
 
 | Step | Description |
 |------|-------------|
-| 1️⃣  | **Add Embabel dependencies**  
-Include the required Embabel libraries in your project's build configuration (e.g., Maven or Gradle). |
-| 2️⃣  | **Enable agents with Spring annotations**  
-Activate Embabel's agent system by using the provided Spring annotations in your codebase. |
-| 3️⃣  | **Define agent classes**  
-Mark agent classes with `@Agent`, declare actions with `@Action`, and specify goals using `@AchievesGoal`. |
-| 4️⃣  | **Run the application**  
-Start your application using the interactive shell or a programmatic entry point. |
-| 5️⃣  | **Explore the sample code**  
-Review the provided code in this directory for practical examples and further understanding. |
+| 1️⃣  | **Add Embabel dependencies**  Include the required Embabel libraries in your project's build configuration (e.g., Maven or Gradle). |
+| 2️⃣  | **Enable agents with Spring annotations**  Activate Embabel's agent system by using the provided Spring annotations in your codebase. |
+| 3️⃣  | **Define agent classes**  Mark agent classes with `@Agent`, declare actions with `@Action`, and specify goals using `@AchievesGoal`. |
+| 4️⃣  | **Run the application**  Start your application using the interactive shell or a programmatic entry point. |
+| 5️⃣  | **Explore the sample code**  Review the provided code in this directory for practical examples and further understanding. |
 
 ## Repository Information
 
