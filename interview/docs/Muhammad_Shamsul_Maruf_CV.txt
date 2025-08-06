@@ -9,7 +9,7 @@ GitHub: https://github.com/smaruf
 
 Professional Summary
 --------------------
-Passionate Senior Software Engineer with extensive experience in Java, Spring Boot, Angular, Node.js, TypeScript, AWS, and Kubernetes. 
+Passionate Senior Software Engineer with extensive experience in Java, Spring Boot, C#, Angular, Node.js, TypeScript, AWS, and Kubernetes. 
 Skilled in full-stack development, cloud-native architectures, cryptography, and fintech applications. Experienced in health management, banking, government services, and innovation management.
 
 Technical Skills
