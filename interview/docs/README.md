@@ -16,6 +16,11 @@ Principal Software Engineer with 15+ years’ experience delivering secure, scal
 
 ## Experience
 
+**Xpert Fintech Ltd, Bangladesh**  
+_Principal Software Engineer (2025–Present)_  
+- Directed FIX/ITCH engine R&D (.NET), enabled DSE FIX certification.
+- Built high-performance market data integrations.
+
 **EPAM Systems, Poland**  
 _Senior Software Engineer (2023–2025)_  
 - Designed scalable APIs (Java, Spring Boot, AWS) for healthcare and property management.
