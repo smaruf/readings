@@ -1,9 +1,9 @@
 Muhammad Shamsul Maruf
 Senior Software Engineer | Java, Spring, Cloud, jQuery, AngularJS, ReactJS Full-Stack Development
 
-Location: Gdańsk, Poland
+Location: Dhaka, Bangladesh
 Email: smaruf00ruet320@gmail.com 
-Phone: +48 733 822 180
+Phone: +48 733 822 180 +880 173 6767 481
 LinkedIn: https://www.linkedin.com/in/muhammad-shamsul-maruf-79905161
 GitHub: https://github.com/smaruf
 
@@ -22,6 +22,11 @@ Technical Skills
 
 Professional Experience
 -----------------------
+Xpert Fintech Ltd, Bangladesh
+Principal Software Engineer (August 2025 - Present)
+- Developed FIX/FAST/ITCH-based system for OMS with C# and MongoDB
+- Working on the back office for trader management in C#
+- Conduct R&D on trading data and Server integration 
 
 EPAM Systems, Poland
 Senior Software Engineer (May 2023 – March 2025)
