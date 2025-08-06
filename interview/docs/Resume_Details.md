@@ -14,6 +14,13 @@ Accomplished Principal Software Engineer with 15+ years of experience designing 
 
 ## Professional Experience
 
+### Xpert Fintech Ltd, Dhaka, Bangladesh
+**Principal Software Engineer** | Aug 25 - Present
+
+- R&D on NASDAQ-style trading platforms for the Dhaka and Chittagong Stock Exchanges, leading the implementation of industry-standard protocols (FIX, FAST, ITCH) for secure and efficient market connectivity. Specializing in real-time market data analysis and processing using C#, MongoDB, and QuickFix-N, driving innovation and reliability in financial systems.
+- Managing and Tuning Microservices for OMS
+- R&D on the implementation of trading API for DSE and CSE
+
 ### EPAM Systems Sp. z o.o, Gdańsk, Poland  
 **Senior Software Engineer** | Mar 2023 – Mar 2025
 
