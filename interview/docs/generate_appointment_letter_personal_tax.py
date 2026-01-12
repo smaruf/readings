@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """
 Generate bilingual (English-Polish) appointment letter PDF for Xpert Fintech Ltd.
-Version: Personal Tax Responsibility - Employee handles all tax payments and filings.
+
+Version: Personal Tax Responsibility
+This version differs from the standard appointment letter in Section 1 (Salary):
+- Employee is personally responsible for payment and filing of ALL taxes
+- Company will NOT deduct or withhold any taxes from salary
+- Suitable for contractors or specific employment arrangements where tax handling is fully personal
 """
 
 from reportlab.lib.pagesizes import A4
