@@ -60,6 +60,28 @@ def register_unicode_fonts():
 register_unicode_fonts()
 
 
+def add_header_footer(canvas, doc):
+    """Add header and footer to each page"""
+    canvas.saveState()
+    
+    # Add logo and company name in header
+    if os.path.exists(LOGO_PATH):
+        # Draw logo in top left
+        canvas.drawImage(LOGO_PATH, 0.75*inch, A4[1] - 1.3*inch, 
+                        width=0.8*inch, height=0.8*inch, preserveAspectRatio=True)
+        
+        # Draw company name next to logo
+        canvas.setFont('DejaVuSans-Bold', 14)
+        canvas.drawString(1.65*inch, A4[1] - 0.95*inch, "Xpert Fintech Ltd.")
+    
+    # Add footer with company address
+    canvas.setFont('DejaVuSans', 8)
+    footer_text = "Xpert Fintech Ltd. | Saiham Sky View Tower (13-A), 45 Bijoynagar, Dhaka, Bangladesh | +88 02 839 2725 | www.xpertfintech.com"
+    canvas.drawCentredString(A4[0] / 2, 0.5 * inch, footer_text)
+    
+    canvas.restoreState()
+
+
 def create_appointment_letter():
     """Create the bilingual appointment letter PDF."""
     
@@ -69,8 +91,8 @@ def create_appointment_letter():
         pagesize=A4,
         rightMargin=0.75*inch,
         leftMargin=0.75*inch,
-        topMargin=0.75*inch,
-        bottomMargin=0.75*inch
+        topMargin=1.5*inch,  # Increased for header
+        bottomMargin=1.0*inch  # Increased for footer
     )
     
     # Container for the 'Flowable' objects
@@ -139,19 +161,6 @@ def create_appointment_letter():
         alignment=TA_CENTER,
         fontName='DejaVuSans-Bold'
     )
-    
-    # Add logo
-    if os.path.exists(LOGO_PATH):
-        logo = Image(LOGO_PATH, width=2*inch, height=2*inch, kind='proportional')
-        logo.hAlign = 'LEFT'
-        story.append(logo)
-        story.append(Spacer(1, 0.2*inch))
-    
-    # Company name and tagline
-    story.append(Paragraph("Xpert Fintech Ltd.", title_style))
-    story.append(Paragraph("<b>XF</b>", center_style))
-    story.append(Paragraph("<b>Connect The Future</b>", tagline_style))
-    story.append(Spacer(1, 0.2*inch))
     
     # Reference and Date (English)
     story.append(Paragraph("<b>Ref:</b> XFL/HR/Appointment-Letter/2025/07/02", normal_style))
@@ -442,8 +451,8 @@ def create_appointment_letter():
     story.append(Paragraph("<b>Md. Abdul Maleque Kibria</b>", normal_style))
     story.append(Paragraph("<b>Managing Director / Dyrektor Zarządzający</b>", normal_style))
     
-    # Build PDF
-    pdf_doc.build(story)
+    # Build PDF with header and footer on each page
+    pdf_doc.build(story, onFirstPage=add_header_footer, onLaterPages=add_header_footer)
     print(f"PDF generated successfully: {OUTPUT_PDF}")
 
 if __name__ == "__main__":
