@@ -6,15 +6,24 @@ Generate bilingual (English-Polish) appointment letter PDF for Xpert Fintech Ltd
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import inch
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
+from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_LEFT
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 from reportlab.lib.colors import HexColor
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 import os
 
 # File paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 LOGO_PATH = os.path.join(SCRIPT_DIR, "xpertfintech_logo.jpg")
 OUTPUT_PDF = os.path.join(SCRIPT_DIR, "Bilingual_Appointment_Letter_Mohammad_Shamsul_Maruf.pdf")
+
+# Register DejaVu fonts for Unicode support (Polish characters)
+DEJAVU_PATH = "/usr/share/fonts/truetype/dejavu"
+pdfmetrics.registerFont(TTFont('DejaVuSans', os.path.join(DEJAVU_PATH, 'DejaVuSans.ttf')))
+pdfmetrics.registerFont(TTFont('DejaVuSans-Bold', os.path.join(DEJAVU_PATH, 'DejaVuSans-Bold.ttf')))
+pdfmetrics.registerFont(TTFont('DejaVuSans-Oblique', os.path.join(DEJAVU_PATH, 'DejaVuSans-Oblique.ttf')))
+pdfmetrics.registerFont(TTFont('DejaVuSans-BoldOblique', os.path.join(DEJAVU_PATH, 'DejaVuSans-BoldOblique.ttf')))
 
 def create_appointment_letter():
     """Create the bilingual appointment letter PDF."""
@@ -43,7 +52,7 @@ def create_appointment_letter():
         textColor=HexColor('#1a1a1a'),
         spaceAfter=12,
         alignment=TA_CENTER,
-        fontName='Helvetica-Bold'
+        fontName='DejaVuSans-Bold'
     )
     
     heading_style = ParagraphStyle(
@@ -53,7 +62,7 @@ def create_appointment_letter():
         textColor=HexColor('#1a1a1a'),
         spaceAfter=10,
         spaceBefore=10,
-        fontName='Helvetica-Bold'
+        fontName='DejaVuSans-Bold'
     )
     
     subheading_style = ParagraphStyle(
@@ -63,7 +72,7 @@ def create_appointment_letter():
         textColor=HexColor('#1a1a1a'),
         spaceAfter=8,
         spaceBefore=8,
-        fontName='Helvetica-Bold'
+        fontName='DejaVuSans-Bold'
     )
     
     normal_style = ParagraphStyle(
@@ -73,7 +82,7 @@ def create_appointment_letter():
         textColor=HexColor('#1a1a1a'),
         spaceAfter=6,
         alignment=TA_JUSTIFY,
-        fontName='Helvetica'
+        fontName='DejaVuSans'
     )
     
     center_style = ParagraphStyle(
@@ -83,7 +92,7 @@ def create_appointment_letter():
         textColor=HexColor('#1a1a1a'),
         spaceAfter=6,
         alignment=TA_CENTER,
-        fontName='Helvetica'
+        fontName='DejaVuSans'
     )
     
     tagline_style = ParagraphStyle(
@@ -93,13 +102,13 @@ def create_appointment_letter():
         textColor=HexColor('#666666'),
         spaceAfter=12,
         alignment=TA_CENTER,
-        fontName='Helvetica-Bold'
+        fontName='DejaVuSans-Bold'
     )
     
     # Add logo
     if os.path.exists(LOGO_PATH):
         logo = Image(LOGO_PATH, width=2*inch, height=2*inch, kind='proportional')
-        logo.hAlign = 'CENTER'
+        logo.hAlign = 'LEFT'
         story.append(logo)
         story.append(Spacer(1, 0.2*inch))
     
