@@ -117,15 +117,16 @@ def create_wes_pdf():
     # Add WES Logo and Title on the same line
     try:
         logo_width = 1.5*inch
+        logo_title_gap = 0.2*inch  # Gap between logo and title
         logo = convert_svg_to_image(SVG_LOGO_PATH, width=logo_width)
         
         # Create title text with both English and Polish on separate lines
         title_text = "WES Credential Evaluation Report<br/>Raport oceny wykształcenia WES"
         title_para = Paragraph(title_text, title_inline_style)
         
-        # Calculate available page width (page width - margins)
-        available_width = letter[0] - 1.5*inch  # 8.5" - 2*0.75" margins
-        title_width = available_width - logo_width - 0.2*inch  # Leave small gap between logo and title
+        # Calculate available page width (page width - left and right margins)
+        available_width = letter[0] - 1.5*inch  # 8.5" - (0.75" left + 0.75" right margins)
+        title_width = available_width - logo_width - logo_title_gap
         
         # Create a table with logo and title side by side
         header_table = Table([[logo, title_para]], colWidths=[logo_width, title_width])
