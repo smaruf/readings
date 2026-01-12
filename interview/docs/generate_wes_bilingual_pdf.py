@@ -99,8 +99,8 @@ def create_wes_pdf():
     doc = SimpleDocTemplate(
         OUTPUT_PDF_PATH,
         pagesize=letter,
-        rightMargin=0.75*inch,
-        leftMargin=0.75*inch,
+        rightMargin=1.0*inch,
+        leftMargin=1.0*inch,
         topMargin=1.2*inch,  # Increased for header with logo and title
         bottomMargin=0.75*inch
     )
@@ -295,7 +295,7 @@ def create_wes_pdf():
     
     # Create left table
     left_course_data = [['Year / Rok', 'Course / Przedmiot', 'Credits / Punkty']] + left_courses
-    left_table = Table(left_course_data, colWidths=[0.5*inch, 2.2*inch, 0.5*inch])
+    left_table = Table(left_course_data, colWidths=[0.55*inch, 2.15*inch, 0.55*inch])
     left_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#01A769')),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
@@ -314,7 +314,7 @@ def create_wes_pdf():
     
     # Create right table
     right_course_data = [['Year / Rok', 'Course / Przedmiot', 'Credits / Punkty']] + right_courses
-    right_table = Table(right_course_data, colWidths=[0.5*inch, 2.2*inch, 0.5*inch])
+    right_table = Table(right_course_data, colWidths=[0.55*inch, 2.15*inch, 0.55*inch])
     right_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#01A769')),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
@@ -332,9 +332,9 @@ def create_wes_pdf():
     ]))
     
     # Create a table to hold both tables side by side
-    # Column widths calculated based on letter page size (8.5") minus margins (1.5" total)
-    # = 7" available / 2 columns ≈ 3.2" per column with small gap
-    combined_table = Table([[left_table, right_table]], colWidths=[3.2*inch, 3.2*inch])
+    # Column widths calculated based on letter page size (8.5") minus margins (2.0" total)
+    # = 6.5" available / 2 columns = 3.25" per column
+    combined_table = Table([[left_table, right_table]], colWidths=[3.25*inch, 3.25*inch])
     combined_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ('LEFTPADDING', (0, 0), (-1, -1), 0),
