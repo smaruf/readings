@@ -5,20 +5,29 @@ This directory contains a Python script to generate a bilingual (English-Polish)
 ## Overview
 
 The generated PDF is a **3-page, notarization-ready document** that includes:
-- **Page 1**: Certificate/Evaluation Summary with WES logo
+- **Page 1**: Certificate/Evaluation Summary
 - **Page 2**: Transcript Summary
 - **Page 3**: Full Course-by-Course Credit Mapping (compact format)
 
 Each page includes:
+- **Consistent header** with Xpert Fintech Ltd. logo and company name
 - Bilingual content (English/Polish)
 - Self-translation notice
-- Professional footer with WES Canada contact information
+- **Consistent footer** with Xpert Fintech Ltd. address
 
 ## Requirements
 
 ```bash
-pip install reportlab Pillow cairosvg
+pip install reportlab
 ```
+
+The script also requires **DejaVu fonts** to be installed on your system for Unicode character support (Polish characters):
+
+- **Ubuntu/Debian**: `sudo apt-get install fonts-dejavu`
+- **Fedora/RHEL**: `sudo dnf install dejavu-sans-fonts`
+- **Windows**: DejaVu fonts are typically included, or download from [DejaVu Fonts](https://dejavu-fonts.github.io/)
+
+The script automatically detects the font location on your system.
 
 ## Usage
 
@@ -66,12 +75,12 @@ This document is designed for:
 
 ## Notes
 
-- The PDF uses standard Times Roman font for official appearance
-- WES green color (#01A769) is used for headings and branding
+- The PDF uses DejaVu Sans fonts for proper Unicode character support
+- Xpert Fintech Ltd. branding is used consistently in headers and footers
 - All pages include self-translation disclaimers as required for notarization
 - The course list on Page 3 uses compact formatting to fit all courses on one page
-- Footer appears on all pages with WES Canada contact information
+- Header and footer appear on all pages with company logo, name, and address
 
 ## License
 
-For personal use only. WES logo and branding are property of World Education Services.
+For personal use only. Xpert Fintech Ltd. logo and branding are property of Xpert Fintech Ltd.

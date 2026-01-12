@@ -38,7 +38,7 @@ This will create a new PDF file: `Bilingual_Appointment_Letter_Mohammad_Shamsul_
 
 The generated PDF includes:
 
-1. **Company Header** - Xpert Fintech Ltd. logo and tagline
+1. **Company Header** - Xpert Fintech Ltd. logo aligned with company name (appears on every page)
 2. **Reference Information** - Letter reference number and date (bilingual)
 3. **Recipient Details** - Employee contact information (bilingual)
 4. **Position Information** - Principal Software Engineer appointment details
@@ -62,7 +62,8 @@ The generated PDF includes:
 ## Features
 
 - Professional A4 format with proper margins
-- **Left-aligned company logo** in the header
+- **Consistent header on all pages** with left-aligned company logo and "Xpert Fintech Ltd." name
+- **Consistent footer on all pages** with company address in single line format
 - Bilingual content (English followed by Polish)
 - **Embedded Unicode fonts (DejaVu Sans)** for proper Polish character display
 - Structured sections with clear headings
