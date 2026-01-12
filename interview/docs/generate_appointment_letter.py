@@ -19,11 +19,46 @@ LOGO_PATH = os.path.join(SCRIPT_DIR, "xpertfintech_logo.jpg")
 OUTPUT_PDF = os.path.join(SCRIPT_DIR, "Bilingual_Appointment_Letter_Mohammad_Shamsul_Maruf.pdf")
 
 # Register DejaVu fonts for Unicode support (Polish characters)
-DEJAVU_PATH = "/usr/share/fonts/truetype/dejavu"
-pdfmetrics.registerFont(TTFont('DejaVuSans', os.path.join(DEJAVU_PATH, 'DejaVuSans.ttf')))
-pdfmetrics.registerFont(TTFont('DejaVuSans-Bold', os.path.join(DEJAVU_PATH, 'DejaVuSans-Bold.ttf')))
-pdfmetrics.registerFont(TTFont('DejaVuSans-Oblique', os.path.join(DEJAVU_PATH, 'DejaVuSans-Oblique.ttf')))
-pdfmetrics.registerFont(TTFont('DejaVuSans-BoldOblique', os.path.join(DEJAVU_PATH, 'DejaVuSans-BoldOblique.ttf')))
+# Try multiple common font paths for cross-platform compatibility
+DEJAVU_PATHS = [
+    "/usr/share/fonts/truetype/dejavu",  # Ubuntu/Debian
+    "/usr/share/fonts/dejavu",            # Fedora/RHEL
+    os.path.join(os.environ.get('WINDIR', 'C:\\Windows'), 'Fonts'),  # Windows
+]
+
+def register_unicode_fonts():
+    """Register DejaVu fonts with error handling."""
+    fonts_to_register = [
+        ('DejaVuSans', 'DejaVuSans.ttf'),
+        ('DejaVuSans-Bold', 'DejaVuSans-Bold.ttf'),
+        ('DejaVuSans-Oblique', 'DejaVuSans-Oblique.ttf'),
+        ('DejaVuSans-BoldOblique', 'DejaVuSans-BoldOblique.ttf'),
+    ]
+    
+    for dejavu_path in DEJAVU_PATHS:
+        if not os.path.exists(dejavu_path):
+            continue
+            
+        try:
+            for font_name, font_file in fonts_to_register:
+                font_path = os.path.join(dejavu_path, font_file)
+                if os.path.exists(font_path):
+                    pdfmetrics.registerFont(TTFont(font_name, font_path))
+            print(f"Successfully registered DejaVu fonts from: {dejavu_path}")
+            return True
+        except Exception as e:
+            print(f"Warning: Failed to register fonts from {dejavu_path}: {e}")
+            continue
+    
+    raise RuntimeError(
+        "Could not find or register DejaVu fonts. "
+        "Please install DejaVu fonts or specify font path. "
+        "On Ubuntu/Debian: sudo apt-get install fonts-dejavu"
+    )
+
+# Register fonts at module level
+register_unicode_fonts()
+
 
 def create_appointment_letter():
     """Create the bilingual appointment letter PDF."""
