@@ -6,15 +6,59 @@ Generate bilingual (English-Polish) appointment letter PDF for Xpert Fintech Ltd
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import inch
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
+from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_LEFT
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 from reportlab.lib.colors import HexColor
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 import os
 
 # File paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 LOGO_PATH = os.path.join(SCRIPT_DIR, "xpertfintech_logo.jpg")
 OUTPUT_PDF = os.path.join(SCRIPT_DIR, "Bilingual_Appointment_Letter_Mohammad_Shamsul_Maruf.pdf")
+
+# Register DejaVu fonts for Unicode support (Polish characters)
+# Try multiple common font paths for cross-platform compatibility
+DEJAVU_PATHS = [
+    "/usr/share/fonts/truetype/dejavu",  # Ubuntu/Debian
+    "/usr/share/fonts/dejavu",            # Fedora/RHEL
+    os.path.join(os.environ.get('WINDIR', 'C:\\Windows'), 'Fonts'),  # Windows
+]
+
+def register_unicode_fonts():
+    """Register DejaVu fonts with error handling."""
+    fonts_to_register = [
+        ('DejaVuSans', 'DejaVuSans.ttf'),
+        ('DejaVuSans-Bold', 'DejaVuSans-Bold.ttf'),
+        ('DejaVuSans-Oblique', 'DejaVuSans-Oblique.ttf'),
+        ('DejaVuSans-BoldOblique', 'DejaVuSans-BoldOblique.ttf'),
+    ]
+    
+    for dejavu_path in DEJAVU_PATHS:
+        if not os.path.exists(dejavu_path):
+            continue
+            
+        try:
+            for font_name, font_file in fonts_to_register:
+                font_path = os.path.join(dejavu_path, font_file)
+                if os.path.exists(font_path):
+                    pdfmetrics.registerFont(TTFont(font_name, font_path))
+            print(f"Successfully registered DejaVu fonts from: {dejavu_path}")
+            return True
+        except Exception as e:
+            print(f"Warning: Failed to register fonts from {dejavu_path}: {e}")
+            continue
+    
+    raise RuntimeError(
+        "Could not find or register DejaVu fonts. "
+        "Please install DejaVu fonts or specify font path. "
+        "On Ubuntu/Debian: sudo apt-get install fonts-dejavu"
+    )
+
+# Register fonts at module level
+register_unicode_fonts()
+
 
 def create_appointment_letter():
     """Create the bilingual appointment letter PDF."""
@@ -43,7 +87,7 @@ def create_appointment_letter():
         textColor=HexColor('#1a1a1a'),
         spaceAfter=12,
         alignment=TA_CENTER,
-        fontName='Helvetica-Bold'
+        fontName='DejaVuSans-Bold'
     )
     
     heading_style = ParagraphStyle(
@@ -53,7 +97,7 @@ def create_appointment_letter():
         textColor=HexColor('#1a1a1a'),
         spaceAfter=10,
         spaceBefore=10,
-        fontName='Helvetica-Bold'
+        fontName='DejaVuSans-Bold'
     )
     
     subheading_style = ParagraphStyle(
@@ -63,7 +107,7 @@ def create_appointment_letter():
         textColor=HexColor('#1a1a1a'),
         spaceAfter=8,
         spaceBefore=8,
-        fontName='Helvetica-Bold'
+        fontName='DejaVuSans-Bold'
     )
     
     normal_style = ParagraphStyle(
@@ -73,7 +117,7 @@ def create_appointment_letter():
         textColor=HexColor('#1a1a1a'),
         spaceAfter=6,
         alignment=TA_JUSTIFY,
-        fontName='Helvetica'
+        fontName='DejaVuSans'
     )
     
     center_style = ParagraphStyle(
@@ -83,7 +127,7 @@ def create_appointment_letter():
         textColor=HexColor('#1a1a1a'),
         spaceAfter=6,
         alignment=TA_CENTER,
-        fontName='Helvetica'
+        fontName='DejaVuSans'
     )
     
     tagline_style = ParagraphStyle(
@@ -93,13 +137,13 @@ def create_appointment_letter():
         textColor=HexColor('#666666'),
         spaceAfter=12,
         alignment=TA_CENTER,
-        fontName='Helvetica-Bold'
+        fontName='DejaVuSans-Bold'
     )
     
     # Add logo
     if os.path.exists(LOGO_PATH):
         logo = Image(LOGO_PATH, width=2*inch, height=2*inch, kind='proportional')
-        logo.hAlign = 'CENTER'
+        logo.hAlign = 'LEFT'
         story.append(logo)
         story.append(Spacer(1, 0.2*inch))
     
