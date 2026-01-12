@@ -332,7 +332,7 @@ def create_wes_pdf():
     ]))
     
     # Create a table to hold both tables side by side
-    # Column widths calculated based on letter page size (8.5") minus margins (2.0" total)
+    # Column widths calculated based on letter page size (8.5") minus margins (2.0" total: 1.0" left + 1.0" right)
     # = 6.5" available / 2 columns = 3.25" per column
     combined_table = Table([[left_table, right_table]], colWidths=[3.25*inch, 3.25*inch])
     combined_table.setStyle(TableStyle([
