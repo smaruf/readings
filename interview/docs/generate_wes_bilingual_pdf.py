@@ -12,72 +12,26 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Image
 from reportlab.lib import colors
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
+import cairosvg
 
 # Get the directory where this script is located
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-LOGO_PATH = os.path.join(SCRIPT_DIR, "xpertfintech_logo.jpg")
+SVG_LOGO_PATH = os.path.join(SCRIPT_DIR, "WES_logo.svg")
 OUTPUT_PDF_PATH = os.path.join(SCRIPT_DIR, "WES_Bilingual_Credential_Evaluation.pdf")
 
-# Register DejaVu fonts for Unicode support (Polish characters)
-DEJAVU_PATHS = [
-    "/usr/share/fonts/truetype/dejavu",  # Ubuntu/Debian
-    "/usr/share/fonts/dejavu",            # Fedora/RHEL
-    os.path.join(os.environ.get('WINDIR', 'C:\\Windows'), 'Fonts'),  # Windows
-]
 
-def register_unicode_fonts():
-    """Register DejaVu fonts with error handling."""
-    fonts_to_register = [
-        ('DejaVuSans', 'DejaVuSans.ttf'),
-        ('DejaVuSans-Bold', 'DejaVuSans-Bold.ttf'),
-    ]
-    
-    for dejavu_path in DEJAVU_PATHS:
-        if not os.path.exists(dejavu_path):
-            continue
-            
-        try:
-            for font_name, font_file in fonts_to_register:
-                font_path = os.path.join(dejavu_path, font_file)
-                if os.path.exists(font_path):
-                    pdfmetrics.registerFont(TTFont(font_name, font_path))
-            print(f"Successfully registered DejaVu fonts from: {dejavu_path}")
-            return True
-        except Exception as e:
-            print(f"Warning: Failed to register fonts from {dejavu_path}: {e}")
-            continue
-    
-    # If DejaVu not available, will use default fonts
-    print("Warning: DejaVu fonts not found, using default fonts")
-    return False
-
-# Try to register fonts
-fonts_registered = register_unicode_fonts()
+def convert_svg_to_image(svg_path, width=1.8*inch):
+    """Convert SVG to PNG and return as ReportLab Image"""
+    png_data = cairosvg.svg2png(url=svg_path, output_width=int(width * 4))
+    return Image(BytesIO(png_data), width=width, height=width * 0.68)
 
 
-def add_header_footer(canvas, doc):
-    """Add header and footer to each page"""
+def add_footer(canvas, doc):
+    """Add footer to each page"""
     canvas.saveState()
-    
-    # Add logo and company name in header
-    if os.path.exists(LOGO_PATH):
-        # Draw logo in top left
-        canvas.drawImage(LOGO_PATH, 0.75*inch, letter[1] - 1.3*inch, 
-                        width=0.8*inch, height=0.8*inch, preserveAspectRatio=True)
-        
-        # Draw company name next to logo
-        font_name = 'DejaVuSans-Bold' if fonts_registered else 'Times-Bold'
-        canvas.setFont(font_name, 14)
-        canvas.drawString(1.65*inch, letter[1] - 0.95*inch, "Xpert Fintech Ltd.")
-    
-    # Add footer with company address
-    footer_font = 'DejaVuSans' if fonts_registered else 'Times-Roman'
-    canvas.setFont(footer_font, 8)
-    footer_text = "Xpert Fintech Ltd. | Saiham Sky View Tower (13-A), 45 Bijoynagar, Dhaka, Bangladesh | +88 02 839 2725 | www.xpertfintech.com"
+    footer_text = "World Education Services (WES) Canada • 2 Carlton Street, Suite 1400, Toronto, Ontario M5B 1J3, Canada"
+    canvas.setFont('Times-Roman', 8)
     canvas.drawCentredString(letter[0] / 2, 0.5 * inch, footer_text)
-    
     canvas.restoreState()
 
 
@@ -90,8 +44,8 @@ def create_wes_pdf():
         pagesize=letter,
         rightMargin=0.75*inch,
         leftMargin=0.75*inch,
-        topMargin=1.5*inch,  # Increased for header
-        bottomMargin=1.0*inch  # Increased for footer
+        topMargin=0.75*inch,
+        bottomMargin=0.75*inch
     )
     
     # Container for the 'Flowable' objects
@@ -99,10 +53,6 @@ def create_wes_pdf():
     
     # Define styles
     styles = getSampleStyleSheet()
-    
-    # Get font name based on registration status
-    font_name = 'DejaVuSans' if fonts_registered else 'Times-Roman'
-    font_bold = 'DejaVuSans-Bold' if fonts_registered else 'Times-Bold'
     
     # Custom styles
     title_style = ParagraphStyle(
@@ -112,7 +62,7 @@ def create_wes_pdf():
         textColor=colors.HexColor('#01A769'),
         spaceAfter=6,
         alignment=TA_CENTER,
-        fontName=font_bold
+        fontName='Times-Bold'
     )
     
     heading_style = ParagraphStyle(
@@ -122,7 +72,7 @@ def create_wes_pdf():
         textColor=colors.HexColor('#01A769'),
         spaceAfter=8,
         spaceBefore=10,
-        fontName=font_bold
+        fontName='Times-Bold'
     )
     
     normal_style = ParagraphStyle(
@@ -130,7 +80,7 @@ def create_wes_pdf():
         parent=styles['Normal'],
         fontSize=10,
         spaceAfter=6,
-        fontName=font_name
+        fontName='Times-Roman'
     )
     
     bold_style = ParagraphStyle(
@@ -138,7 +88,7 @@ def create_wes_pdf():
         parent=styles['Normal'],
         fontSize=10,
         spaceAfter=6,
-        fontName=font_bold
+        fontName='Times-Bold'
     )
     
     italic_style = ParagraphStyle(
@@ -152,10 +102,51 @@ def create_wes_pdf():
     
     # ==================== PAGE 1 ====================
     
-    # Title (logo now in header)
-    elements.append(Paragraph("WES Credential Evaluation Report", title_style))
-    elements.append(Paragraph("Raport oceny wykształcenia WES", title_style))
-    elements.append(Spacer(1, 0.2*inch))
+    # Custom title style for inline header (left-aligned)
+    title_inline_style = ParagraphStyle(
+        'TitleInline',
+        parent=styles['Heading1'],
+        fontSize=16,
+        textColor=colors.HexColor('#01A769'),
+        spaceAfter=0,
+        alignment=TA_LEFT,
+        fontName='Times-Bold',
+        leading=19
+    )
+    
+    # Add WES Logo and Title on the same line
+    try:
+        logo_width = 1.5*inch
+        logo_title_gap = 0.2*inch  # Gap between logo and title
+        logo = convert_svg_to_image(SVG_LOGO_PATH, width=logo_width)
+        
+        # Create title text with both English and Polish on separate lines
+        title_text = "WES Credential Evaluation Report<br/>Raport oceny wykształcenia WES"
+        title_para = Paragraph(title_text, title_inline_style)
+        
+        # Calculate available page width (page width - left and right margins)
+        available_width = letter[0] - 1.5*inch  # 8.5" - (0.75" left + 0.75" right margins)
+        title_width = available_width - logo_width - logo_title_gap
+        
+        # Create a table with logo and title side by side
+        header_table = Table([[logo, title_para]], colWidths=[logo_width, title_width])
+        header_table.setStyle(TableStyle([
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('LEFTPADDING', (0, 0), (0, 0), 0),
+            ('RIGHTPADDING', (0, 0), (0, 0), 10),
+            ('LEFTPADDING', (1, 0), (1, 0), 0),
+            ('RIGHTPADDING', (1, 0), (1, 0), 0),
+            ('TOPPADDING', (0, 0), (-1, -1), 0),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
+        ]))
+        elements.append(header_table)
+        elements.append(Spacer(1, 0.2*inch))
+    except Exception as e:
+        print(f"Warning: Could not add logo: {e}")
+        # Fallback to titles only if logo fails
+        elements.append(Paragraph("WES Credential Evaluation Report", title_style))
+        elements.append(Paragraph("Raport oceny wykształcenia WES", title_style))
+        elements.append(Spacer(1, 0.2*inch))
     
     # Personal Information
     elements.append(Paragraph("<b>Name / Imię i nazwisko:</b><br/><b>MARUF, Muhammad Shamsul</b>", normal_style))
@@ -207,7 +198,7 @@ def create_wes_pdf():
     # Credential Authentication
     elements.append(Paragraph("Credential Authentication", heading_style))
     elements.append(Paragraph("Weryfikacja dokumentów", heading_style))
-    elements.append(Paragraph("<b>Authentication Method / Metoda weryfikacji:</b><br/>Documents were verified by the awarding institution.<br/><br/>Dokumenty zostały zweryfikowane bezpośrednio przez uczelnię wydającą dyplom.", normal_style))
+    elements.append(Paragraph("<b>Authentication Method / Metoda weryfikacji:</b><br/>Documents were verified by the awarding institution.<br/><br/>Dokumenty zostały zweryfikowane bezpośrednio przez uczelnię wydającą.", normal_style))
     elements.append(Spacer(1, 0.2*inch))
     
     # Recognition
@@ -336,8 +327,8 @@ def create_wes_pdf():
     elements.append(Paragraph("<i>This document is a self-translation.</i>", italic_style))
     elements.append(Paragraph("<i>Niniejszy dokument stanowi tłumaczenie własne.</i>", italic_style))
     
-    # Build PDF with header and footer on each page
-    doc.build(elements, onFirstPage=add_header_footer, onLaterPages=add_header_footer)
+    # Build PDF
+    doc.build(elements, onFirstPage=add_footer, onLaterPages=add_footer)
     print(f"✅ PDF generated successfully: {OUTPUT_PDF_PATH}")
 
 
