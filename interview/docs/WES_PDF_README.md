@@ -16,9 +16,26 @@ Each page includes:
 
 ## Requirements
 
+### Python Dependencies
 ```bash
 pip install reportlab Pillow cairosvg
 ```
+
+### System Fonts
+This script requires DejaVu fonts for proper Unicode support (Polish characters):
+
+**Ubuntu/Debian:**
+```bash
+sudo apt-get install fonts-dejavu
+```
+
+**macOS:**
+```bash
+brew install --cask font-dejavu
+```
+
+**Windows:**
+Download and install from https://dejavu-fonts.github.io/
 
 ## Usage
 
@@ -66,11 +83,12 @@ This document is designed for:
 
 ## Notes
 
-- The PDF uses standard Times Roman font for official appearance
+- The PDF uses DejaVu Serif fonts with full Unicode support for proper rendering of Polish diacritical marks (ł, ś, ą, ę, ż, ć, ń, ó)
 - WES green color (#01A769) is used for headings and branding
 - All pages include self-translation disclaimers as required for notarization
 - The course list on Page 3 uses compact formatting to fit all courses on one page
 - Footer appears on all pages with WES Canada contact information
+- Fonts are embedded and subsetted in the PDF for portability
 
 ## License
 

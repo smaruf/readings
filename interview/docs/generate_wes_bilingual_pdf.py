@@ -13,12 +13,32 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT
 from reportlab.lib.utils import ImageReader
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Image
 from reportlab.lib import colors
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 import cairosvg
 
 # Get the directory where this script is located
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 SVG_LOGO_PATH = os.path.join(SCRIPT_DIR, "WES_logo.svg")
 OUTPUT_PDF_PATH = os.path.join(SCRIPT_DIR, "WES_Bilingual_Credential_Evaluation.pdf")
+
+
+def register_unicode_fonts():
+    """Register Unicode-compatible TrueType fonts for Polish character support"""
+    # DejaVu Serif fonts support full Unicode including Polish diacritics
+    # These paths are for Linux/Unix systems. On other systems, ensure DejaVu fonts are installed.
+    try:
+        pdfmetrics.registerFont(TTFont('DejaVuSerif', '/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf'))
+        pdfmetrics.registerFont(TTFont('DejaVuSerif-Bold', '/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf'))
+        pdfmetrics.registerFont(TTFont('DejaVuSerif-Italic', '/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf'))
+    except Exception as e:
+        raise RuntimeError(
+            f"Failed to load DejaVu fonts: {e}\n"
+            "Please ensure DejaVu fonts are installed on your system.\n"
+            "On Ubuntu/Debian: sudo apt-get install fonts-dejavu\n"
+            "On macOS: brew install --cask font-dejavu\n"
+            "On Windows: Download from https://dejavu-fonts.github.io/"
+        )
 
 
 def convert_svg_to_image(svg_path, width=1.8*inch):
@@ -51,10 +71,10 @@ def add_header_footer(canvas, doc):
         title_x = logo_x + logo_width + 0.2 * inch
         title_y = logo_y - logo_height / 2
         
-        canvas.setFont('Times-Bold', 14)
+        canvas.setFont('DejaVuSerif-Bold', 14)
         canvas.setFillColor(colors.HexColor('#01A769'))
         canvas.drawString(title_x, title_y + 0.1 * inch, "WES Credential Evaluation Report")
-        canvas.setFont('Times-Bold', 12)
+        canvas.setFont('DejaVuSerif-Bold', 12)
         canvas.drawString(title_x, title_y - 0.15 * inch, "Raport oceny wykształcenia WES")
         
     except Exception as e:
@@ -62,7 +82,7 @@ def add_header_footer(canvas, doc):
     
     # Add footer
     footer_text = "World Education Services (WES) Canada • 2 Carlton Street, Suite 1400, Toronto, Ontario M5B 1J3, Canada"
-    canvas.setFont('Times-Roman', 8)
+    canvas.setFont('DejaVuSerif', 8)
     canvas.setFillColor(colors.black)
     canvas.drawCentredString(letter[0] / 2, 0.5 * inch, footer_text)
     
@@ -71,6 +91,9 @@ def add_header_footer(canvas, doc):
 
 def create_wes_pdf():
     """Generate the complete 3-page WES bilingual PDF"""
+    
+    # Register Unicode-compatible fonts first
+    register_unicode_fonts()
     
     # Create PDF document with larger top margin to accommodate header
     doc = SimpleDocTemplate(
@@ -96,7 +119,7 @@ def create_wes_pdf():
         textColor=colors.HexColor('#01A769'),
         spaceAfter=6,
         alignment=TA_CENTER,
-        fontName='Times-Bold'
+        fontName='DejaVuSerif-Bold'
     )
     
     heading_style = ParagraphStyle(
@@ -106,7 +129,7 @@ def create_wes_pdf():
         textColor=colors.HexColor('#01A769'),
         spaceAfter=8,
         spaceBefore=10,
-        fontName='Times-Bold'
+        fontName='DejaVuSerif-Bold'
     )
     
     normal_style = ParagraphStyle(
@@ -114,7 +137,7 @@ def create_wes_pdf():
         parent=styles['Normal'],
         fontSize=10,
         spaceAfter=6,
-        fontName='Times-Roman'
+        fontName='DejaVuSerif'
     )
     
     bold_style = ParagraphStyle(
@@ -122,7 +145,7 @@ def create_wes_pdf():
         parent=styles['Normal'],
         fontSize=10,
         spaceAfter=6,
-        fontName='Times-Bold'
+        fontName='DejaVuSerif-Bold'
     )
     
     italic_style = ParagraphStyle(
@@ -130,7 +153,7 @@ def create_wes_pdf():
         parent=styles['Normal'],
         fontSize=9,
         spaceAfter=6,
-        fontName='Times-Italic',
+        fontName='DejaVuSerif-Italic',
         alignment=TA_CENTER
     )
     
@@ -264,9 +287,9 @@ def create_wes_pdf():
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
         ('ALIGN', (2, 0), (2, -1), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Times-Bold'),
+        ('FONTNAME', (0, 0), (-1, 0), 'DejaVuSerif-Bold'),
         ('FONTSIZE', (0, 0), (-1, 0), 8),
-        ('FONTNAME', (0, 1), (-1, -1), 'Times-Roman'),
+        ('FONTNAME', (0, 1), (-1, -1), 'DejaVuSerif'),
         ('FONTSIZE', (0, 1), (-1, -1), 7),
         ('BOTTOMPADDING', (0, 0), (-1, 0), 6),
         ('TOPPADDING', (0, 1), (-1, -1), 1.5),
