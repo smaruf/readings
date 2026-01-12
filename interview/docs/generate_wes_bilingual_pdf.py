@@ -102,20 +102,51 @@ def create_wes_pdf():
     
     # ==================== PAGE 1 ====================
     
-    # Add WES Logo
+    # Custom title style for inline header (left-aligned)
+    title_inline_style = ParagraphStyle(
+        'TitleInline',
+        parent=styles['Heading1'],
+        fontSize=16,
+        textColor=colors.HexColor('#01A769'),
+        spaceAfter=0,
+        alignment=TA_LEFT,
+        fontName='Times-Bold',
+        leading=19
+    )
+    
+    # Add WES Logo and Title on the same line
     try:
-        logo = convert_svg_to_image(SVG_LOGO_PATH)
-        logo.hAlign = 'CENTER'
-        elements.append(logo)
+        logo_width = 1.5*inch
+        logo_title_gap = 0.2*inch  # Gap between logo and title
+        logo = convert_svg_to_image(SVG_LOGO_PATH, width=logo_width)
+        
+        # Create title text with both English and Polish on separate lines
+        title_text = "WES Credential Evaluation Report<br/>Raport oceny wykształcenia WES"
+        title_para = Paragraph(title_text, title_inline_style)
+        
+        # Calculate available page width (page width - left and right margins)
+        available_width = letter[0] - 1.5*inch  # 8.5" - (0.75" left + 0.75" right margins)
+        title_width = available_width - logo_width - logo_title_gap
+        
+        # Create a table with logo and title side by side
+        header_table = Table([[logo, title_para]], colWidths=[logo_width, title_width])
+        header_table.setStyle(TableStyle([
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('LEFTPADDING', (0, 0), (0, 0), 0),
+            ('RIGHTPADDING', (0, 0), (0, 0), 10),
+            ('LEFTPADDING', (1, 0), (1, 0), 0),
+            ('RIGHTPADDING', (1, 0), (1, 0), 0),
+            ('TOPPADDING', (0, 0), (-1, -1), 0),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
+        ]))
+        elements.append(header_table)
         elements.append(Spacer(1, 0.2*inch))
     except Exception as e:
         print(f"Warning: Could not add logo: {e}")
-        elements.append(Spacer(1, 0.3*inch))
-    
-    # Title
-    elements.append(Paragraph("WES Credential Evaluation Report", title_style))
-    elements.append(Paragraph("Raport oceny wykształcenia WES", title_style))
-    elements.append(Spacer(1, 0.2*inch))
+        # Fallback to titles only if logo fails
+        elements.append(Paragraph("WES Credential Evaluation Report", title_style))
+        elements.append(Paragraph("Raport oceny wykształcenia WES", title_style))
+        elements.append(Spacer(1, 0.2*inch))
     
     # Personal Information
     elements.append(Paragraph("<b>Name / Imię i nazwisko:</b><br/><b>MARUF, Muhammad Shamsul</b>", normal_style))
