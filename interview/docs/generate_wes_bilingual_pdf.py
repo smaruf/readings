@@ -26,10 +26,19 @@ OUTPUT_PDF_PATH = os.path.join(SCRIPT_DIR, "WES_Bilingual_Credential_Evaluation.
 def register_unicode_fonts():
     """Register Unicode-compatible TrueType fonts for Polish character support"""
     # DejaVu Serif fonts support full Unicode including Polish diacritics
-    pdfmetrics.registerFont(TTFont('DejaVuSerif', '/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf'))
-    pdfmetrics.registerFont(TTFont('DejaVuSerif-Bold', '/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf'))
-    pdfmetrics.registerFont(TTFont('DejaVuSerif-Italic', '/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf'))
-    pdfmetrics.registerFont(TTFont('DejaVuSerif-BoldItalic', '/usr/share/fonts/truetype/dejavu/DejaVuSerif-BoldItalic.ttf'))
+    # These paths are for Linux/Unix systems. On other systems, ensure DejaVu fonts are installed.
+    try:
+        pdfmetrics.registerFont(TTFont('DejaVuSerif', '/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf'))
+        pdfmetrics.registerFont(TTFont('DejaVuSerif-Bold', '/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf'))
+        pdfmetrics.registerFont(TTFont('DejaVuSerif-Italic', '/usr/share/fonts/truetype/dejavu/DejaVuSerif-Italic.ttf'))
+    except Exception as e:
+        raise RuntimeError(
+            f"Failed to load DejaVu fonts: {e}\n"
+            "Please ensure DejaVu fonts are installed on your system.\n"
+            "On Ubuntu/Debian: sudo apt-get install fonts-dejavu\n"
+            "On macOS: brew install --cask font-dejavu\n"
+            "On Windows: Download from https://dejavu-fonts.github.io/"
+        )
 
 
 def convert_svg_to_image(svg_path, width=1.8*inch):
