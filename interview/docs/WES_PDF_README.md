@@ -7,7 +7,7 @@ This directory contains a Python script to generate a bilingual (English-Polish)
 The generated PDF is a **3-page, notarization-ready document** that includes:
 - **Page 1**: Certificate/Evaluation Summary with WES logo
 - **Page 2**: Transcript Summary
-- **Page 3**: Full Course-by-Course Credit Mapping (compact format)
+- **Page 3**: Full Course-by-Course Credit Mapping in side-by-side columns (compact format)
 
 Each page includes:
 - Bilingual content (English/Polish)
@@ -86,7 +86,7 @@ This document is designed for:
 - The PDF uses DejaVu Serif fonts with full Unicode support for proper rendering of Polish diacritical marks (ł, ś, ą, ę, ż, ć, ń, ó)
 - WES green color (#01A769) is used for headings and branding
 - All pages include self-translation disclaimers as required for notarization
-- The course list on Page 3 uses compact formatting to fit all courses on one page
+- The course list on Page 3 uses a side-by-side two-column layout with compact formatting to fit all courses on one page
 - Footer appears on all pages with WES Canada contact information
 - Fonts are embedded and subsetted in the PDF for portability
 

@@ -224,14 +224,21 @@ def create_wes_pdf():
     
     # ==================== PAGE 3 ====================
     
-    # Courses section heading
-    elements.append(Paragraph("Courses & Credits", heading_style))
-    elements.append(Paragraph("Przedmioty i punkty", heading_style))
-    elements.append(Spacer(1, 0.05*inch))
+    # Compact heading style for page 3
+    compact_heading_style = ParagraphStyle(
+        'CompactHeading',
+        parent=heading_style,
+        fontSize=10,
+        spaceAfter=3,
+        spaceBefore=3,
+    )
     
-    # Course data
-    course_data = [
-        ['Year / Rok', 'Course / Przedmiot', 'Credits / Punkty'],
+    # Courses section heading
+    elements.append(Paragraph("Courses & Credits / Przedmioty i punkty", compact_heading_style))
+    elements.append(Spacer(1, 0.03*inch))
+    
+    # Course data - split into two columns for side-by-side layout
+    all_courses = [
         ['First', 'Computer Basics and Programming', '3.5'],
         ['First', 'Computer Basics and Programming Lab', '1.5'],
         ['First', 'Chemistry', '2.5'],
@@ -280,53 +287,100 @@ def create_wes_pdf():
         ['Final', 'Seminar', '1.0'],
     ]
     
-    # Create table with compact styling
-    course_table = Table(course_data, colWidths=[0.8*inch, 3.9*inch, 1.0*inch])
-    course_table.setStyle(TableStyle([
+    # Split courses into two columns for side-by-side layout
+    # Using ceiling division to ensure left column has one more item if odd number of courses
+    mid_point = (len(all_courses) + 1) // 2
+    left_courses = all_courses[:mid_point]
+    right_courses = all_courses[mid_point:]
+    
+    # Create left table
+    left_course_data = [['Year / Rok', 'Course / Przedmiot', 'Credits / Punkty']] + left_courses
+    left_table = Table(left_course_data, colWidths=[0.5*inch, 2.2*inch, 0.5*inch])
+    left_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#01A769')),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
         ('ALIGN', (2, 0), (2, -1), 'CENTER'),
         ('FONTNAME', (0, 0), (-1, 0), 'DejaVuSerif-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 8),
+        ('FONTSIZE', (0, 0), (-1, 0), 7),
         ('FONTNAME', (0, 1), (-1, -1), 'DejaVuSerif'),
-        ('FONTSIZE', (0, 1), (-1, -1), 7),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 6),
-        ('TOPPADDING', (0, 1), (-1, -1), 1.5),
-        ('BOTTOMPADDING', (0, 1), (-1, -1), 1.5),
+        ('FONTSIZE', (0, 1), (-1, -1), 6),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 4),
+        ('TOPPADDING', (0, 1), (-1, -1), 1),
+        ('BOTTOMPADDING', (0, 1), (-1, -1), 1),
         ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
     ]))
     
-    elements.append(course_table)
-    elements.append(Spacer(1, 0.1*inch))
+    # Create right table
+    right_course_data = [['Year / Rok', 'Course / Przedmiot', 'Credits / Punkty']] + right_courses
+    right_table = Table(right_course_data, colWidths=[0.5*inch, 2.2*inch, 0.5*inch])
+    right_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#01A769')),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('ALIGN', (2, 0), (2, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'DejaVuSerif-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 7),
+        ('FONTNAME', (0, 1), (-1, -1), 'DejaVuSerif'),
+        ('FONTSIZE', (0, 1), (-1, -1), 6),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 4),
+        ('TOPPADDING', (0, 1), (-1, -1), 1),
+        ('BOTTOMPADDING', (0, 1), (-1, -1), 1),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+    ]))
+    
+    # Create a table to hold both tables side by side
+    # Column widths calculated based on letter page size (8.5") minus margins (1.5" total)
+    # = 7" available / 2 columns ≈ 3.2" per column with small gap
+    combined_table = Table([[left_table, right_table]], colWidths=[3.2*inch, 3.2*inch])
+    combined_table.setStyle(TableStyle([
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+    ]))
+    
+    elements.append(combined_table)
+    elements.append(Spacer(1, 0.05*inch))
     
     # Grading & Evaluation Notes
-    elements.append(Paragraph("Grading & Evaluation Notes", heading_style))
-    elements.append(Paragraph("Informacje o ocenach i ewaluacji", heading_style))
+    elements.append(Paragraph("Grading & Evaluation Notes / Informacje o ocenach i ewaluacji", compact_heading_style))
     
     small_normal_style = ParagraphStyle(
         'SmallNormal',
         parent=normal_style,
-        fontSize=8,
-        spaceAfter=4,
+        fontSize=7,
+        spaceAfter=2,
     )
     
     elements.append(Paragraph("• Original course grades were awarded according to the institutional grading system (e.g. A, B+, B, C+), as per university regulations.", small_normal_style))
     elements.append(Paragraph("• World Education Services (WES) does <b>not</b> convert individual course grades into Canadian equivalents.", small_normal_style))
     elements.append(Paragraph("• Canadian equivalency and GPA are determined <b>only at the credential level</b>.", small_normal_style))
-    elements.append(Spacer(1, 0.05*inch))
+    elements.append(Spacer(1, 0.03*inch))
     
     # Overall WES Evaluation
-    elements.append(Paragraph("<b>Overall WES Evaluation / Ogólna ocena WES:</b>", normal_style))
-    elements.append(Paragraph("• Total Credits: <b>133.5</b>", small_normal_style))
-    elements.append(Paragraph("• Cumulative GPA: <b>3.26</b>", small_normal_style))
-    elements.append(Paragraph("• Canadian Equivalency: <b>Bachelor's degree (four years)</b>", small_normal_style))
-    elements.append(Spacer(1, 0.1*inch))
+    compact_bold_style = ParagraphStyle(
+        'CompactBold',
+        parent=bold_style,
+        fontSize=8,
+        spaceAfter=2,
+    )
+    
+    elements.append(Paragraph("<b>Overall WES Evaluation / Ogólna ocena WES:</b>", compact_bold_style))
+    elements.append(Paragraph("• Total Credits: <b>133.5</b> • Cumulative GPA: <b>3.26</b> • Canadian Equivalency: <b>Bachelor's degree (four years)</b>", small_normal_style))
+    elements.append(Spacer(1, 0.05*inch))
+    
+    # Compact italic style for self-translation
+    compact_italic_style = ParagraphStyle(
+        'CompactItalic',
+        parent=italic_style,
+        fontSize=8,
+        spaceAfter=2,
+    )
     
     # Self-translation notice
-    elements.append(Paragraph("<i>This document is a self-translation.</i>", italic_style))
-    elements.append(Paragraph("<i>Niniejszy dokument stanowi tłumaczenie własne.</i>", italic_style))
+    elements.append(Paragraph("<i>This document is a self-translation. / Niniejszy dokument stanowi tłumaczenie własne.</i>", compact_italic_style))
     
     # Build PDF
     doc.build(elements, onFirstPage=add_header_footer, onLaterPages=add_header_footer)
