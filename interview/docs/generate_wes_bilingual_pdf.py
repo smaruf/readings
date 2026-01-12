@@ -287,8 +287,9 @@ def create_wes_pdf():
         ['Final', 'Seminar', '1.0'],
     ]
     
-    # Split courses into two halves for side-by-side layout
-    mid_point = (len(all_courses) + 1) // 2  # Split roughly in half
+    # Split courses into two columns for side-by-side layout
+    # Using ceiling division to ensure left column has one more item if odd number of courses
+    mid_point = (len(all_courses) + 1) // 2
     left_courses = all_courses[:mid_point]
     right_courses = all_courses[mid_point:]
     
@@ -331,6 +332,8 @@ def create_wes_pdf():
     ]))
     
     # Create a table to hold both tables side by side
+    # Column widths calculated based on letter page size (8.5") minus margins (1.5" total)
+    # = 7" available / 2 columns ≈ 3.2" per column with small gap
     combined_table = Table([[left_table, right_table]], colWidths=[3.2*inch, 3.2*inch])
     combined_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
