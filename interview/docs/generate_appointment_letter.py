@@ -6,11 +6,9 @@ Generate bilingual (English-Polish) appointment letter PDF for Xpert Fintech Ltd
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import inch
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_JUSTIFY
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, PageBreak
+from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 from reportlab.lib.colors import HexColor
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
 import os
 
 # File paths
