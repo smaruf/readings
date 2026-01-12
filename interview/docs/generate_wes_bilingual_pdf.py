@@ -10,6 +10,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
+from reportlab.lib.utils import ImageReader
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Image
 from reportlab.lib import colors
 import cairosvg
@@ -26,25 +27,58 @@ def convert_svg_to_image(svg_path, width=1.8*inch):
     return Image(BytesIO(png_data), width=width, height=width * 0.68)
 
 
-def add_footer(canvas, doc):
-    """Add footer to each page"""
+def add_header_footer(canvas, doc):
+    """Add header with logo/title and footer to each page"""
     canvas.saveState()
+    
+    # Add header with logo and title
+    try:
+        # Logo position (top-left)
+        logo_x = 0.75 * inch
+        logo_y = letter[1] - 0.5 * inch  # Position from top
+        
+        # Convert SVG to PNG for header
+        png_data = cairosvg.svg2png(url=SVG_LOGO_PATH, output_width=int(1.3 * inch * 4))
+        from reportlab.lib.utils import ImageReader
+        logo_img = ImageReader(BytesIO(png_data))
+        
+        # Draw logo
+        logo_width = 1.3 * inch
+        logo_height = logo_width * 0.68
+        canvas.drawImage(logo_img, logo_x, logo_y - logo_height, width=logo_width, height=logo_height, mask='auto')
+        
+        # Draw title next to logo
+        title_x = logo_x + logo_width + 0.2 * inch
+        title_y = logo_y - logo_height / 2
+        
+        canvas.setFont('Times-Bold', 14)
+        canvas.setFillColor(colors.HexColor('#01A769'))
+        canvas.drawString(title_x, title_y + 0.1 * inch, "WES Credential Evaluation Report")
+        canvas.setFont('Times-Bold', 12)
+        canvas.drawString(title_x, title_y - 0.15 * inch, "Raport oceny wykształcenia WES")
+        
+    except Exception as e:
+        print(f"Warning: Could not add header logo: {e}")
+    
+    # Add footer
     footer_text = "World Education Services (WES) Canada • 2 Carlton Street, Suite 1400, Toronto, Ontario M5B 1J3, Canada"
     canvas.setFont('Times-Roman', 8)
+    canvas.setFillColor(colors.black)
     canvas.drawCentredString(letter[0] / 2, 0.5 * inch, footer_text)
+    
     canvas.restoreState()
 
 
 def create_wes_pdf():
     """Generate the complete 3-page WES bilingual PDF"""
     
-    # Create PDF document
+    # Create PDF document with larger top margin to accommodate header
     doc = SimpleDocTemplate(
         OUTPUT_PDF_PATH,
         pagesize=letter,
         rightMargin=0.75*inch,
         leftMargin=0.75*inch,
-        topMargin=0.75*inch,
+        topMargin=1.2*inch,  # Increased for header with logo and title
         bottomMargin=0.75*inch
     )
     
@@ -102,52 +136,6 @@ def create_wes_pdf():
     
     # ==================== PAGE 1 ====================
     
-    # Custom title style for inline header (left-aligned)
-    title_inline_style = ParagraphStyle(
-        'TitleInline',
-        parent=styles['Heading1'],
-        fontSize=16,
-        textColor=colors.HexColor('#01A769'),
-        spaceAfter=0,
-        alignment=TA_LEFT,
-        fontName='Times-Bold',
-        leading=19
-    )
-    
-    # Add WES Logo and Title on the same line
-    try:
-        logo_width = 1.5*inch
-        logo_title_gap = 0.2*inch  # Gap between logo and title
-        logo = convert_svg_to_image(SVG_LOGO_PATH, width=logo_width)
-        
-        # Create title text with both English and Polish on separate lines
-        title_text = "WES Credential Evaluation Report<br/>Raport oceny wykształcenia WES"
-        title_para = Paragraph(title_text, title_inline_style)
-        
-        # Calculate available page width (page width - left and right margins)
-        available_width = letter[0] - 1.5*inch  # 8.5" - (0.75" left + 0.75" right margins)
-        title_width = available_width - logo_width - logo_title_gap
-        
-        # Create a table with logo and title side by side
-        header_table = Table([[logo, title_para]], colWidths=[logo_width, title_width])
-        header_table.setStyle(TableStyle([
-            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-            ('LEFTPADDING', (0, 0), (0, 0), 0),
-            ('RIGHTPADDING', (0, 0), (0, 0), 10),
-            ('LEFTPADDING', (1, 0), (1, 0), 0),
-            ('RIGHTPADDING', (1, 0), (1, 0), 0),
-            ('TOPPADDING', (0, 0), (-1, -1), 0),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
-        ]))
-        elements.append(header_table)
-        elements.append(Spacer(1, 0.2*inch))
-    except Exception as e:
-        print(f"Warning: Could not add logo: {e}")
-        # Fallback to titles only if logo fails
-        elements.append(Paragraph("WES Credential Evaluation Report", title_style))
-        elements.append(Paragraph("Raport oceny wykształcenia WES", title_style))
-        elements.append(Spacer(1, 0.2*inch))
-    
     # Personal Information
     elements.append(Paragraph("<b>Name / Imię i nazwisko:</b><br/><b>MARUF, Muhammad Shamsul</b>", normal_style))
     elements.append(Paragraph("<b>Date of Birth / Data urodzenia:</b><br/>June 30, 1982", normal_style))
@@ -183,11 +171,6 @@ def create_wes_pdf():
     
     # ==================== PAGE 2 ====================
     
-    # Page 2 Title
-    elements.append(Paragraph("Transcript Summary", title_style))
-    elements.append(Paragraph("Podsumowanie suplementu do dyplomu", title_style))
-    elements.append(Spacer(1, 0.3*inch))
-    
     # Summary Totals
     elements.append(Paragraph("Summary Totals", heading_style))
     elements.append(Paragraph("Podsumowanie ogólne", heading_style))
@@ -218,15 +201,10 @@ def create_wes_pdf():
     
     # ==================== PAGE 3 ====================
     
-    # Page 3 Title
-    elements.append(Paragraph("Course-by-Course Credit Mapping", title_style))
-    elements.append(Paragraph("Zestawienie przedmiotów i punktów", title_style))
-    elements.append(Spacer(1, 0.2*inch))
-    
     # Courses section heading
     elements.append(Paragraph("Courses & Credits", heading_style))
     elements.append(Paragraph("Przedmioty i punkty", heading_style))
-    elements.append(Spacer(1, 0.1*inch))
+    elements.append(Spacer(1, 0.05*inch))
     
     # Course data
     course_data = [
@@ -280,25 +258,25 @@ def create_wes_pdf():
     ]
     
     # Create table with compact styling
-    course_table = Table(course_data, colWidths=[0.9*inch, 3.8*inch, 1.2*inch])
+    course_table = Table(course_data, colWidths=[0.8*inch, 3.9*inch, 1.0*inch])
     course_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#01A769')),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
         ('ALIGN', (2, 0), (2, -1), 'CENTER'),
         ('FONTNAME', (0, 0), (-1, 0), 'Times-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 9),
+        ('FONTSIZE', (0, 0), (-1, 0), 8),
         ('FONTNAME', (0, 1), (-1, -1), 'Times-Roman'),
-        ('FONTSIZE', (0, 1), (-1, -1), 7.5),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
-        ('TOPPADDING', (0, 1), (-1, -1), 2),
-        ('BOTTOMPADDING', (0, 1), (-1, -1), 2),
+        ('FONTSIZE', (0, 1), (-1, -1), 7),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 6),
+        ('TOPPADDING', (0, 1), (-1, -1), 1.5),
+        ('BOTTOMPADDING', (0, 1), (-1, -1), 1.5),
         ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
     ]))
     
     elements.append(course_table)
-    elements.append(Spacer(1, 0.15*inch))
+    elements.append(Spacer(1, 0.1*inch))
     
     # Grading & Evaluation Notes
     elements.append(Paragraph("Grading & Evaluation Notes", heading_style))
@@ -314,21 +292,21 @@ def create_wes_pdf():
     elements.append(Paragraph("• Original course grades were awarded according to the institutional grading system (e.g. A, B+, B, C+), as per university regulations.", small_normal_style))
     elements.append(Paragraph("• World Education Services (WES) does <b>not</b> convert individual course grades into Canadian equivalents.", small_normal_style))
     elements.append(Paragraph("• Canadian equivalency and GPA are determined <b>only at the credential level</b>.", small_normal_style))
-    elements.append(Spacer(1, 0.1*inch))
+    elements.append(Spacer(1, 0.05*inch))
     
     # Overall WES Evaluation
     elements.append(Paragraph("<b>Overall WES Evaluation / Ogólna ocena WES:</b>", normal_style))
     elements.append(Paragraph("• Total Credits: <b>133.5</b>", small_normal_style))
     elements.append(Paragraph("• Cumulative GPA: <b>3.26</b>", small_normal_style))
     elements.append(Paragraph("• Canadian Equivalency: <b>Bachelor's degree (four years)</b>", small_normal_style))
-    elements.append(Spacer(1, 0.15*inch))
+    elements.append(Spacer(1, 0.1*inch))
     
     # Self-translation notice
     elements.append(Paragraph("<i>This document is a self-translation.</i>", italic_style))
     elements.append(Paragraph("<i>Niniejszy dokument stanowi tłumaczenie własne.</i>", italic_style))
     
     # Build PDF
-    doc.build(elements, onFirstPage=add_footer, onLaterPages=add_footer)
+    doc.build(elements, onFirstPage=add_header_footer, onLaterPages=add_header_footer)
     print(f"✅ PDF generated successfully: {OUTPUT_PDF_PATH}")
 
 
