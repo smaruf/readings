@@ -16,6 +16,14 @@ The script requires Python 3 and the following package:
 pip install reportlab
 ```
 
+The script also requires **DejaVu fonts** to be installed on your system for Unicode character support (Polish characters):
+
+- **Ubuntu/Debian**: `sudo apt-get install fonts-dejavu`
+- **Fedora/RHEL**: `sudo dnf install dejavu-sans-fonts`
+- **Windows**: DejaVu fonts are typically included, or download from [DejaVu Fonts](https://dejavu-fonts.github.io/)
+
+The script automatically detects the font location on your system.
+
 ## Usage
 
 To generate the appointment letter PDF, run:
@@ -54,10 +62,12 @@ The generated PDF includes:
 ## Features
 
 - Professional A4 format with proper margins
-- Company logo integrated in the header
+- **Left-aligned company logo** in the header
 - Bilingual content (English followed by Polish)
+- **Embedded Unicode fonts (DejaVu Sans)** for proper Polish character display
 - Structured sections with clear headings
 - Professional typography and spacing
+- Cross-platform support (Linux, Windows)
 - Ready for printing and official use
 
 ## Customization
@@ -71,4 +81,4 @@ To modify the content, edit the `generate_appointment_letter.py` script. The scr
 
 ## Output
 
-The generated PDF is approximately 21KB in size and contains 4 pages with all appointment letter details in both English and Polish.
+The generated PDF is approximately 62KB in size and contains 4 pages with all appointment letter details in both English and Polish. The PDF includes embedded Unicode fonts to ensure proper display of Polish characters (ł, ą, ę, ć, ń, ó, ś, ź, ż) on all systems.
