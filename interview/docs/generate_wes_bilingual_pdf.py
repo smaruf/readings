@@ -181,7 +181,7 @@ def create_wes_pdf():
     # Credential Authentication
     elements.append(Paragraph("Credential Authentication", heading_style))
     elements.append(Paragraph("Weryfikacja dokumentów", heading_style))
-    elements.append(Paragraph("<b>Authentication Method / Metoda weryfikacji:</b><br/>Documents were verified by the awarding institution.<br/><br/>Dokumenty zostały zweryfikowane bezpośrednio przez uczelnię wydającą dyplom.", normal_style))
+    elements.append(Paragraph("<b>Authentication Method / Metoda weryfikacji:</b><br/>Documents were verified by the awarding institution.<br/><br/>Dokumenty zostały zweryfikowane bezpośrednio przez uczelnię wydającą.", normal_style))
     elements.append(Spacer(1, 0.2*inch))
     
     # Recognition
