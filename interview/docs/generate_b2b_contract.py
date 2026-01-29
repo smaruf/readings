@@ -1,6 +1,17 @@
 #!/usr/bin/env python3
 """
 Generate Remote B2B Service Contract PDF for Xpert Fintech Ltd.
+
+This script generates B2B service contracts with customizable start dates.
+File numbering follows the 01XX series convention documented in README.md.
+
+Usage:
+    python3 generate_b2b_contract.py "01 May 2026" "0103 FINAL_UNICODE_DejaVu_Remote_B2B_Contract_Start_01_May_2026.pdf"
+    
+Example contracts generated:
+    - 0103: May 2026
+    - 0104: June 2026
+    - 0107: August 2026
 """
 
 from reportlab.lib.pagesizes import A4

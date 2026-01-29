@@ -11,6 +11,28 @@
 
 ---
 
+## Document Organization
+
+### B2B Contracts (01XX series)
+- **0101** - B2B Contract Start: 01 April 2026
+- **0102** - B2B Contract Start: 01 July 2026
+- **0103** - B2B Contract Start: 01 May 2026
+- **0104** - B2B Contract Start: 01 June 2026
+- **0105** - CV (Muhammad_Shamsul_Maruf_CV_EU.pdf)
+- **0106** - Cover Letter
+- **0107** - B2B Contract Start: 01 August 2026
+
+### Supporting Documents (02XX series)
+- **0201** - Cover Letter B2B Gdansk
+- **0202** - Continuity Statement (with Managing Director signature: Md. Abdul Maleque Kibria)
+- **0203** - Tax Declaration
+
+### Other Documents (03XX series)
+- **0301** - Appointment Letters
+- **0302** - WES Bilingual Credential Evaluation
+
+---
+
 ## Professional Summary
 
 Principal Software Engineer with 15+ years’ experience delivering secure, scalable solutions for finance, healthcare, government, and enterprise. Expertise in Java, C#, Python, AWS, cloud-native architectures, and leading teams.
