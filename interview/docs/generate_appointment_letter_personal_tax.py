@@ -22,7 +22,7 @@ import os
 # File paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 LOGO_PATH = os.path.join(SCRIPT_DIR, "xpertfintech_logo.jpg")
-OUTPUT_PDF = os.path.join(SCRIPT_DIR, "0301 Bilingual_Appointment_Letter_Mohammad_Shamsul_Maruf_Personal_Tax.pdf")
+OUTPUT_PDF = os.path.join(SCRIPT_DIR, "0301 Bilingual_Appointment_Letter_Muhammad_Shamsul_Maruf_Personal_Tax.pdf")
 
 # Register DejaVu fonts for Unicode support (Polish characters)
 # Try multiple common font paths for cross-platform compatibility
@@ -179,14 +179,14 @@ def create_appointment_letter():
     story.append(Spacer(1, 0.2*inch))
     
     # Recipient details (English)
-    story.append(Paragraph("<b>Mr. Mohammad Shamsul Maruf</b>", normal_style))
+    story.append(Paragraph("<b>Mr. Muhammad Shamsul Maruf</b>", normal_style))
     story.append(Paragraph("Address: Nur Monjil, Islamnagar, Matuail, Jatrabari, Dhaka, Bangladesh", normal_style))
     story.append(Paragraph("Cell: +880 1736 767 481", normal_style))
     story.append(Paragraph("Email: smaruf00ruet320@gmail.com, muhammad.shamsul.maruf@gmail.com", normal_style))
     story.append(Spacer(1, 0.1*inch))
     
     # Recipient details (Polish)
-    story.append(Paragraph("<b>Pan Mohammad Shamsul Maruf</b>", normal_style))
+    story.append(Paragraph("<b>Pan Muhammad Shamsul Maruf</b>", normal_style))
     story.append(Paragraph("Adres: Nur Monjil, Islamnagar, Matuail, Jatrabari, Dhaka, Bangladesz", normal_style))
     story.append(Paragraph("Telefon: +880 1736 767 481", normal_style))
     story.append(Paragraph("E-mail: smaruf00ruet320@gmail.com, muhammad.shamsul.maruf@gmail.com", normal_style))
