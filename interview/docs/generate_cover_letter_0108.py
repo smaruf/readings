@@ -7,7 +7,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import inch
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Table, TableStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.colors import HexColor
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -15,7 +15,6 @@ import os
 
 # File paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-LOGO_PATH = os.path.join(SCRIPT_DIR, "xpertfintech_logo.jpg")
 OUTPUT_PDF = os.path.join(SCRIPT_DIR, "0108 COVER_LETTER_B2B_GDANSK_UNICODE_WITH_LOGO_SINGLE_PAGE.pdf")
 
 # Register DejaVu fonts for Unicode support (Polish characters)
@@ -99,17 +98,6 @@ def create_cover_letter():
         alignment=TA_LEFT,
         fontName='DejaVuSans-Bold'
     )
-    
-    # Add logo if it exists
-    if os.path.exists(LOGO_PATH):
-        logo_img = Image(LOGO_PATH, width=1.0*inch, height=1.0*inch)
-        logo_table = Table([[logo_img]], colWidths=[1.0*inch])
-        logo_table.setStyle(TableStyle([
-            ('ALIGN', (0, 0), (0, 0), 'LEFT'),
-            ('VALIGN', (0, 0), (0, 0), 'TOP'),
-        ]))
-        story.append(logo_table)
-        story.append(Spacer(1, 0.2*inch))
     
     # Date and location line
     story.append(Paragraph("Gdańsk, ______________________", normal_style))
