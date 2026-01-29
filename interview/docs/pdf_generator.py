@@ -53,9 +53,14 @@ def register_unicode_fonts():
                 font_path = os.path.join(dejavu_path, font_file)
                 if os.path.exists(font_path):
                     pdfmetrics.registerFont(TTFont(font_name, font_path))
+            print(f"Successfully registered DejaVu fonts from: {dejavu_path}")
             return True
         except Exception as e:
+            print(f"Warning: Failed to register fonts from {dejavu_path}: {e}")
             continue
+    
+    print("Warning: Could not register DejaVu fonts from any standard location.")
+    print("PDF generation will use default fonts which may not support all characters.")
     return False
 
 # Register fonts
@@ -148,7 +153,21 @@ def generate_pdf(config):
     
     Args:
         config: PDFConfig instance with all settings
+        
+    Raises:
+        ValueError: If logo file path is invalid
+        FileNotFoundError: If logo file doesn't exist
     """
+    
+    # Validate logo file if provided
+    if config.logo_path:
+        if not os.path.exists(config.logo_path):
+            raise FileNotFoundError(f"Logo file not found: {config.logo_path}")
+        
+        # Check if it's a valid image format
+        valid_extensions = ('.jpg', '.jpeg', '.png', '.gif', '.bmp')
+        if not config.logo_path.lower().endswith(valid_extensions):
+            raise ValueError(f"Logo file must be an image format: {', '.join(valid_extensions)}")
     
     # Create PDF document
     pdf_doc = SimpleDocTemplate(
