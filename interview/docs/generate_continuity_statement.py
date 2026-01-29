@@ -133,7 +133,7 @@ def create_continuity_statement():
         normal_style
     ))
     story.append(Paragraph(
-        "<b>Mr. Mohammad Shamsul Maruf</b> is ongoing and long-term",
+        "<b>Mr. Muhammad Shamsul Maruf</b> is ongoing and long-term",
         normal_style
     ))
     story.append(Paragraph(
@@ -148,7 +148,7 @@ def create_continuity_statement():
         normal_style
     ))
     story.append(Paragraph(
-        "<b>Panem Mohammad Shamsul Maruf</b> ma charakter",
+        "<b>Panem Muhammad Shamsul Maruf</b> ma charakter",
         normal_style
     ))
     story.append(Paragraph(
