@@ -17,7 +17,7 @@ import os
 # File paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 LOGO_PATH = os.path.join(SCRIPT_DIR, "xpertfintech_logo.jpg")
-OUTPUT_PDF = os.path.join(SCRIPT_DIR, "0106 CONTINUITY_STATEMENT_UNICODE_WITH_LOGO.pdf")
+OUTPUT_PDF = os.path.join(SCRIPT_DIR, "0109B CONTINUITY_STATEMENT_UNICODE_WITH_LOGO.pdf")
 
 # Register DejaVu fonts for Unicode support (Polish characters)
 DEJAVU_PATHS = [
@@ -155,7 +155,7 @@ def create_continuity_statement():
         normal_style
     ))
     story.append(Paragraph(
-        "<b>Mr. Mohammad Shamsul Maruf</b> is ongoing and long-term",
+        "<b>Mr. Muhammad Shamsul Maruf</b> is ongoing and long-term",
         normal_style
     ))
     story.append(Paragraph(
@@ -170,7 +170,7 @@ def create_continuity_statement():
         normal_style
     ))
     story.append(Paragraph(
-        "<b>Panem Mohammad Shamsul Maruf</b> ma charakter",
+        "<b>Panem Muhammad Shamsul Maruf</b> ma charakter",
         normal_style
     ))
     story.append(Paragraph(

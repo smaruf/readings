@@ -235,7 +235,7 @@ def create_b2b_contract(start_date_str, output_filename):
         normal_style
     ))
     story.append(Paragraph(
-        "<b>Service Provider / Usługodawca:</b> Mohammad Shamsul Maruf, Independent IT Consultant (B2B)",
+        "<b>Service Provider / Usługodawca:</b> Muhammad Shamsul Maruf, Independent IT Consultant (B2B)",
         normal_style
     ))
     story.append(Spacer(1, 0.2*inch))
@@ -277,7 +277,7 @@ def create_b2b_contract(start_date_str, output_filename):
         ],
         [
             Paragraph("<b>Md. Abdul Maleque Kibria</b><br/>Managing Director<br/>Xpert Fintech Ltd.", normal_style),
-            Paragraph("<b>Mohammad Shamsul Maruf</b>", normal_style)
+            Paragraph("<b>Muhammad Shamsul Maruf</b>", normal_style)
         ]
     ]
     
