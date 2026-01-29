@@ -18,7 +18,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import inch
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_LEFT
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
 from reportlab.lib.colors import HexColor, black
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -67,6 +67,19 @@ def register_unicode_fonts():
 register_unicode_fonts()
 
 
+def add_header_footer(canvas, doc, logo_path):
+    """Add header with logo to the page"""
+    canvas.saveState()
+    
+    # Add logo in header if it exists
+    if os.path.exists(logo_path):
+        # Draw logo centered at top
+        canvas.drawImage(logo_path, (A4[0] - 1.2*inch) / 2, A4[1] - 1.5*inch, 
+                        width=1.2*inch, height=1.2*inch, preserveAspectRatio=True)
+    
+    canvas.restoreState()
+
+
 def create_b2b_contract(start_date_str, output_filename):
     """
     Create the B2B contract PDF.
@@ -78,6 +91,7 @@ def create_b2b_contract(start_date_str, output_filename):
     
     # File path
     SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    LOGO_PATH = os.path.join(SCRIPT_DIR, "xpertfintech_logo.jpg")
     OUTPUT_PDF = os.path.join(SCRIPT_DIR, output_filename)
     
     # Create PDF document
@@ -86,7 +100,7 @@ def create_b2b_contract(start_date_str, output_filename):
         pagesize=A4,
         rightMargin=0.75*inch,
         leftMargin=0.75*inch,
-        topMargin=1.0*inch,
+        topMargin=2.0*inch,  # Increased for logo
         bottomMargin=1.0*inch
     )
     
@@ -255,8 +269,9 @@ def create_b2b_contract(start_date_str, output_filename):
         footer_style
     ))
     
-    # Build PDF
-    pdf_doc.build(story)
+    # Build PDF with header on each page
+    pdf_doc.build(story, onFirstPage=lambda c, d: add_header_footer(c, d, LOGO_PATH), 
+                  onLaterPages=lambda c, d: add_header_footer(c, d, LOGO_PATH))
     print(f"PDF generated successfully: {OUTPUT_PDF}")
 
 
