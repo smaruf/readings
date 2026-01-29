@@ -67,17 +67,9 @@ def register_unicode_fonts():
 register_unicode_fonts()
 
 
-def add_header_footer(canvas, doc, logo_path):
-    """Add header with logo to the page"""
-    canvas.saveState()
-    
-    # Add logo in header if it exists
-    if os.path.exists(logo_path):
-        # Draw logo centered at top
-        canvas.drawImage(logo_path, (A4[0] - 1.2*inch) / 2, A4[1] - 1.5*inch, 
-                        width=1.2*inch, height=1.2*inch, preserveAspectRatio=True)
-    
-    canvas.restoreState()
+def add_footer(canvas, doc):
+    """Placeholder callback - footer is rendered as document content, not via canvas."""
+    pass
 
 
 def create_b2b_contract(start_date_str, output_filename):
@@ -100,7 +92,7 @@ def create_b2b_contract(start_date_str, output_filename):
         pagesize=A4,
         rightMargin=0.75*inch,
         leftMargin=0.75*inch,
-        topMargin=2.0*inch,  # Increased for logo
+        topMargin=0.75*inch,  # Reduced for side-by-side logo/title layout
         bottomMargin=1.0*inch
     )
     
@@ -110,96 +102,128 @@ def create_b2b_contract(start_date_str, output_filename):
     # Define styles
     styles = getSampleStyleSheet()
     
-    # Custom styles
+    # Custom styles - reduced font sizes for compact layout
     title_style = ParagraphStyle(
         'CustomTitle',
         parent=styles['Heading1'],
-        fontSize=16,
+        fontSize=12,  # Reduced from 16
         textColor=HexColor('#1a1a1a'),
-        spaceAfter=8,
-        alignment=TA_CENTER,
-        fontName='DejaVuSans-Bold'
+        spaceAfter=4,  # Reduced from 8
+        alignment=TA_LEFT,  # Changed from CENTER to LEFT
+        fontName='DejaVuSans-Bold',
+        leading=14
     )
     
     company_style = ParagraphStyle(
         'CompanyStyle',
         parent=styles['Normal'],
-        fontSize=12,
+        fontSize=10,  # Reduced from 12
         textColor=HexColor('#1a1a1a'),
-        spaceAfter=4,
-        alignment=TA_CENTER,
+        spaceAfter=3,  # Reduced from 4
+        alignment=TA_LEFT,  # Changed from CENTER to LEFT
         fontName='DejaVuSans-Bold'
     )
     
     subtitle_style = ParagraphStyle(
         'SubtitleStyle',
         parent=styles['Normal'],
-        fontSize=10,
+        fontSize=8,  # Reduced from 10
         textColor=HexColor('#666666'),
-        spaceAfter=4,
-        alignment=TA_CENTER,
+        spaceAfter=3,  # Reduced from 4
+        alignment=TA_LEFT,  # Changed from CENTER to LEFT
         fontName='DejaVuSans'
     )
     
     date_style = ParagraphStyle(
         'DateStyle',
         parent=styles['Normal'],
-        fontSize=11,
+        fontSize=9,  # Reduced from 11
         textColor=HexColor('#1a1a1a'),
-        spaceAfter=12,
-        alignment=TA_CENTER,
+        spaceAfter=10,  # Reduced from 12
+        alignment=TA_LEFT,  # Changed from CENTER to LEFT
         fontName='DejaVuSans-Bold'
     )
     
     heading_style = ParagraphStyle(
         'CustomHeading',
         parent=styles['Heading2'],
-        fontSize=12,
+        fontSize=10,  # Reduced from 12
         textColor=HexColor('#1a1a1a'),
-        spaceAfter=8,
-        spaceBefore=12,
+        spaceAfter=6,  # Reduced from 8
+        spaceBefore=10,  # Reduced from 12
         fontName='DejaVuSans-Bold'
     )
     
     normal_style = ParagraphStyle(
         'CustomNormal',
         parent=styles['Normal'],
-        fontSize=10,
+        fontSize=9,  # Reduced from 10
         textColor=HexColor('#1a1a1a'),
-        spaceAfter=6,
+        spaceAfter=5,  # Reduced from 6
         alignment=TA_LEFT,
-        fontName='DejaVuSans'
+        fontName='DejaVuSans',
+        leading=12  # Added for compact spacing
     )
     
     footer_style = ParagraphStyle(
         'FooterStyle',
         parent=styles['Normal'],
-        fontSize=8,
+        fontSize=7,  # Reduced from 8
         textColor=HexColor('#666666'),
-        spaceAfter=4,
+        spaceAfter=3,  # Reduced from 4
         alignment=TA_CENTER,
         fontName='DejaVuSans'
     )
     
     # Add title
-    story.append(Paragraph(
-        "REMOTE B2B SERVICE CONTRACT / UMOWA B2B O ŚWIADCZENIE<br/>USŁUG ZDALNYCH",
-        title_style
-    ))
-    story.append(Spacer(1, 0.15*inch))
+    # Create logo and title side-by-side using a table
+    if os.path.exists(LOGO_PATH):
+        logo_img = Image(LOGO_PATH, width=1.0*inch, height=1.0*inch)
+        
+        # Create title with company info as multi-line paragraph
+        title_text = """<b>REMOTE B2B SERVICE CONTRACT</b><br/>
+        <b>UMOWA B2B O ŚWIADCZENIE USŁUG ZDALNYCH</b><br/>
+        <br/>
+        <b>Xpert Fintech Ltd.</b><br/>
+        <font size="8">Foreign entity – not registered in Poland<br/>
+        Podmiot zagraniczny – niezarejestrowany w Polsce</font>"""
+        
+        title_para = Paragraph(title_text, title_style)
+        
+        # Create table with logo on left and title on right
+        # A4 width = 8.27", margins = 0.75" each, available width = 6.77"
+        header_table = Table(
+            [[logo_img, title_para]],
+            colWidths=[1.0*inch, 5.5*inch]  # Total: 6.5", leaving 0.27" margin
+        )
+        header_table.setStyle(TableStyle([
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('LEFTPADDING', (0, 0), (0, 0), 0),
+            ('LEFTPADDING', (1, 0), (1, 0), 10),
+            ('RIGHTPADDING', (1, 0), (1, 0), 0),
+        ]))
+        story.append(header_table)
+    else:
+        # Fallback: just title if logo doesn't exist
+        story.append(Paragraph(
+            "REMOTE B2B SERVICE CONTRACT / UMOWA B2B O ŚWIADCZENIE<br/>USŁUG ZDALNYCH",
+            title_style
+        ))
+        story.append(Spacer(1, 0.1*inch))
+        
+        # Company name
+        story.append(Paragraph("Xpert Fintech Ltd.", company_style))
+        story.append(Paragraph("Foreign entity – not registered in Poland", subtitle_style))
+        story.append(Paragraph("Podmiot zagraniczny – niezarejestrowany w Polsce", subtitle_style))
     
-    # Company name
-    story.append(Paragraph("Xpert Fintech Ltd.", company_style))
-    story.append(Paragraph("Foreign entity – not registered in Poland", subtitle_style))
-    story.append(Paragraph("Podmiot zagraniczny – niezarejestrowany w Polsce", subtitle_style))
-    story.append(Spacer(1, 0.2*inch))
+    story.append(Spacer(1, 0.15*inch))  # Reduced spacing
     
     # Contract start date
     story.append(Paragraph(
         f"Contract Start Date / Data rozpoczęcia: {start_date_str}",
         date_style
     ))
-    story.append(Spacer(1, 0.2*inch))
+    story.append(Spacer(1, 0.15*inch))  # Reduced spacing
     
     # Parties section
     story.append(Paragraph("Parties / Strony umowy", heading_style))
@@ -269,9 +293,8 @@ def create_b2b_contract(start_date_str, output_filename):
         footer_style
     ))
     
-    # Build PDF with header on each page
-    pdf_doc.build(story, onFirstPage=lambda c, d: add_header_footer(c, d, LOGO_PATH), 
-                  onLaterPages=lambda c, d: add_header_footer(c, d, LOGO_PATH))
+    # Build PDF
+    pdf_doc.build(story, onFirstPage=add_footer, onLaterPages=add_footer)
     print(f"PDF generated successfully: {OUTPUT_PDF}")
 
 
