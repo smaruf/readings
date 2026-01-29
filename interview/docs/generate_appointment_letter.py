@@ -7,7 +7,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import inch
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_LEFT
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, Table, TableStyle
 from reportlab.lib.colors import HexColor
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -61,20 +61,10 @@ register_unicode_fonts()
 
 
 def add_header_footer(canvas, doc):
-    """Add header and footer to each page"""
+    """Add footer to each page in the bottom margin"""
     canvas.saveState()
     
-    # Add logo and company name in header
-    if os.path.exists(LOGO_PATH):
-        # Draw logo in top left
-        canvas.drawImage(LOGO_PATH, 0.75*inch, A4[1] - 1.3*inch, 
-                        width=0.8*inch, height=0.8*inch, preserveAspectRatio=True)
-        
-        # Draw company name next to logo
-        canvas.setFont('DejaVuSans-Bold', 14)
-        canvas.drawString(1.65*inch, A4[1] - 0.95*inch, "Xpert Fintech Ltd.")
-    
-    # Add footer with company address
+    # Add footer with company address in bottom margin
     canvas.setFont('DejaVuSans', 8)
     footer_text = "Xpert Fintech Ltd. | Saiham Sky View Tower (13-A), 45 Bijoynagar, Dhaka, Bangladesh | +88 02 839 2725 | www.xpertfintech.com"
     canvas.drawCentredString(A4[0] / 2, 0.5 * inch, footer_text)
@@ -91,8 +81,8 @@ def create_appointment_letter():
         pagesize=A4,
         rightMargin=0.75*inch,
         leftMargin=0.75*inch,
-        topMargin=1.5*inch,  # Increased for header
-        bottomMargin=1.0*inch  # Increased for footer
+        topMargin=0.75*inch,  # Reduced since logo/company name are now in document content
+        bottomMargin=1.0*inch  # For footer in bottom margin
     )
     
     # Container for the 'Flowable' objects
@@ -161,6 +151,38 @@ def create_appointment_letter():
         alignment=TA_CENTER,
         fontName='DejaVuSans-Bold'
     )
+    
+    company_name_style = ParagraphStyle(
+        'CompanyName',
+        parent=styles['Normal'],
+        fontSize=14,
+        textColor=HexColor('#1a1a1a'),
+        spaceAfter=8,
+        alignment=TA_LEFT,
+        fontName='DejaVuSans-Bold'
+    )
+    
+    # Add logo and company name at the top (in document content, after top margin)
+    if os.path.exists(LOGO_PATH):
+        logo_img = Image(LOGO_PATH, width=0.8*inch, height=0.8*inch)
+        company_para = Paragraph("Xpert Fintech Ltd.", company_name_style)
+        
+        # Create table with logo on left and company name on right
+        header_table = Table(
+            [[logo_img, company_para]],
+            colWidths=[1.0*inch, 5.5*inch]
+        )
+        header_table.setStyle(TableStyle([
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('LEFTPADDING', (0, 0), (0, 0), 0),
+            ('LEFTPADDING', (1, 0), (1, 0), 10),
+        ]))
+        story.append(header_table)
+    else:
+        # Fallback: just company name if logo doesn't exist
+        story.append(Paragraph("Xpert Fintech Ltd.", company_name_style))
+    
+    story.append(Spacer(1, 0.3*inch))
     
     # Reference and Date (English)
     story.append(Paragraph("<b>Ref:</b> XFL/HR/Appointment-Letter/2025/07/02", normal_style))
