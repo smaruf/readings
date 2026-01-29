@@ -68,8 +68,15 @@ register_unicode_fonts()
 
 
 def add_footer(canvas, doc):
-    """Placeholder callback - footer is rendered as document content, not via canvas."""
-    pass
+    """Add footer in the bottom margin area."""
+    canvas.saveState()
+    
+    # Add footer with company address in bottom margin
+    canvas.setFont('DejaVuSans', 7)
+    footer_text = "Headquarters: Saiham Sky View Tower (13-A), 45 Bijoynagar, Dhaka Division, Dhaka, Motijheel, Dhaka 1000, Bangladesh"
+    canvas.drawCentredString(A4[0] / 2, 0.5 * inch, footer_text)
+    
+    canvas.restoreState()
 
 
 def create_b2b_contract(start_date_str, output_filename):
@@ -175,18 +182,13 @@ def create_b2b_contract(start_date_str, output_filename):
         fontName='DejaVuSans'
     )
     
-    # Add title
-    # Create logo and title side-by-side using a table
+    # Add logo and title side-by-side using a table
     if os.path.exists(LOGO_PATH):
         logo_img = Image(LOGO_PATH, width=1.0*inch, height=1.0*inch)
         
-        # Create title with company info as multi-line paragraph
+        # Create title paragraph (without company info)
         title_text = """<b>REMOTE B2B SERVICE CONTRACT</b><br/>
-        <b>UMOWA B2B O ŚWIADCZENIE USŁUG ZDALNYCH</b><br/>
-        <br/>
-        <b>Xpert Fintech Ltd.</b><br/>
-        <font size="8">Foreign entity – not registered in Poland<br/>
-        Podmiot zagraniczny – niezarejestrowany w Polsce</font>"""
+        <b>UMOWA B2B O ŚWIADCZENIE USŁUG ZDALNYCH</b>"""
         
         title_para = Paragraph(title_text, title_style)
         
@@ -209,12 +211,13 @@ def create_b2b_contract(start_date_str, output_filename):
             "REMOTE B2B SERVICE CONTRACT / UMOWA B2B O ŚWIADCZENIE<br/>USŁUG ZDALNYCH",
             title_style
         ))
-        story.append(Spacer(1, 0.1*inch))
-        
-        # Company name
-        story.append(Paragraph("Xpert Fintech Ltd.", company_style))
-        story.append(Paragraph("Foreign entity – not registered in Poland", subtitle_style))
-        story.append(Paragraph("Podmiot zagraniczny – niezarejestrowany w Polsce", subtitle_style))
+    
+    story.append(Spacer(1, 0.1*inch))
+    
+    # Add company name AFTER the title (in document content, not in header margin)
+    story.append(Paragraph("Xpert Fintech Ltd.", company_style))
+    story.append(Paragraph("Foreign entity – not registered in Poland", subtitle_style))
+    story.append(Paragraph("Podmiot zagraniczny – niezarejestrowany w Polsce", subtitle_style))
     
     story.append(Spacer(1, 0.15*inch))  # Reduced spacing
     
@@ -285,13 +288,7 @@ def create_b2b_contract(start_date_str, output_filename):
     ]))
     
     story.append(signature_table)
-    story.append(Spacer(1, 0.3*inch))
-    
-    # Footer with company address
-    story.append(Paragraph(
-        "Headquarters: Saiham Sky View Tower (13-A), 45 Bijoynagar, Dhaka Division, Dhaka, Motijheel, Dhaka 1000,<br/>Bangladesh",
-        footer_style
-    ))
+    # Footer is now rendered in the bottom margin via add_footer callback
     
     # Build PDF
     pdf_doc.build(story, onFirstPage=add_footer, onLaterPages=add_footer)
