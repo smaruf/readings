@@ -68,10 +68,8 @@ register_unicode_fonts()
 
 
 def add_footer(canvas, doc):
-    """Add footer at bottom"""
-    canvas.saveState()
-    # Footer is now added as part of the document content
-    canvas.restoreState()
+    """Placeholder callback - footer is rendered as document content, not via canvas."""
+    pass
 
 
 def create_b2b_contract(start_date_str, output_filename):
