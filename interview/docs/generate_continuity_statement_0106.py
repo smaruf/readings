@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-Generate Continuity of Cooperation Statement PDF for 0106 with left-aligned layout.
+Generate Continuity of Cooperation Statement PDF for 0106 with logo and title
+side-by-side at the top, followed by left-aligned text in compact layout.
 """
 
 from reportlab.lib.pagesizes import A4
@@ -130,15 +131,16 @@ def create_continuity_statement():
         title_para = Paragraph("Continuity of Cooperation Statement", title_style)
         
         # Create table with logo on left and title on right
+        # A4 width = 8.27", margins = 0.75" each, available width = 6.77"
         header_table = Table(
             [[logo_img, title_para]],
-            colWidths=[1.2*inch, 5.3*inch]
+            colWidths=[1.0*inch, 5.5*inch]  # Total: 6.5", leaving 0.27" margin
         )
         header_table.setStyle(TableStyle([
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
             ('LEFTPADDING', (0, 0), (0, 0), 0),
-            ('RIGHTPADDING', (1, 0), (1, 0), 0),
             ('LEFTPADDING', (1, 0), (1, 0), 10),
+            ('RIGHTPADDING', (1, 0), (1, 0), 0),
         ]))
         story.append(header_table)
     else:
