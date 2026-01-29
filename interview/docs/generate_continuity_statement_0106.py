@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """
-Generate Continuity of Cooperation Statement PDF for 0106 with left-aligned layout.
+Generate Continuity of Cooperation Statement PDF for 0106 with logo and title
+side-by-side at the top, followed by left-aligned text in compact layout.
 """
 
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import inch
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_LEFT
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
 from reportlab.lib.colors import HexColor
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -59,18 +60,12 @@ def register_unicode_fonts():
 register_unicode_fonts()
 
 
-def add_header_footer(canvas, doc, logo_path):
-    """Add header with left-aligned logo and footer at bottom"""
+def add_footer(canvas, doc):
+    """Add footer at bottom"""
     canvas.saveState()
     
-    # Add logo in header (left-aligned) if it exists
-    if os.path.exists(logo_path):
-        # Draw logo at left top margin
-        canvas.drawImage(logo_path, 0.75*inch, A4[1] - 1.5*inch, 
-                        width=1.2*inch, height=1.2*inch, preserveAspectRatio=True)
-    
     # Add footer at bottom margin
-    canvas.setFont('DejaVuSans', 8)
+    canvas.setFont('DejaVuSans', 7)
     canvas.setFillColor(HexColor('#666666'))
     footer_text = "Headquarters: Saiham Sky View Tower (13-A), 45 Bijoynagar, Dhaka Division, Dhaka, Motijheel, Dhaka 1000, Bangladesh"
     canvas.drawString(0.75*inch, 0.5*inch, footer_text)
@@ -79,7 +74,7 @@ def add_header_footer(canvas, doc, logo_path):
 
 
 def create_continuity_statement():
-    """Create the continuity statement PDF with left-aligned logo, title, and text."""
+    """Create the continuity statement PDF with left-aligned logo and title side-by-side."""
     
     # Create PDF document
     pdf_doc = SimpleDocTemplate(
@@ -87,7 +82,7 @@ def create_continuity_statement():
         pagesize=A4,
         rightMargin=0.75*inch,
         leftMargin=0.75*inch,
-        topMargin=2.0*inch,  # Increased for logo
+        topMargin=0.75*inch,  # Reduced for compact layout
         bottomMargin=1.0*inch
     )
     
@@ -97,41 +92,62 @@ def create_continuity_statement():
     # Define styles
     styles = getSampleStyleSheet()
     
-    # Custom styles - all left-aligned
+    # Custom styles - all left-aligned with smaller fonts for compact layout
     title_style = ParagraphStyle(
         'CustomTitle',
         parent=styles['Heading1'],
-        fontSize=18,
+        fontSize=14,  # Reduced from 18
         textColor=HexColor('#1a1a1a'),
-        spaceAfter=30,
-        alignment=TA_LEFT,  # Left-aligned
-        fontName='DejaVuSans-Bold'
+        spaceAfter=0,
+        alignment=TA_LEFT,
+        fontName='DejaVuSans-Bold',
+        leading=16
     )
     
     normal_style = ParagraphStyle(
         'CustomNormal',
         parent=styles['Normal'],
-        fontSize=13,
+        fontSize=10,  # Reduced from 13
         textColor=HexColor('#1a1a1a'),
-        spaceAfter=12,
-        alignment=TA_LEFT,  # Left-aligned
+        spaceAfter=8,  # Reduced from 12
+        alignment=TA_LEFT,
         fontName='DejaVuSans',
-        leading=20
+        leading=14  # Reduced from 20
     )
     
     signature_style = ParagraphStyle(
         'SignatureStyle',
         parent=styles['Normal'],
-        fontSize=11,
+        fontSize=9,  # Reduced from 11
         textColor=HexColor('#1a1a1a'),
-        spaceAfter=8,
-        alignment=TA_LEFT,  # Left-aligned
+        spaceAfter=6,  # Reduced from 8
+        alignment=TA_LEFT,
         fontName='DejaVuSans'
     )
     
-    # Add title (left-aligned)
-    story.append(Paragraph("Continuity of Cooperation Statement", title_style))
-    story.append(Spacer(1, 0.3*inch))
+    # Create logo and title side-by-side using a table
+    if os.path.exists(LOGO_PATH):
+        logo_img = Image(LOGO_PATH, width=1.0*inch, height=1.0*inch)
+        title_para = Paragraph("Continuity of Cooperation Statement", title_style)
+        
+        # Create table with logo on left and title on right
+        # A4 width = 8.27", margins = 0.75" each, available width = 6.77"
+        header_table = Table(
+            [[logo_img, title_para]],
+            colWidths=[1.0*inch, 5.5*inch]  # Total: 6.5", leaving 0.27" margin
+        )
+        header_table.setStyle(TableStyle([
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('LEFTPADDING', (0, 0), (0, 0), 0),
+            ('LEFTPADDING', (1, 0), (1, 0), 10),
+            ('RIGHTPADDING', (1, 0), (1, 0), 0),
+        ]))
+        story.append(header_table)
+    else:
+        # Fallback: just title if logo doesn't exist
+        story.append(Paragraph("Continuity of Cooperation Statement", title_style))
+    
+    story.append(Spacer(1, 0.25*inch))  # Reduced spacing
     
     # Add English text (left-aligned)
     story.append(Paragraph(
@@ -146,7 +162,7 @@ def create_continuity_statement():
         "under a B2B cooperation model.",
         normal_style
     ))
-    story.append(Spacer(1, 0.3*inch))
+    story.append(Spacer(1, 0.2*inch))  # Reduced from 0.3
     
     # Add Polish text (left-aligned)
     story.append(Paragraph(
@@ -161,11 +177,11 @@ def create_continuity_statement():
         "ciągły i długoterminowy w ramach modelu B2B.",
         normal_style
     ))
-    story.append(Spacer(1, 0.6*inch))
+    story.append(Spacer(1, 0.4*inch))  # Reduced from 0.6
     
     # Add date field (left-aligned)
     story.append(Paragraph("Date / Data: ______________________", signature_style))
-    story.append(Spacer(1, 0.3*inch))
+    story.append(Spacer(1, 0.25*inch))  # Reduced from 0.3
     
     # Add signature fields with Managing Director name (left-aligned)
     story.append(Paragraph("Signed / Podpis:", signature_style))
@@ -176,9 +192,8 @@ def create_continuity_statement():
     story.append(Paragraph("Managing Director", signature_style))
     story.append(Paragraph("Xpert Fintech Ltd.", signature_style))
     
-    # Build PDF with header and footer on each page
-    pdf_doc.build(story, onFirstPage=lambda c, d: add_header_footer(c, d, LOGO_PATH), 
-                  onLaterPages=lambda c, d: add_header_footer(c, d, LOGO_PATH))
+    # Build PDF with footer on each page
+    pdf_doc.build(story, onFirstPage=add_footer, onLaterPages=add_footer)
     print(f"PDF generated successfully: {OUTPUT_PDF}")
 
 
