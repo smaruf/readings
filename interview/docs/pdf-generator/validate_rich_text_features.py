@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test script for rich-text and image support in PDF generator.
+Validation script for rich-text and image support in PDF generator.
 """
 
 import os
