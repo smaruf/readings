@@ -289,12 +289,30 @@ def convert_markdown_to_html(markdown_text):
     if not markdown_text or not markdown_text.strip():
         return markdown_text
     
+    def apply_inline_formatting(text):
+        """Apply inline markdown formatting (bold, italic, code, links)."""
+        # Bold: **text** or __text__ (non-greedy)
+        text = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', text)
+        text = re.sub(r'__(.+?)__', r'<b>\1</b>', text)
+        
+        # Italic: *text* or _text_ (non-greedy, but not if part of **)
+        # Avoid matching ** by using negative lookahead/lookbehind
+        text = re.sub(r'(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)', r'<i>\1</i>', text)
+        text = re.sub(r'(?<!_)_(?!_)(.+?)(?<!_)_(?!_)', r'<i>\1</i>', text)
+        
+        # Inline code: `code`
+        text = re.sub(r'`(.+?)`', r'<font face="Courier">\1</font>', text)
+        
+        # Links: [text](url) - For PDF, we'll just show the text (ReportLab has limited link support)
+        text = re.sub(r'\[(.+?)\]\((.+?)\)', r'<u>\1</u>', text)
+        
+        return text
+    
     text = markdown_text
     
     # Process line by line for structural elements
     lines = text.split('\n')
     processed_lines = []
-    in_list = False
     
     for line in lines:
         original_line = line
@@ -305,6 +323,8 @@ def convert_markdown_to_html(markdown_text):
         if heading_match:
             level = len(heading_match.group(1))
             heading_text = heading_match.group(2)
+            # Apply inline formatting to heading text
+            heading_text = apply_inline_formatting(heading_text)
             # Convert headings to bold text with larger size
             size = max(10, 16 - level)
             processed_lines.append(f'<font size="{size}"><b>{heading_text}</b></font>')
@@ -313,13 +333,17 @@ def convert_markdown_to_html(markdown_text):
         # Blockquotes (> quote)
         if stripped.startswith('> '):
             quote_text = stripped[2:]
+            # Apply inline formatting to quote text
+            quote_text = apply_inline_formatting(quote_text)
             processed_lines.append(f'<i>{quote_text}</i>')
             continue
         
         # Unordered lists (- item, * item, + item)
         if re.match(r'^[\-\*\+]\s+', stripped):
-            list_text = re.sub(r'^[\-\*\+]\s+', '• ', stripped)
-            processed_lines.append(list_text)
+            list_text = re.sub(r'^[\-\*\+]\s+', '', stripped)
+            # Apply inline formatting to list text
+            list_text = apply_inline_formatting(list_text)
+            processed_lines.append(f'• {list_text}')
             continue
         
         # Ordered lists (1. item, 2. item, etc.)
@@ -327,6 +351,8 @@ def convert_markdown_to_html(markdown_text):
         if ordered_match:
             num = ordered_match.group(1)
             list_text = ordered_match.group(2)
+            # Apply inline formatting to list text
+            list_text = apply_inline_formatting(list_text)
             processed_lines.append(f'{num}. {list_text}')
             continue
         
@@ -336,23 +362,19 @@ def convert_markdown_to_html(markdown_text):
     # Join lines back
     text = '\n'.join(processed_lines)
     
-    # Inline formatting (applied to the whole text)
-    # Bold: **text** or __text__ (non-greedy)
-    text = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', text)
-    text = re.sub(r'__(.+?)__', r'<b>\1</b>', text)
+    # Apply inline formatting to remaining text (paragraphs)
+    # Split by double newlines to preserve paragraph structure
+    paragraphs = text.split('\n\n')
+    formatted_paragraphs = []
+    for para in paragraphs:
+        # Check if this paragraph already has formatting applied (headings, lists, quotes)
+        if '<font size=' in para or para.strip().startswith('•') or re.match(r'^\d+\.', para.strip()) or para.startswith('<i>'):
+            formatted_paragraphs.append(para)
+        else:
+            # Apply inline formatting to regular paragraphs
+            formatted_paragraphs.append(apply_inline_formatting(para))
     
-    # Italic: *text* or _text_ (non-greedy, but not if part of **)
-    # Avoid matching ** by using negative lookahead/lookbehind
-    text = re.sub(r'(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)', r'<i>\1</i>', text)
-    text = re.sub(r'(?<!_)_(?!_)(.+?)(?<!_)_(?!_)', r'<i>\1</i>', text)
-    
-    # Inline code: `code`
-    text = re.sub(r'`(.+?)`', r'<font face="Courier">\1</font>', text)
-    
-    # Links: [text](url) - For PDF, we'll just show the text (ReportLab has limited link support)
-    text = re.sub(r'\[(.+?)\]\((.+?)\)', r'<u>\1</u>', text)
-    
-    return text
+    return '\n\n'.join(formatted_paragraphs)
 
 
 def convert_rich_html_to_reportlab(html_text):
@@ -590,7 +612,8 @@ def generate_pdf(config):
     # First, check if text contains markdown syntax (and not HTML)
     # If it has markdown indicators and no HTML tags, convert markdown to HTML first
     body_text = config.body_text
-    has_html = '<' in body_text and ('</b>' in body_text or '</i>' in body_text or '</font>' in body_text or '<p>' in body_text or '<div>' in body_text)
+    # Improved HTML detection: check for common HTML tag patterns (opening and closing)
+    has_html = bool(re.search(r'<(b|i|u|font|p|div|span|strong|em)[\s>]', body_text, re.IGNORECASE))
     has_markdown = bool(re.search(r'(\*\*|__|^#{1,6}\s|\*(?!\*)|_(?!_)|`|\[.+?\]\(.+?\)|^[\-\*\+]\s|^\d+\.\s)', body_text, re.MULTILINE))
     
     # Convert markdown to HTML if markdown is detected and no HTML tags present
