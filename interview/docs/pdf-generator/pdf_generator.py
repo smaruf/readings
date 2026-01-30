@@ -679,7 +679,7 @@ def run_gui():
             """Generate a preview of the PDF and display it in the Preview tab."""
             try:
                 import tempfile
-                from PIL import Image as PILImage
+                from PIL import Image as PILImage, ImageTk
                 from pdf2image import convert_from_path
                 
                 # Update config from GUI
@@ -720,7 +720,6 @@ def run_gui():
                         preview_image = preview_image.resize((new_width, new_height), PILImage.Resampling.LANCZOS)
                         
                         # Convert to PhotoImage
-                        from PIL import ImageTk
                         self.preview_photo = ImageTk.PhotoImage(preview_image)
                         
                         # Clear canvas and display image
@@ -734,7 +733,6 @@ def run_gui():
                     # Restore original output file
                     self.config.output_file = original_output
                     # Clean up temp file
-                    import os
                     if os.path.exists(temp_pdf_path):
                         os.remove(temp_pdf_path)
                         
