@@ -5,11 +5,27 @@ Configurable PDF Generator - CLI and GUI Tool
 This tool allows generating PDFs with customizable:
 - Logo path and position
 - Title text and alignment
-- Body text content
+- Body text content with RICH-TEXT and INLINE IMAGE support
 - Footer text
 - Margins (top, bottom, left, right)
 - Font sizes (title, body, footer)
 - Page alignment options
+
+RICH-TEXT SUPPORT:
+Body text supports HTML-like markup for formatting:
+- <b>bold text</b>
+- <i>italic text</i>
+- <u>underlined text</u>
+- <font color="red">colored text</font>
+- <font size="14">sized text</font>
+- <font face="Courier">font family</font>
+- Combine tags: <b><i>bold italic</i></b>
+
+INLINE IMAGE SUPPORT:
+Embed images within body text using <img> tags:
+- <img src="path/to/image.jpg" width="50" height="50"/>
+- Supports JPG, PNG, GIF formats
+- Width and height in pixels
 
 Usage:
     CLI: python3 pdf_generator.py --cli
@@ -308,8 +324,11 @@ def run_cli():
                        default='left', help='Title alignment (default: left)')
     
     # Body
-    parser.add_argument('--body', help='Body text (use \\n\\n for paragraph breaks)')
-    parser.add_argument('--body-file', help='Read body text from file')
+    parser.add_argument('--body', help='Body text (use \\n\\n for paragraph breaks). '
+                       'Supports rich-text: <b>bold</b>, <i>italic</i>, <u>underline</u>, '
+                       '<font color="red">colors</font>, and inline images: '
+                       '<img src="path.jpg" width="50" height="50"/>')
+    parser.add_argument('--body-file', help='Read body text from file (supports rich-text markup)')
     parser.add_argument('--body-size', type=int, default=10,
                        help='Body font size (default: 10)')
     parser.add_argument('--body-align', choices=['left', 'center', 'right', 'justify'],
@@ -526,7 +545,21 @@ def run_gui():
             frame.pack(fill='both', expand=True)
             
             # Body text
-            ttk.Label(frame, text="Body Text:").pack(anchor='w', pady=5)
+            body_label_frame = ttk.Frame(frame)
+            body_label_frame.pack(fill='x', pady=5)
+            ttk.Label(body_label_frame, text="Body Text:", font=('Arial', 10, 'bold')).pack(side='left')
+            ttk.Label(body_label_frame, text="(Supports rich-text and inline images)", 
+                     font=('Arial', 8), foreground='gray').pack(side='left', padx=5)
+            
+            # Rich-text help
+            help_frame = ttk.Frame(frame)
+            help_frame.pack(fill='x', pady=(0, 5))
+            help_text = ttk.Label(help_frame, 
+                text="Rich-text: <b>bold</b>, <i>italic</i>, <u>underline</u>, "
+                     "<font color=\"red\">color</font>, <img src=\"path.jpg\" width=\"50\" height=\"50\"/>",
+                font=('Arial', 7), foreground='#555555', wraplength=600)
+            help_text.pack(anchor='w', padx=5)
+            
             self.body_text = scrolledtext.ScrolledText(frame, width=60, height=15)
             self.body_text.insert('1.0', self.config.body_text)
             self.body_text.pack(fill='both', expand=True, pady=5)
