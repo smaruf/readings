@@ -1,1 +1,6 @@
 __pycache__/
+# Test/validation PDFs from pdf_generator
+interview/docs/pdf-generator/test_*.pdf
+interview/docs/pdf-generator/demo_*.pdf
+interview/docs/pdf-generator/example_*.pdf
+interview/docs/pdf-generator/validate_*.pdf

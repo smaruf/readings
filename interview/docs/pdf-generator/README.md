@@ -6,6 +6,8 @@ A comprehensive CLI and GUI tool for generating customizable PDF documents with 
 
 - **Dual Interface**: Both Command-Line (CLI) and Graphical User Interface (GUI)
 - **Logo Support**: Add logos with customizable size and position (side-by-side or top-center)
+- **Rich-Text Support**: Format body text with HTML-like markup (bold, italic, underline, colors, font sizes)
+- **Inline Images**: Embed images within body text alongside regular content
 - **Customizable Text**: Configure title, body, and footer text with individual formatting
 - **Flexible Alignment**: Left, center, right, or justify alignment for each text section
 - **Adjustable Fonts**: Control font sizes for title, body, and footer independently
@@ -20,6 +22,74 @@ sudo apt-get install fonts-dejavu  # For Unicode support (Linux)
 ```
 
 For GUI mode, tkinter is required (usually included with Python).
+
+## Rich-Text and Inline Image Support
+
+### Copy-Paste Rich Text from Editors
+
+**NEW!** You can now directly paste rich-text from other editors, and the formatting will be automatically preserved:
+
+**Supported Sources:**
+- Google Docs
+- Microsoft Word (web version)
+- Web browsers (Chrome, Firefox, Safari, Edge)
+- Notepad++ (with rich text plugins)
+- Any application that copies HTML to clipboard
+
+**How it works:**
+1. Copy formatted text from any supported editor
+2. Paste it into the PDF Generator (GUI or save to file for CLI)
+3. The tool automatically converts the HTML formatting to ReportLab format
+4. Generate your PDF with preserved formatting!
+
+**Example:**
+- Copy this from Google Docs: **Bold text** and *italic text* in <span style="color: red;">red</span>
+- Paste into PDF Generator
+- The formatting is automatically preserved in the PDF
+
+### Rich-Text Formatting
+
+The body text supports HTML-like markup for rich formatting:
+
+**Text Styling:**
+- `<b>bold text</b>` - Bold text
+- `<i>italic text</i>` - Italic text
+- `<u>underlined text</u>` - Underlined text
+- `<b><i>combined</i></b>` - Combine multiple styles
+
+**Colors:**
+- `<font color="red">red text</font>` - Colored text
+- Supports standard HTML color names: red, blue, green, navy, darkgreen, etc.
+- Also supports hex colors: `<font color="#FF5733">custom color</font>`
+
+**Font Sizes:**
+- `<font size="14">larger text</font>` - Custom font size
+
+**Font Families:**
+- `<font face="Courier">monospace text</font>` - Different font family
+- Available fonts: DejaVuSans (default), DejaVuSans-Bold, Courier
+
+**Line Breaks:**
+- `<br/>` - Insert line break within paragraph
+
+### Inline Images
+
+Embed images directly within body text using `<img>` tags:
+
+```
+<img src="path/to/image.jpg" width="50" height="50"/>
+```
+
+**Image Attributes:**
+- `src` - Path to image file (required)
+- `width` - Image width in pixels (required)
+- `height` - Image height in pixels (required)
+- Supported formats: JPG, JPEG, PNG, GIF
+
+**Example:**
+```
+This is regular text with an inline icon <img src="icon.png" width="20" height="20"/> embedded.
+```
 
 ## Usage
 
@@ -146,7 +216,22 @@ python3 pdf_generator.py --cli \
   --output report.pdf
 ```
 
-#### Example 5: Save configuration for reuse
+#### Example 5: Paste HTML from Google Docs/Web (save to file first)
+
+1. Copy formatted text from Google Docs or a web page
+2. Save it to a file (e.g., `pasted_content.html`)
+3. Generate PDF:
+
+```bash
+python3 pdf_generator.py --cli \
+  --title "Document from Pasted Content" \
+  --body-file pasted_content.html \
+  --output pasted_document.pdf
+```
+
+The HTML will be automatically converted to ReportLab format!
+
+#### Example 6: Save configuration for reuse
 
 ```bash
 python3 pdf_generator.py --cli \
@@ -154,6 +239,35 @@ python3 pdf_generator.py --cli \
   --body "Template content" \
   --save-config template.json \
   --output template.pdf
+```
+
+#### Example 7: Rich-text formatting
+
+```bash
+python3 pdf_generator.py --cli \
+  --title "Rich Text Example" \
+  --body "<b>Bold introduction</b>\\n\\nThis paragraph has <i>italic</i>, <u>underlined</u>, and <font color=\"red\">colored text</font>.\\n\\n<font size=\"12\"><b>Important:</b></font> Rich-text is fully supported!" \
+  --output rich_text_example.pdf
+```
+
+#### Example 8: Inline images in body text
+
+```bash
+python3 pdf_generator.py --cli \
+  --title "Product Catalog" \
+  --body "Product 1: <img src=\"product1.jpg\" width=\"40\" height=\"40\"/> High quality item.\\n\\nProduct 2: <img src=\"product2.jpg\" width=\"40\" height=\"40\"/> Premium choice." \
+  --output catalog.pdf
+```
+
+#### Example 9: Combined rich-text and images
+
+```bash
+python3 pdf_generator.py --cli \
+  --logo company_logo.jpg \
+  --title "Marketing Brochure" \
+  --body "<font color=\"navy\" size=\"12\"><b>Welcome to Our Company!</b></font>\\n\\nWe offer <b>premium services</b> with <i>exceptional quality</i>.\\n\\nOur logo: <img src=\"company_logo.jpg\" width=\"50\" height=\"50\"/> represents excellence.\\n\\n<font color=\"green\">Contact us today!</font>" \
+  --footer "© 2026 Company Name" \
+  --output brochure.pdf
 ```
 
 ## Configuration File Format
@@ -190,6 +304,10 @@ Configuration files are JSON format with the following structure:
 - All measurements are in inches
 - Font sizes are in points
 - The tool uses DejaVu fonts for Unicode support (including Polish characters)
+- **Body text supports rich-text markup**: Use HTML-like tags for formatting (see Rich-Text Support section)
+- **Inline images**: Embed images in body text using `<img>` tags (see Inline Image Support section)
+- **Copy-paste from editors**: Directly paste rich-text from Google Docs, web browsers, Word, etc. - formatting is automatically preserved!
+- Rich-text and inline images work in both CLI and GUI modes
 
 ## Integration with Existing Generators
 

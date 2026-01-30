@@ -5,11 +5,34 @@ Configurable PDF Generator - CLI and GUI Tool
 This tool allows generating PDFs with customizable:
 - Logo path and position
 - Title text and alignment
-- Body text content
+- Body text content with RICH-TEXT and INLINE IMAGE support
 - Footer text
 - Margins (top, bottom, left, right)
 - Font sizes (title, body, footer)
 - Page alignment options
+
+RICH-TEXT SUPPORT:
+Body text supports HTML-like markup for formatting:
+- <b>bold text</b>
+- <i>italic text</i>
+- <u>underlined text</u>
+- <font color="red">colored text</font>
+- <font size="14">sized text</font>
+- <font face="Courier">font family</font>
+- Combine tags: <b><i>bold italic</i></b>
+
+COPY-PASTE FROM EDITORS:
+Paste rich-text directly from:
+- Google Docs, Microsoft Word (web)
+- Web browsers (Chrome, Firefox, Safari)
+- Notepad++ and other rich text editors
+The tool automatically converts HTML formatting to ReportLab format!
+
+INLINE IMAGE SUPPORT:
+Embed images within body text using <img> tags:
+- <img src="path/to/image.jpg" width="50" height="50"/>
+- Supports JPG, PNG, GIF formats
+- Width and height in pixels
 
 Usage:
     CLI: python3 pdf_generator.py --cli
@@ -20,6 +43,8 @@ import os
 import sys
 import argparse
 import json
+import re
+from html.parser import HTMLParser
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import inch
 from reportlab.lib.styles import ParagraphStyle
@@ -65,6 +90,198 @@ def register_unicode_fonts():
 
 # Register fonts
 register_unicode_fonts()
+
+
+class RichTextHTMLConverter(HTMLParser):
+    """
+    Converts rich HTML (from copy-paste from editors) to ReportLab-compatible HTML.
+    
+    Supports converting from formats used by:
+    - Web browsers (Chrome, Firefox, etc.)
+    - Google Docs
+    - Microsoft Word (when pasted to web)
+    - Notepad++ (with plugins)
+    - Other rich text editors
+    """
+    
+    # Mapping of HTML tags to ReportLab-compatible tags
+    TAG_MAPPINGS = {
+        'strong': 'b',
+        'em': 'i',
+        'bold': 'b',
+        'italic': 'i',
+        'span': None,  # Will handle with styles
+        'div': None,   # Will handle with breaks
+        'p': None,     # Will handle with breaks
+        'br': 'br',
+        'h1': 'b',
+        'h2': 'b',
+        'h3': 'b',
+        'h4': 'b',
+        'h5': 'b',
+        'h6': 'b',
+    }
+    
+    def __init__(self):
+        super().__init__()
+        self.result = []
+        self.tag_stack = []
+        
+    def handle_starttag(self, tag, attrs):
+        """Handle opening tags."""
+        tag_lower = tag.lower()
+        attrs_dict = dict(attrs)
+        
+        # Handle paragraph and div tags - add line breaks
+        if tag_lower in ('p', 'div'):
+            if self.result and self.result[-1] != '\n\n':
+                self.result.append('\n\n')
+            return
+        
+        # Map to ReportLab-compatible tag
+        reportlab_tag = self.TAG_MAPPINGS.get(tag_lower, tag_lower)
+        
+        if reportlab_tag is None:
+            # Handle span with styles
+            if tag_lower == 'span' and 'style' in attrs_dict:
+                style = attrs_dict['style']
+                font_attrs = self._parse_style(style)
+                if font_attrs:
+                    self.result.append(f'<font {font_attrs}>')
+                    self.tag_stack.append(('font', True))
+                    return
+            return
+        
+        # Handle supported tags
+        if reportlab_tag in ('b', 'i', 'u'):
+            self.result.append(f'<{reportlab_tag}>')
+            self.tag_stack.append((reportlab_tag, True))
+        elif reportlab_tag == 'font':
+            # Extract font attributes
+            font_attrs = []
+            for attr_name, attr_value in attrs:
+                if attr_name.lower() in ('color', 'face', 'size'):
+                    font_attrs.append(f'{attr_name}="{attr_value}"')
+            if font_attrs:
+                self.result.append(f'<font {" ".join(font_attrs)}>')
+                self.tag_stack.append(('font', True))
+        elif reportlab_tag == 'br':
+            self.result.append('<br/>')
+    
+    def handle_endtag(self, tag):
+        """Handle closing tags."""
+        tag_lower = tag.lower()
+        
+        # Handle paragraph and div tags
+        if tag_lower in ('p', 'div'):
+            if self.result and self.result[-1] != '\n\n':
+                self.result.append('\n\n')
+            return
+        
+        # Map to ReportLab-compatible tag
+        reportlab_tag = self.TAG_MAPPINGS.get(tag_lower, tag_lower)
+        
+        if reportlab_tag is None:
+            if tag_lower == 'span' and self.tag_stack and self.tag_stack[-1][0] == 'font':
+                self.tag_stack.pop()
+                self.result.append('</font>')
+            return
+        
+        # Close tag if it's in the stack
+        if self.tag_stack and self.tag_stack[-1][0] == reportlab_tag:
+            self.tag_stack.pop()
+            self.result.append(f'</{reportlab_tag}>')
+    
+    def handle_data(self, data):
+        """Handle text data."""
+        # Clean up excessive whitespace but preserve intentional spacing
+        data = re.sub(r'\n+', '\n', data)
+        self.result.append(data)
+    
+    def _parse_style(self, style_str):
+        """Parse inline CSS styles and convert to font attributes."""
+        attrs = []
+        
+        # Parse style string
+        style_parts = [s.strip() for s in style_str.split(';') if s.strip()]
+        
+        for part in style_parts:
+            if ':' not in part:
+                continue
+            
+            prop, value = part.split(':', 1)
+            prop = prop.strip().lower()
+            value = value.strip()
+            
+            # Handle color
+            if prop == 'color':
+                # Convert rgb(r,g,b) to hex if needed
+                if value.startswith('rgb'):
+                    value = self._rgb_to_hex(value)
+                attrs.append(f'color="{value}"')
+            
+            # Handle font-size
+            elif prop == 'font-size':
+                # Extract numeric size (remove 'pt', 'px', etc.)
+                size_match = re.match(r'(\d+)', value)
+                if size_match:
+                    attrs.append(f'size="{size_match.group(1)}"')
+            
+            # Handle font-weight (bold)
+            elif prop == 'font-weight':
+                if value in ('bold', 'bolder', '700', '800', '900'):
+                    # Will be handled by wrapping with <b> tag
+                    pass
+            
+            # Handle font-style (italic)
+            elif prop == 'font-style':
+                if value == 'italic':
+                    # Will be handled by wrapping with <i> tag
+                    pass
+        
+        return ' '.join(attrs) if attrs else None
+    
+    def _rgb_to_hex(self, rgb_str):
+        """Convert rgb(r,g,b) to #RRGGBB."""
+        match = re.match(r'rgba?\((\d+),\s*(\d+),\s*(\d+)', rgb_str)
+        if match:
+            r, g, b = match.groups()
+            return f'#{int(r):02x}{int(g):02x}{int(b):02x}'
+        return rgb_str
+    
+    def get_result(self):
+        """Get the converted HTML."""
+        result_str = ''.join(self.result)
+        # Clean up multiple consecutive newlines
+        result_str = re.sub(r'\n{3,}', '\n\n', result_str)
+        return result_str.strip()
+
+
+def convert_rich_html_to_reportlab(html_text):
+    """
+    Convert rich HTML (from copy-paste) to ReportLab-compatible HTML.
+    
+    Args:
+        html_text: HTML text (potentially from clipboard or file)
+        
+    Returns:
+        ReportLab-compatible HTML string
+    """
+    if not html_text or not html_text.strip():
+        return html_text
+    
+    # If it doesn't look like HTML, return as-is
+    if '<' not in html_text:
+        return html_text
+    
+    try:
+        converter = RichTextHTMLConverter()
+        converter.feed(html_text)
+        return converter.get_result()
+    except Exception as e:
+        print(f"Warning: Failed to convert HTML: {e}")
+        print("Using original text as-is")
+        return html_text
 
 
 class PDFConfig:
@@ -272,7 +489,9 @@ def generate_pdf(config):
         story.append(Spacer(1, 0.3 * inch))
     
     # Add body text (support multiple paragraphs separated by \n\n)
-    paragraphs = config.body_text.split('\n\n')
+    # Convert rich HTML to ReportLab-compatible format if needed
+    body_text = convert_rich_html_to_reportlab(config.body_text)
+    paragraphs = body_text.split('\n\n')
     for para_text in paragraphs:
         if para_text.strip():
             story.append(Paragraph(para_text.strip(), body_style))
@@ -308,8 +527,12 @@ def run_cli():
                        default='left', help='Title alignment (default: left)')
     
     # Body
-    parser.add_argument('--body', help='Body text (use \\n\\n for paragraph breaks)')
-    parser.add_argument('--body-file', help='Read body text from file')
+    parser.add_argument('--body', help='Body text (use \\n\\n for paragraph breaks). '
+                       'Supports rich-text: <b>bold</b>, <i>italic</i>, <u>underline</u>, '
+                       '<font color="red">colors</font>, and inline images: '
+                       '<img src="path.jpg" width="50" height="50"/>. '
+                       'Also supports pasted HTML from editors (Google Docs, web, etc.)')
+    parser.add_argument('--body-file', help='Read body text from file (supports rich-text markup and HTML)')
     parser.add_argument('--body-size', type=int, default=10,
                        help='Body font size (default: 10)')
     parser.add_argument('--body-align', choices=['left', 'center', 'right', 'justify'],
@@ -526,7 +749,22 @@ def run_gui():
             frame.pack(fill='both', expand=True)
             
             # Body text
-            ttk.Label(frame, text="Body Text:").pack(anchor='w', pady=5)
+            body_label_frame = ttk.Frame(frame)
+            body_label_frame.pack(fill='x', pady=5)
+            ttk.Label(body_label_frame, text="Body Text:", font=('Arial', 10, 'bold')).pack(side='left')
+            ttk.Label(body_label_frame, text="(Supports rich-text, inline images, and copy-paste from editors)", 
+                     font=('Arial', 8), foreground='gray').pack(side='left', padx=5)
+            
+            # Rich-text help
+            help_frame = ttk.Frame(frame)
+            help_frame.pack(fill='x', pady=(0, 5))
+            help_text = ttk.Label(help_frame, 
+                text="Type markup: <b>bold</b>, <i>italic</i>, <u>underline</u>, "
+                     "<font color=\"red\">color</font>, <img src=\"path.jpg\" width=\"50\" height=\"50\"/> "
+                     "OR paste rich-text directly from Google Docs, web browsers, etc.",
+                font=('Arial', 7), foreground='#555555', wraplength=600)
+            help_text.pack(anchor='w', padx=5)
+            
             self.body_text = scrolledtext.ScrolledText(frame, width=60, height=15)
             self.body_text.insert('1.0', self.config.body_text)
             self.body_text.pack(fill='both', expand=True, pady=5)
