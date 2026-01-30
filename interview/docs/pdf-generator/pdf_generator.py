@@ -90,6 +90,9 @@ class PDFConfig:
         self.footer_font_size = 7
         self.footer_alignment = "center"
         
+        self.include_header = True
+        self.include_footer = True
+        
         self.margin_top = 0.75
         self.margin_bottom = 1.0
         self.margin_left = 0.75
@@ -112,6 +115,8 @@ class PDFConfig:
             'footer_text': self.footer_text,
             'footer_font_size': self.footer_font_size,
             'footer_alignment': self.footer_alignment,
+            'include_header': self.include_header,
+            'include_footer': self.include_footer,
             'margin_top': self.margin_top,
             'margin_bottom': self.margin_bottom,
             'margin_left': self.margin_left,
@@ -181,9 +186,9 @@ def generate_pdf(config):
     
     story = []
     
-    # Define footer callback if footer text is provided
+    # Define footer callback if footer text is provided and footer is enabled
     def add_footer(canvas, doc):
-        if config.footer_text:
+        if config.include_footer and config.footer_text:
             canvas.saveState()
             canvas.setFont('DejaVuSans', config.footer_font_size)
             canvas.setFillColor(HexColor('#666666'))
@@ -223,47 +228,48 @@ def generate_pdf(config):
         leading=config.body_font_size * 1.4
     )
     
-    # Add logo and title
-    if config.logo_path and os.path.exists(config.logo_path):
-        if config.logo_position == "side-by-side":
-            # Logo and title side-by-side
-            logo_img = Image(config.logo_path, 
-                           width=config.logo_width * inch, 
-                           height=config.logo_height * inch)
-            title_para = Paragraph(config.title, title_style)
-            
-            # Calculate available width
-            available_width = A4[0] / inch - config.margin_left - config.margin_right
-            title_width = available_width - config.logo_width - 0.2  # 0.2" spacing
-            
-            header_table = Table(
-                [[logo_img, title_para]],
-                colWidths=[config.logo_width * inch, title_width * inch]
-            )
-            header_table.setStyle(TableStyle([
-                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-                ('LEFTPADDING', (0, 0), (0, 0), 0),
-                ('LEFTPADDING', (1, 0), (1, 0), 10),
-                ('RIGHTPADDING', (1, 0), (1, 0), 0),
-            ]))
-            story.append(header_table)
-        else:  # top-center
-            # Centered logo at top
-            logo_img = Image(config.logo_path,
-                           width=config.logo_width * inch,
-                           height=config.logo_height * inch)
-            logo_table = Table([[logo_img]], colWidths=[config.logo_width * inch])
-            logo_table.setStyle(TableStyle([
-                ('ALIGN', (0, 0), (0, 0), 'CENTER'),
-            ]))
-            story.append(logo_table)
-            story.append(Spacer(1, 0.2 * inch))
+    # Add logo and title (header)
+    if config.include_header:
+        if config.logo_path and os.path.exists(config.logo_path):
+            if config.logo_position == "side-by-side":
+                # Logo and title side-by-side
+                logo_img = Image(config.logo_path, 
+                               width=config.logo_width * inch, 
+                               height=config.logo_height * inch)
+                title_para = Paragraph(config.title, title_style)
+                
+                # Calculate available width
+                available_width = A4[0] / inch - config.margin_left - config.margin_right
+                title_width = available_width - config.logo_width - 0.2  # 0.2" spacing
+                
+                header_table = Table(
+                    [[logo_img, title_para]],
+                    colWidths=[config.logo_width * inch, title_width * inch]
+                )
+                header_table.setStyle(TableStyle([
+                    ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+                    ('LEFTPADDING', (0, 0), (0, 0), 0),
+                    ('LEFTPADDING', (1, 0), (1, 0), 10),
+                    ('RIGHTPADDING', (1, 0), (1, 0), 0),
+                ]))
+                story.append(header_table)
+            else:  # top-center
+                # Centered logo at top
+                logo_img = Image(config.logo_path,
+                               width=config.logo_width * inch,
+                               height=config.logo_height * inch)
+                logo_table = Table([[logo_img]], colWidths=[config.logo_width * inch])
+                logo_table.setStyle(TableStyle([
+                    ('ALIGN', (0, 0), (0, 0), 'CENTER'),
+                ]))
+                story.append(logo_table)
+                story.append(Spacer(1, 0.2 * inch))
+                story.append(Paragraph(config.title, title_style))
+        else:
+            # Just title, no logo
             story.append(Paragraph(config.title, title_style))
-    else:
-        # Just title, no logo
-        story.append(Paragraph(config.title, title_style))
-    
-    story.append(Spacer(1, 0.3 * inch))
+        
+        story.append(Spacer(1, 0.3 * inch))
     
     # Add body text (support multiple paragraphs separated by \n\n)
     paragraphs = config.body_text.split('\n\n')
@@ -421,6 +427,11 @@ def run_gui():
             notebook.add(advanced_frame, text='Advanced')
             self.create_advanced_tab(advanced_frame)
             
+            # Tab 5: Preview
+            preview_frame = ttk.Frame(notebook)
+            notebook.add(preview_frame, text='Preview')
+            self.create_preview_tab(preview_frame)
+            
             # Bottom buttons
             button_frame = ttk.Frame(root)
             button_frame.pack(fill='x', padx=10, pady=10)
@@ -429,6 +440,8 @@ def run_gui():
                       command=self.load_config).pack(side='left', padx=5)
             ttk.Button(button_frame, text="Save Config", 
                       command=self.save_config).pack(side='left', padx=5)
+            ttk.Button(button_frame, text="Preview PDF", 
+                      command=self.preview_pdf).pack(side='right', padx=5)
             ttk.Button(button_frame, text="Generate PDF", 
                       command=self.generate_pdf).pack(side='right', padx=5)
         
@@ -462,6 +475,19 @@ def run_gui():
             ttk.Combobox(frame, textvariable=self.title_align_var, 
                         values=['left', 'center', 'right'], 
                         width=15, state='readonly').grid(row=3, column=1, sticky='w', pady=5, padx=5)
+            
+            # Header/Footer options
+            ttk.Label(frame, text="Display Options:").grid(row=4, column=0, sticky='w', pady=10)
+            options_frame = ttk.Frame(frame)
+            options_frame.grid(row=5, column=0, columnspan=3, sticky='w', pady=5, padx=5)
+            
+            self.include_header_var = tk.BooleanVar(value=self.config.include_header)
+            ttk.Checkbutton(options_frame, text="Include Header (Logo & Title)", 
+                           variable=self.include_header_var).pack(anchor='w', pady=2)
+            
+            self.include_footer_var = tk.BooleanVar(value=self.config.include_footer)
+            ttk.Checkbutton(options_frame, text="Include Footer", 
+                           variable=self.include_footer_var).pack(anchor='w', pady=2)
         
         def create_logo_tab(self, parent):
             frame = ttk.Frame(parent, padding=10)
@@ -570,6 +596,31 @@ def run_gui():
             ttk.Spinbox(margins_frame, from_=0.1, to=3.0, increment=0.25, 
                        textvariable=self.margin_right_var, width=10).grid(row=1, column=3, padx=5, pady=5)
         
+        def create_preview_tab(self, parent):
+            """Create preview tab with canvas to display PDF preview."""
+            frame = ttk.Frame(parent, padding=10)
+            frame.pack(fill='both', expand=True)
+            
+            # Instructions
+            ttk.Label(frame, text="PDF Preview", font=('Arial', 12, 'bold')).pack(pady=10)
+            ttk.Label(frame, text="Click 'Preview PDF' button to generate a preview of the first page").pack(pady=5)
+            
+            # Canvas for preview
+            canvas_frame = ttk.Frame(frame, relief='sunken', borderwidth=2)
+            canvas_frame.pack(fill='both', expand=True, padx=10, pady=10)
+            
+            # Create canvas with scrollbar
+            scrollbar = ttk.Scrollbar(canvas_frame)
+            scrollbar.pack(side='right', fill='y')
+            
+            self.preview_canvas = tk.Canvas(canvas_frame, bg='white', yscrollcommand=scrollbar.set)
+            self.preview_canvas.pack(side='left', fill='both', expand=True)
+            scrollbar.config(command=self.preview_canvas.yview)
+            
+            # Status label
+            self.preview_status = ttk.Label(frame, text="No preview generated yet", foreground='gray')
+            self.preview_status.pack(pady=5)
+        
         def browse_output(self):
             filename = filedialog.asksaveasfilename(
                 defaultextension=".pdf",
@@ -598,6 +649,8 @@ def run_gui():
             self.config.title = self.title_entry.get()
             self.config.title_font_size = self.title_size_var.get()
             self.config.title_alignment = self.title_align_var.get()
+            self.config.include_header = self.include_header_var.get()
+            self.config.include_footer = self.include_footer_var.get()
             
             self.config.body_text = self.body_text.get('1.0', 'end-1c')
             self.config.body_font_size = self.body_size_var.get()
@@ -621,6 +674,79 @@ def run_gui():
                                   f"PDF generated successfully:\n{self.config.output_file}")
             except Exception as e:
                 messagebox.showerror("Error", f"Failed to generate PDF:\n{str(e)}")
+        
+        def preview_pdf(self):
+            """Generate a preview of the PDF and display it in the Preview tab."""
+            try:
+                import tempfile
+                from PIL import Image as PILImage
+                from pdf2image import convert_from_path
+                
+                # Update config from GUI
+                self.update_config()
+                
+                # Generate PDF to a temporary file
+                with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as tmp_file:
+                    temp_pdf_path = tmp_file.name
+                
+                # Save current output file and use temp file
+                original_output = self.config.output_file
+                self.config.output_file = temp_pdf_path
+                
+                try:
+                    # Generate the PDF
+                    generate_pdf(self.config)
+                    
+                    # Convert first page to image
+                    images = convert_from_path(temp_pdf_path, first_page=1, last_page=1, dpi=150)
+                    
+                    if images:
+                        # Get the first page image
+                        preview_image = images[0]
+                        
+                        # Resize to fit canvas while maintaining aspect ratio
+                        canvas_width = self.preview_canvas.winfo_width()
+                        canvas_height = self.preview_canvas.winfo_height()
+                        
+                        if canvas_width < 100:  # Canvas not yet rendered
+                            canvas_width = 600
+                            canvas_height = 700
+                        
+                        img_width, img_height = preview_image.size
+                        scale = min((canvas_width - 20) / img_width, (canvas_height - 20) / img_height)
+                        new_width = int(img_width * scale)
+                        new_height = int(img_height * scale)
+                        
+                        preview_image = preview_image.resize((new_width, new_height), PILImage.Resampling.LANCZOS)
+                        
+                        # Convert to PhotoImage
+                        from PIL import ImageTk
+                        self.preview_photo = ImageTk.PhotoImage(preview_image)
+                        
+                        # Clear canvas and display image
+                        self.preview_canvas.delete('all')
+                        self.preview_canvas.create_image(10, 10, anchor='nw', image=self.preview_photo)
+                        self.preview_canvas.config(scrollregion=self.preview_canvas.bbox('all'))
+                        
+                        self.preview_status.config(text="Preview generated successfully", foreground='green')
+                    
+                finally:
+                    # Restore original output file
+                    self.config.output_file = original_output
+                    # Clean up temp file
+                    import os
+                    if os.path.exists(temp_pdf_path):
+                        os.remove(temp_pdf_path)
+                        
+            except ImportError:
+                messagebox.showerror("Error", 
+                    "PDF preview requires 'pdf2image' and 'Pillow' libraries.\n"
+                    "Install with: pip install pdf2image pillow\n"
+                    "Also requires poppler-utils to be installed on your system.")
+                self.preview_status.config(text="Preview failed: missing dependencies", foreground='red')
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to generate preview:\n{str(e)}")
+                self.preview_status.config(text=f"Preview failed: {str(e)}", foreground='red')
         
         def save_config(self):
             """Save current configuration to file."""
@@ -657,6 +783,8 @@ def run_gui():
                     self.title_entry.insert(0, self.config.title)
                     self.title_size_var.set(self.config.title_font_size)
                     self.title_align_var.set(self.config.title_alignment)
+                    self.include_header_var.set(self.config.include_header)
+                    self.include_footer_var.set(self.config.include_footer)
                     
                     self.body_text.delete('1.0', tk.END)
                     self.body_text.insert('1.0', self.config.body_text)
