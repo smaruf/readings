@@ -20,6 +20,7 @@ A comprehensive CLI and GUI tool for generating customizable PDF documents with 
 ```bash
 pip install reportlab pillow
 sudo apt-get install fonts-dejavu  # For Unicode support (Linux)
+sudo apt-get install poppler       # For Preview
 ```
 
 For GUI mode, tkinter is required (usually included with Python).
