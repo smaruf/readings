@@ -5,14 +5,24 @@ Configurable PDF Generator - CLI and GUI Tool
 This tool allows generating PDFs with customizable:
 - Logo path and position
 - Title text and alignment
-- Body text content with RICH-TEXT and INLINE IMAGE support
+- Body text content with RICH-TEXT, MARKDOWN, and INLINE IMAGE support
 - Footer text
 - Margins (top, bottom, left, right)
 - Font sizes (title, body, footer)
 - Page alignment options
 
-RICH-TEXT SUPPORT:
-Body text supports HTML-like markup for formatting:
+MARKDOWN SUPPORT:
+Body text supports Markdown (*.md) style formatting:
+- **bold text** or __bold text__
+- *italic text* or _italic text_
+- # Heading 1, ## Heading 2, etc.
+- `inline code`
+- [link text](url)
+- Lists: - item, * item, + item, 1. item
+- > Blockquote
+
+RICH-TEXT HTML SUPPORT:
+Body text also supports HTML-like markup for formatting:
 - <b>bold text</b>
 - <i>italic text</i>
 - <u>underlined text</u>
@@ -257,6 +267,116 @@ class RichTextHTMLConverter(HTMLParser):
         return result_str.strip()
 
 
+def convert_markdown_to_html(markdown_text):
+    """
+    Convert Markdown syntax to HTML for ReportLab.
+    
+    Supports:
+    - **bold** or __bold__
+    - *italic* or _italic_
+    - # Headings (H1-H6)
+    - `inline code`
+    - [links](url)
+    - Ordered/unordered lists
+    - > Blockquotes
+    
+    Args:
+        markdown_text: Text with markdown formatting
+        
+    Returns:
+        HTML string compatible with ReportLab
+    """
+    if not markdown_text or not markdown_text.strip():
+        return markdown_text
+    
+    def apply_inline_formatting(text):
+        """Apply inline markdown formatting (bold, italic, code, links)."""
+        # Bold: **text** or __text__ (non-greedy)
+        text = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', text)
+        text = re.sub(r'__(.+?)__', r'<b>\1</b>', text)
+        
+        # Italic: *text* or _text_ (non-greedy, but not if part of **)
+        # Avoid matching ** by using negative lookahead/lookbehind
+        text = re.sub(r'(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)', r'<i>\1</i>', text)
+        text = re.sub(r'(?<!_)_(?!_)(.+?)(?<!_)_(?!_)', r'<i>\1</i>', text)
+        
+        # Inline code: `code`
+        text = re.sub(r'`(.+?)`', r'<font face="Courier">\1</font>', text)
+        
+        # Links: [text](url) - For PDF, we'll just show the text (ReportLab has limited link support)
+        text = re.sub(r'\[(.+?)\]\((.+?)\)', r'<u>\1</u>', text)
+        
+        return text
+    
+    text = markdown_text
+    
+    # Process line by line for structural elements
+    lines = text.split('\n')
+    processed_lines = []
+    
+    for line in lines:
+        original_line = line
+        stripped = line.strip()
+        
+        # Headings (# H1, ## H2, etc.)
+        heading_match = re.match(r'^(#{1,6})\s+(.+)$', stripped)
+        if heading_match:
+            level = len(heading_match.group(1))
+            heading_text = heading_match.group(2)
+            # Apply inline formatting to heading text
+            heading_text = apply_inline_formatting(heading_text)
+            # Convert headings to bold text with larger size
+            size = max(10, 16 - level)
+            processed_lines.append(f'<font size="{size}"><b>{heading_text}</b></font>')
+            continue
+        
+        # Blockquotes (> quote)
+        if stripped.startswith('> '):
+            quote_text = stripped[2:]
+            # Apply inline formatting to quote text
+            quote_text = apply_inline_formatting(quote_text)
+            processed_lines.append(f'<i>{quote_text}</i>')
+            continue
+        
+        # Unordered lists (- item, * item, + item)
+        if re.match(r'^[\-\*\+]\s+', stripped):
+            list_text = re.sub(r'^[\-\*\+]\s+', '', stripped)
+            # Apply inline formatting to list text
+            list_text = apply_inline_formatting(list_text)
+            processed_lines.append(f'• {list_text}')
+            continue
+        
+        # Ordered lists (1. item, 2. item, etc.)
+        ordered_match = re.match(r'^(\d+)\.\s+(.+)$', stripped)
+        if ordered_match:
+            num = ordered_match.group(1)
+            list_text = ordered_match.group(2)
+            # Apply inline formatting to list text
+            list_text = apply_inline_formatting(list_text)
+            processed_lines.append(f'{num}. {list_text}')
+            continue
+        
+        # No structural change, add as-is
+        processed_lines.append(original_line)
+    
+    # Join lines back
+    text = '\n'.join(processed_lines)
+    
+    # Apply inline formatting to remaining text (paragraphs)
+    # Split by double newlines to preserve paragraph structure
+    paragraphs = text.split('\n\n')
+    formatted_paragraphs = []
+    for para in paragraphs:
+        # Check if this paragraph already has formatting applied (headings, lists, quotes)
+        if '<font size=' in para or para.strip().startswith('•') or re.match(r'^\d+\.', para.strip()) or para.startswith('<i>'):
+            formatted_paragraphs.append(para)
+        else:
+            # Apply inline formatting to regular paragraphs
+            formatted_paragraphs.append(apply_inline_formatting(para))
+    
+    return '\n\n'.join(formatted_paragraphs)
+
+
 def convert_rich_html_to_reportlab(html_text):
     """
     Convert rich HTML (from copy-paste) to ReportLab-compatible HTML.
@@ -489,8 +609,19 @@ def generate_pdf(config):
         story.append(Spacer(1, 0.3 * inch))
     
     # Add body text (support multiple paragraphs separated by \n\n)
+    # First, check if text contains markdown syntax (and not HTML)
+    # If it has markdown indicators and no HTML tags, convert markdown to HTML first
+    body_text = config.body_text
+    # Improved HTML detection: check for common HTML tag patterns (opening and closing)
+    has_html = bool(re.search(r'<(b|i|u|font|p|div|span|strong|em)[\s>]', body_text, re.IGNORECASE))
+    has_markdown = bool(re.search(r'(\*\*|__|^#{1,6}\s|\*(?!\*)|_(?!_)|`|\[.+?\]\(.+?\)|^[\-\*\+]\s|^\d+\.\s)', body_text, re.MULTILINE))
+    
+    # Convert markdown to HTML if markdown is detected and no HTML tags present
+    if has_markdown and not has_html:
+        body_text = convert_markdown_to_html(body_text)
+    
     # Convert rich HTML to ReportLab-compatible format if needed
-    body_text = convert_rich_html_to_reportlab(config.body_text)
+    body_text = convert_rich_html_to_reportlab(body_text)
     paragraphs = body_text.split('\n\n')
     for para_text in paragraphs:
         if para_text.strip():
@@ -528,11 +659,12 @@ def run_cli():
     
     # Body
     parser.add_argument('--body', help='Body text (use \\n\\n for paragraph breaks). '
-                       'Supports rich-text: <b>bold</b>, <i>italic</i>, <u>underline</u>, '
-                       '<font color="red">colors</font>, and inline images: '
+                       'Supports Markdown: **bold**, *italic*, # Heading, `code`, [link](url). '
+                       'Also supports HTML: <b>bold</b>, <i>italic</i>, <u>underline</u>, '
+                       '<font color="red">colors</font>, inline images: '
                        '<img src="path.jpg" width="50" height="50"/>. '
-                       'Also supports pasted HTML from editors (Google Docs, web, etc.)')
-    parser.add_argument('--body-file', help='Read body text from file (supports rich-text markup and HTML)')
+                       'Pasted HTML from editors (Google Docs, web, etc.) also supported.')
+    parser.add_argument('--body-file', help='Read body text from file (supports Markdown, rich-text markup, and HTML)')
     parser.add_argument('--body-size', type=int, default=10,
                        help='Body font size (default: 10)')
     parser.add_argument('--body-align', choices=['left', 'center', 'right', 'justify'],

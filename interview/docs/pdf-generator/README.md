@@ -6,6 +6,7 @@ A comprehensive CLI and GUI tool for generating customizable PDF documents with 
 
 - **Dual Interface**: Both Command-Line (CLI) and Graphical User Interface (GUI)
 - **Logo Support**: Add logos with customizable size and position (side-by-side or top-center)
+- **Markdown Support**: Format body text with Markdown (*.md) style syntax (bold, italic, headings, lists, code, links)
 - **Rich-Text Support**: Format body text with HTML-like markup (bold, italic, underline, colors, font sizes)
 - **Inline Images**: Embed images within body text alongside regular content
 - **Customizable Text**: Configure title, body, and footer text with individual formatting
@@ -23,11 +24,62 @@ sudo apt-get install fonts-dejavu  # For Unicode support (Linux)
 
 For GUI mode, tkinter is required (usually included with Python).
 
+## Markdown (*.md) Style Formatting
+
+**NEW!** The PDF Generator now supports Markdown syntax for easy document formatting!
+
+### Supported Markdown Syntax
+
+**Text Formatting:**
+- `**bold text**` or `__bold text__` - Bold text
+- `*italic text*` or `_italic text_` - Italic text
+- `` `inline code` `` - Inline code/monospace text
+
+**Headings:**
+- `# Heading 1` - Large heading (H1)
+- `## Heading 2` - Medium heading (H2)
+- `### Heading 3` - Smaller heading (H3)
+- And so on up to H6
+
+**Lists:**
+- Unordered: `- item`, `* item`, or `+ item`
+- Ordered: `1. item`, `2. item`, etc.
+
+**Other:**
+- `` `code` `` - Inline code with monospace font
+- `[link text](url)` - Links (displayed as underlined text)
+- `> quote` - Blockquotes (displayed in italic)
+
+### Markdown Example
+
+```markdown
+# Welcome
+
+This is **bold** and *italic* text.
+
+## Features
+- Easy to use
+- Fast
+- Reliable
+
+> "Markdown makes formatting simple!"
+
+Use `code` for technical terms.
+```
+
+### Using Markdown Files
+
+You can write your content in a `.md` file and load it:
+
+```bash
+python3 pdf_generator.py --cli --body-file document.md --output output.pdf
+```
+
 ## Rich-Text and Inline Image Support
 
 ### Copy-Paste Rich Text from Editors
 
-**NEW!** You can now directly paste rich-text from other editors, and the formatting will be automatically preserved:
+You can directly paste rich-text from other editors, and the formatting will be automatically preserved:
 
 **Supported Sources:**
 - Google Docs
@@ -47,9 +99,9 @@ For GUI mode, tkinter is required (usually included with Python).
 - Paste into PDF Generator
 - The formatting is automatically preserved in the PDF
 
-### Rich-Text Formatting
+### Rich-Text HTML Formatting
 
-The body text supports HTML-like markup for rich formatting:
+The body text also supports HTML-like markup for rich formatting:
 
 **Text Styling:**
 - `<b>bold text</b>` - Bold text
@@ -152,7 +204,42 @@ python3 pdf_generator.py --cli [options]
 
 ### Examples
 
-#### Example 1: Simple document with logo and title
+#### Example 1: Using Markdown formatting
+
+```bash
+python3 pdf_generator.py --cli \
+  --title "Project Documentation" \
+  --body "# Introduction\n\nThis project uses **Markdown** for easy formatting.\n\n## Features\n\n- Simple syntax\n- Easy to read\n- *Quick* to write\n\n> Documentation is key to success!" \
+  --output markdown_doc.pdf
+```
+
+#### Example 2: Loading Markdown from file
+
+Create a file `document.md`:
+```markdown
+# Meeting Notes
+
+## Attendees
+- John Doe
+- Jane Smith
+
+## Action Items
+1. Review budget
+2. Schedule follow-up
+3. Update documentation
+
+**Deadline:** February 15, 2026
+```
+
+Then generate PDF:
+```bash
+python3 pdf_generator.py --cli \
+  --title "Meeting Notes" \
+  --body-file document.md \
+  --output meeting_notes.pdf
+```
+
+#### Example 3: Simple document with logo and title
 
 ```bash
 python3 pdf_generator.py --cli \
@@ -163,7 +250,7 @@ python3 pdf_generator.py --cli \
   --output proposal.pdf
 ```
 
-#### Example 2: Multi-paragraph document
+#### Example 4: Multi-paragraph document
 
 ```bash
 python3 pdf_generator.py --cli \
@@ -304,10 +391,12 @@ Configuration files are JSON format with the following structure:
 - All measurements are in inches
 - Font sizes are in points
 - The tool uses DejaVu fonts for Unicode support (including Polish characters)
+- **Markdown support**: Use Markdown (*.md) syntax for easy formatting - automatically detected when no HTML tags are present
 - **Body text supports rich-text markup**: Use HTML-like tags for formatting (see Rich-Text Support section)
 - **Inline images**: Embed images in body text using `<img>` tags (see Inline Image Support section)
 - **Copy-paste from editors**: Directly paste rich-text from Google Docs, web browsers, Word, etc. - formatting is automatically preserved!
-- Rich-text and inline images work in both CLI and GUI modes
+- Markdown, HTML rich-text, and inline images work in both CLI and GUI modes
+- The tool auto-detects the format: Markdown is converted when no HTML tags are detected
 
 ## Integration with Existing Generators
 
