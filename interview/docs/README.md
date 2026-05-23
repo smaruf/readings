@@ -78,3 +78,5 @@ Rajshahi University of Engineering & Technology (RUET), Bangladesh
 
 - **English:** Upper-Intermediate/B2+
 - **Bengali:** Native
+
+[Details](https://github.com/smaruf/readings/blob/master/interview/docs/Resume_Details.md)
