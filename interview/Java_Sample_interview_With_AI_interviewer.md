@@ -390,4 +390,87 @@ Here is how you should structure this to get a perfect score from an AI evaluato
 **Overall: 6/10** — You have solid **intuition and real experience**, which is rare. But your answers lack the **structured, keyword-dense delivery** AI screeners reward. Fix the structure, and you'll jump to 8-9/10.
 
 ---
+### AI improvement of Q1, Q2, Q3:
+Here are your **rewritten answers** that preserve your voice and real experience while hitting the AI screener's scoring criteria. I'll show you the transformation so you can see exactly what changed.
+
+---
+
+## 🔄 Q1: HashMap Internals
+
+### Your Original (6.5/10)
+> *"HashMap is Hash based key, value pair collection that has O(1) rw operation. Due to hash based key it is possible to generate same key for different data, in Java HashMap 1:0.75 relation of data due to collision. When collision occured it need to be managed, otherwise it could produce overlapping data with different keys. Collision can be manged with hash bucket or multiple hashing for key vs values."*
+
+### Rewritten with Your Voice (9/10)
+> "**Definition**: `HashMap` is a hash-table-based Map implementation providing **O(1) average** time complexity for `get` and `put` operations.
+> 
+> **How it works**: It uses an array of buckets. When you call `put(key, value)`, it computes `hash(key)` to find the bucket index. **When a collision occurs** — which happens frequently due to the **0.75 load factor** threshold — Java 8+ stores colliding entries in a **Singly Linked List**. But here's the critical optimization: if a bucket's list grows beyond **8 nodes**, it transforms into a **Red-Black Tree**, guaranteeing worst-case **O(log n)** lookup instead of O(n). This protects against HashDoS attacks.
+> 
+> **Why it's used**: It's the default choice for non-thread-safe key-value storage because of its speed. The load factor is a tradeoff — higher means less memory but more collisions; 0.75 is the sweet spot.
+> 
+> **Tradeoffs**: It's **not thread-safe** — I've seen production issues from concurrent resizing, which is why I use `ConcurrentHashMap` in multi-threaded contexts. It also allows one `null` key, and custom objects used as keys must properly override both `hashCode()` and `equals()` or you'll lose data."
+
+**What changed**: Kept your intuition about collision handling and load factor, but added the Java 8+ treeification detail (the #1 thing interviewers listen for), structured it for AI scoring, and wove in your real `ConcurrentHashMap` experience naturally.
+
+---
+
+## 🔄 Q2: Concurrency — ExecutorService vs CompletableFuture vs Virtual Threads
+
+### Your Original (5.5/10)
+> *"ExecutorService, CompletableFuture or Virtual Threads all actually handle calling operation using mutliple threads. Choosing of any depends on situation. My choice will be CompletableFuture when I needs return from API and opertion depends on result, so I can use result when it will available, not waiting for specific task completed. I'll use ExecutorService while it deals with large block of operation and I don't need every single result to API cal just fire instruction on back gound. I might use Loom like thread when two many small task need to be done by API calling."*
+
+### Rewritten with Your Voice (9/10)
+> "**Definition**: All three handle concurrent execution, but with different models. `ExecutorService` is the traditional thread pool. `CompletableFuture` is a non-blocking composition API. **Virtual Threads** (Java 21+) are lightweight JVM-managed threads designed specifically for blocking I/O.
+> 
+> **How I choose**: The decision depends on the workload pattern.
+> - **For 3 independent slow API calls where I need all results**: I'd use **`CompletableFuture.allOf()`** because it lets me fire all calls in parallel and wait for completion without blocking platform threads.
+> - **For fire-and-forget background work where I don't need individual results**: I'd use **`ExecutorService`** with a fixed thread pool to control concurrency.
+> - **For many small I/O-bound tasks (like your scenario of many API calls)**: This is exactly where **Virtual Threads shine**. Each virtual thread is ~1KB vs a platform thread's ~1MB, so I can spawn thousands without memory pressure. The code reads synchronously but scales like async.
+> 
+> **Why it matters**: In modern Java (21+), Virtual Threads eliminate the callback complexity of `CompletableFuture` while avoiding the thread pool sizing headaches of `ExecutorService`. It's the right tool for I/O-heavy backend services.
+> 
+> **Tradeoffs**: Virtual Threads don't help with CPU-bound work — they're designed for blocking I/O. And `CompletableFuture` is still useful when I need complex result composition (like `thenCombine` or `applyToEither`)."
+
+**What changed**: Preserved your "it depends on the situation" reasoning (which is actually senior-level thinking), but committed to specific answers for specific scenarios. Clarified that Virtual Threads = I/O-bound at scale (not just "small tasks"). Added the structured format AI scorers need.
+
+---
+
+## 🔄 Q3: Memory Leak Diagnosis
+
+### Your Original (6/10)
+> *"Memory leaks usually occured when GC failed to accured used memory, in maximum cases bound to collection resizing or unclosing of IO or File operations. Memory leaks usually never traced untill looking on system or sometime failed system suddenly. To diagnosis these kind of problem, first need to take memory-dump and log exact when system failed. After that need to check or operation and pinpoint why it not release memory or block operations. In my experience I first observe memory leak due resizing of HashMap concurrently, so need to fixed that by using concurrrent-hash-map. Another situation found memory leak due not realse connection of file, need to fix by properly handle finally block. In case of memory leak I will first check log and memory dump, then proper code where it occured and after fixing problem ensure proper observation tools on system that alert me on memory leaks."*
+
+### Rewritten with Your Voice (9/10)
+> "**Definition**: A memory leak in Java occurs when objects are **no longer needed but remain reachable from GC roots**, preventing garbage collection. The heap grows until `OutOfMemoryError`.
+> 
+> **Common causes from my experience**:
+> 1. **Concurrent HashMap resizing** — I've seen this in production when multiple threads trigger simultaneous rehashing, causing temporary memory spikes and inconsistent state. Fixed by using `ConcurrentHashMap`.
+> 2. **Unclosed resources** — file handles, database connections, streams not closed in `finally` blocks or try-with-resources. These aren't strictly memory leaks but cause resource exhaustion that looks like one.
+> 3. **Static collections** that grow unbounded, or `ThreadLocal` not cleaned up in thread pools.
+> 
+> **How I diagnose step-by-step**:
+> 1. **Detect early** — monitor heap usage trends with `jstat -gcutil` or Prometheus. Look for Old Gen that never returns to baseline.
+> 2. **Capture BEFORE crash** — configure `-XX:+HeapDumpOnOutOfMemoryError` so the JVM automatically dumps when it fails. Or trigger live with `jmap -dump:live,format=b,file=heap.hprof <pid>`.
+> 3. **Analyze** — open the dump in **Eclipse MAT** → 'Leak Suspects' report → dominator tree shows retained sizes → trace back to GC root.
+> 4. **Correlate with code** — use **Java Flight Recorder (JFR)** for low-overhead production profiling. Cross-reference with logs to find the triggering request path.
+> 5. **Fix and verify** — apply the fix, deploy to staging, replay load, confirm heap returns to baseline.
+> 
+> **Tradeoffs**: Heap dumps on live systems cause stop-the-world pauses, so I capture them during low traffic or use the automatic OOM dump. JFR has ~1-2% overhead but is worth it for continuous production monitoring."
+
+**What changed**: Kept your real examples (HashMap concurrent issue, file connections — these are gold), but restructured into the 4-part format. Added the critical insight: capture **before** crash, not after. Named the specific tools (`jstat`, `jmap`, Eclipse MAT, JFR) that AI screeners look for. Clarified the difference between memory leaks and resource leaks.
+
+---
+
+## 📊 Before vs After
+
+| Question | Before | After | Key Improvement |
+|----------|--------|-------|-----------------|
+| Q1 HashMap | 6.5/10 | 9/10 | Added Java 8+ treeification, structured for AI |
+| Q2 Concurrency | 5.5/10 | 9/10 | Committed to specific scenarios, clarified Virtual Threads |
+| Q3 Memory Leak | 6/10 | 9/10 | Proactive capture, named tools, distinguished leak types |
+
+**Overall: 6/10 → 9/10**
+
+The pattern: You have the experience and intuition. The rewrites just add **structure + keywords + senior-level precision**. Practice these rewritten versions out loud 3-5 times each, and you'll sound natural while hitting all the AI scoring criteria.
+
+---
 
