@@ -1,3 +1,40 @@
+### Intro for AI agent:
+
+Here is your **highly customized, AI-optimized 2-minute intro**, built directly from your GitHub profile (`smaruf`), your fintech background at Xpert Fintech Ltd, and the specific competency matrix for the **Senior Java Developer – Backend and System Integration** role.
+
+---
+
+### 🎙️ Your Customized 2-Minute Intro Script
+*(Target length: ~210 words. Speak at a measured, confident pace. This will take about 1 minute 30 seconds, leaving room for natural pauses.)*
+
+> "Hi, I’m MShamsul Maruf. I’m a Senior Software Developer specializing in scalable backend systems and complex system integration, primarily using **Java** and **Spring Boot**.
+> 
+> Currently, at Xpert Fintech Ltd, I design and maintain high-throughput microservices. A key highlight of my recent work was architecting an **event-driven integration layer**. By applying rigorous **domain modeling** and optimizing message processing, we significantly improved data consistency and reduced cross-system latency across our distributed services. My core technical strength lies in **Java concurrency**, **Spring Data JPA** optimization, and designing robust, **idempotent REST APIs**.
+> 
+> Beyond core backend development, I bring a strong **data engineering** and **AI** perspective. I actively build tools to integrate LLM capabilities into backend workflows using Python, and I have hands-on experience with cloud infrastructure across **AWS**, **GCP**, and **Azure**. I’m also continuously expanding my stack—currently diving into **Golang** and **Kotlin**—to ensure I can choose the right tool for any architectural challenge.
+> 
+> I’m particularly excited about this **Senior Java Developer – Backend and System Integration** role because it sits exactly at the intersection of my expertise. I’ve spent my career solving complex integration challenges in the fintech space, and I’m eager to bring my experience in building reliable, scalable messaging architectures to your team."
+
+---
+
+### 🧠 Why This Specific Script Scores High with "Lea" (The AI Screener)
+
+1. **Exact Keyword Matching**: The AI scores based on keyword density. This script naturally hits: *Java, Spring Boot, System Integration, Microservices, Domain Modeling, Event-driven, Idempotent REST APIs, Data Engineering, AWS, GCP, Azure, Golang*.
+2. **Profile Authenticity**: It directly references your pinned GitHub work (`domain-modeling`, `data-engineering`, `python-ai-course`) and your active learning (`Golang`, `Kotlin`), making you sound genuinely passionate and well-rounded, not just reciting a script.
+3. **Fintech Context**: Mentioning "Xpert Fintech Ltd" and "data consistency" subtly signals that you understand the high-stakes, zero-data-loss environment of financial system integration.
+4. **The "T-Shaped" Developer Signal**: AI models are trained to favor candidates who have deep expertise in one area (Java/Spring) but broad awareness of others (Python AI, Golang, Cloud). This script proves you are that candidate.
+
+---
+
+### ⚙️ How to Practice
+1. **Fill the silence**: If you have a specific metric (e.g., "reduced latency by 30%" or "handled 10k requests/sec"), insert it in the second paragraph. If not, the current phrasing ("significantly improved") is still strong and truthful.
+2. **Record yourself**: Use your phone's voice memo app. Listen back. Do you sound like you're reading, or like you're explaining your career to a colleague? Aim for the latter.
+3. **Pace yourself**: The instructions explicitly say *"Take your time — you can elaborate."* Do not rush. Pause for half a second after saying "Java and Spring Boot," and after "event-driven integration layer." AI transcription engines score deliberate pacing higher.
+
+---
+
+### Java Question Samples:
+
 Here's a **high-yield question bank** modeled on what an AI screening agent like Lea will actually ask, with **structured answers** in the format AI scorers reward (Definition → How → Why → Tradeoffs).
 
 I've weighted questions by the tier priorities in your guide and woven in your differentiators (Kafka, distributed systems, market data).
