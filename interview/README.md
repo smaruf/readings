@@ -25,6 +25,7 @@ This repository contains an interactive flashcard game to help users prepare for
 - [Docker and K8S_interview_topics.md](Docker_K8S_interview_topics.md)
 - [java_spring_preparation.md](java_spring_preparation.md)
 - [java_gc_operations.md](java_gc_operations.md)
+- [AI Interview Preparation](https://github.com/smaruf/readings/blob/master/interview/Java_Sample_interview_With_AI_interviewer.md)
 ## How to Use
 
 1. **Clone the Repository**:
