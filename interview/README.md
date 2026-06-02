@@ -25,10 +25,11 @@ This repository contains an interactive flashcard game to help users prepare for
 - [Docker and K8S_interview_topics.md](Docker_K8S_interview_topics.md)
 - [java_spring_preparation.md](java_spring_preparation.md)
 - [java_gc_operations.md](java_gc_operations.md)
-- [AI Interview Preparation](https://github.com/smaruf/readings/blob/master/interview/Java_Sample_interview_With_AI_interviewer.md)
-- [Keywords: Wild Interview](https://github.com/smaruf/readings/blob/master/interview/Keywords_Plans_Wild_Programming_Interview.md)
-- [Keywords: Wild Interview Questions](https://github.com/smaruf/readings/blob/master/interview/Keyword_Wild_Interview_Question.md)
-- [Keywords: Wild Interview Cheatsheet](https://github.com/smaruf/readings/blob/master/interview/Keywords_Wild_interview_CheatSheet.md)
+- [AI Interview Preparation]Java_Sample_interview_With_AI_interviewer.md)
+- [Keywords: Wild Interview](Keywords_Plans_Wild_Programming_Interview.md)
+- [Keywords: Wild Interview Questions](Keyword_Wild_Interview_Question.md)
+- [Keywords: Wild Interview Cheatsheet](Keywords_Wild_interview_CheatSheet.md)
+- [Keywords: Wild Interview Plan](Keywords_Wild_interview_Plan.md)
 ## How to Use
 
 1. **Clone the Repository**:
