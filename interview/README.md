@@ -26,6 +26,7 @@ This repository contains an interactive flashcard game to help users prepare for
 - [java_spring_preparation.md](java_spring_preparation.md)
 - [java_gc_operations.md](java_gc_operations.md)
 - [AI Interview Preparation](https://github.com/smaruf/readings/blob/master/interview/Java_Sample_interview_With_AI_interviewer.md)
+- [Keyword: Wild Interview](https://github.com/smaruf/readings/blob/master/interview/Keywords_Plans_Wild_Programming_Interview.md)
 ## How to Use
 
 1. **Clone the Repository**:
