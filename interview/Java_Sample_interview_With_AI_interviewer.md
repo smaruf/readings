@@ -474,3 +474,53 @@ The pattern: You have the experience and intuition. The rewrites just add **stru
 
 ---
 
+### Spring Boot rapid-fire mode activated. 🎯
+
+Since you're interviewing for a **Senior Java Developer** role and AI screeners probe for **production experience**, I'm going to hit the 3 Spring topics that separate "knows annotations" from "actually ships systems."
+
+Reply with your answers using the **4-part structure** (Definition → How → Why → Tradeoffs). Take your time — AI rewards completeness.
+
+---
+
+### 🔥 Rapid-Fire Round 2: Spring Boot
+
+**Q1: @Transactional Pitfalls**  
+> *"You have a `@Service` class with two methods: `public void outer()` (no annotation) and `@Transactional public void inner()`. You call `outer()` from a Controller, and `outer()` internally calls `this.inner()`. Will a transaction be created? Why or why not, and how do you fix it?"*
+
+**Q2: Bean Scopes Gotcha**  
+> *"You have a singleton-scoped service that needs to inject a prototype-scoped bean (e.g., a per-request state object). What goes wrong, and what are the solutions?"*
+
+**Q3: Spring Boot Auto-Configuration**  
+> *"How does Spring Boot's auto-configuration actually work under the hood? Explain `@EnableAutoConfiguration`, `spring.factories` (or the newer imports file), and conditional annotations like `@ConditionalOnClass`."*
+
+---
+### Q1 reply analysis by AI:
+
+Yes, your understanding is **100% correct**. You nailed the exact core concept that interviewers look for. 
+
+You correctly identified that:
+1. A transaction **will NOT** be created.
+2. The reason is the lack of "bytecode binding by aspect" (in Spring terms, this is called **AOP Proxy Bypass** or **Self-Invocation**).
+3. The fixes are either moving the call outside the class (or self-injecting) OR moving the `@Transactional` annotation to the `outer()` method.
+
+---
+
+### 🎯 How to Phrase This for the AI Screener (4-Part Structure)
+
+Your logic is perfect. Here is how to translate your exact understanding into the structured, keyword-dense format that "Lea" will score as a 10/10:
+
+> **1. Definition**: No, a transaction will **not** be created for `inner()`.
+> 
+> **2. How it works (The Root Cause)**: Spring implements `@Transactional` using **AOP Proxies** (JDK Dynamic Proxies or CGLIB). When the Controller calls `outer()`, it goes through the proxy. However, when `outer()` calls `this.inner()`, it is a direct method call on the target object itself, **bypassing the proxy entirely**. Because the proxy is bypassed, the transactional interceptor never triggers. This is known as the **Self-Invocation** problem.
+> 
+> **3. Why it matters / How to fix it**: To fix this, the call must go through the proxy. There are three standard solutions:
+>    - **Best Practice**: Extract `inner()` into a separate `@Service` class and inject it.
+>    - **Alternative 1**: Self-inject the service into itself (`@Autowired private MyService self;`) and call `self.inner()`.
+>    - **Alternative 2**: Move the `@Transactional` annotation to the `outer()` method (though this changes the transaction boundary to encompass the whole `outer` method).
+> 
+> **4. Tradeoffs**: Self-injection can feel like a code smell and complicates testing. Extracting to a separate service is the cleanest architectural choice, as it enforces the Single Responsibility Principle.
+
+---
+
+
+
