@@ -118,3 +118,72 @@ You can literally read these out loud. They sound like a confident Senior Engine
 > **Learning:** I learned that partition key design is just as critical as consumer scaling, and I added a runbook for the team to handle hot partitions in the future."
 
 ---
+Let’s continue building your playbook. Here is the **next batch of high-yield questions** covering Spring Data JPA, Microservices Reliability, REST Best Practices, and Database Indexing. 
+
+These are crafted in your practical, senior tone, strictly following the **4-part structure** (Definition → How → Why/Fix → Tradeoffs) to maximize your AI screener score.
+
+---
+## Continue 1:
+### 🟢 TIER 2: Spring Data JPA & Advanced Spring
+
+**Q1: What is the N+1 problem in Spring Data JPA, and how do you fix it?**
+> **Your Reply:**
+> "**Definition:** The N+1 problem occurs when fetching a list of parent entities triggers N additional queries to fetch their lazy-loaded child entities, resulting in 1 initial query + N subsequent queries.
+> **How it happens:** For example, fetching 100 `Order` entities, and then iterating over them to call `order.getItems()` triggers 100 separate `SELECT` statements for the items.
+> **How to fix it:** I use `JOIN FETCH` in my JPQL query to retrieve parents and children in a single query. Alternatively, I use `@EntityGraph` on the repository method, or `@BatchSize` to fetch children in batches (e.g., 1 query per 10 parents instead of 100).
+> **Tradeoff:** `JOIN FETCH` can cause Cartesian product explosions if multiple collections are joined. In those cases, `@BatchSize` or separate queries with `IN` clauses are safer and more performant."
+
+**Q2: What goes wrong when a Singleton-scoped bean injects a Prototype-scoped bean, and how do you solve it?**
+> **Your Reply:**
+> "**Definition:** A Singleton bean is created once per ApplicationContext, while a Prototype bean is created every time it is requested.
+> **The Problem:** Dependency injection happens only once during the Singleton's initialization. Therefore, the Singleton will hold a reference to the *same* Prototype instance forever, defeating the purpose of the Prototype scope.
+> **How to fix it:** There are three standard solutions:
+> 1. Use `@Lookup` method injection to tell Spring to return a new instance on each call.
+> 2. Inject `ObjectProvider<MyPrototypeBean>` or `ApplicationContext` and call `.getObject()` when needed.
+> 3. Use Scoped Proxies (`@Scope(value="prototype", proxyMode=ScopedProxyMode.TARGET_CLASS)`).
+> **Tradeoff:** Scoped proxies add CGLIB overhead. `ObjectProvider` is my preferred modern approach because it’s explicit, type-safe, and doesn't rely on bytecode manipulation."
+
+---
+
+### 🟢 TIER 3: Microservices Reliability
+
+**Q3: Explain the Circuit Breaker pattern and when to use it.**
+> **Your Reply:**
+> "**Definition:** A Circuit Breaker prevents cascading failures in a distributed system by stopping requests to a failing dependency before it overwhelms the system.
+> **How it works:** It has three states: 
+> 1. **Closed:** Normal operation. 
+> 2. **Open:** Failure threshold is reached; requests fail immediately (fast-fail) without hitting the downstream service. 
+> 3. **Half-Open:** After a timeout, it allows a few test requests through. If they succeed, it closes; if they fail, it reopens. I typically implement this using Resilience4j in Spring Boot.
+> **Why it matters:** It protects my service from thread pool exhaustion and long timeouts when a downstream service (like a payment gateway) is degraded.
+> **Tradeoff:** It adds complexity and requires careful tuning of thresholds (failure rate, wait duration). If tuned too aggressively, it can cause false positives and unnecessary fast-fails."
+
+---
+
+### 🟢 TIER 3: REST Best Practices
+
+**Q4: How do you handle pagination in a high-scale REST API?**
+> **Your Reply:**
+> "**Definition:** Pagination splits large result sets into manageable chunks to protect database and network resources.
+> **How it works:** I avoid `OFFSET/LIMIT` for large datasets because the database still scans all skipped rows, causing performance degradation as the offset grows. Instead, I use **Cursor-based (Keyset) pagination**. The client provides a cursor (e.g., `last_seen_id` or `timestamp`), and the query uses `WHERE id > last_seen_id LIMIT 50`.
+> **Why it matters:** Cursor pagination guarantees O(1) or O(log N) lookup time using indexes, regardless of how deep into the dataset the user pages.
+> **Tradeoff:** Cursor pagination doesn't allow jumping to arbitrary pages (like 'go to page 50'), but for infinite-scroll APIs, logs, or market data feeds, it is the only scalable choice."
+
+---
+
+### 🟢 TIER 4: Database & System Integration
+
+**Q5: When would you use a GIN index in PostgreSQL instead of the default B-tree index?**
+> **Your Reply:**
+> "**Definition:** B-tree is the default index, optimized for equality and range queries on scalar values (like integers or timestamps). GIN (Generalized Inverted Index) is designed for composite values.
+> **How it works:** GIN is ideal for indexing `JSONB` columns, arrays, or full-text search. For example, if I have a `metadata` JSONB column and frequently query `WHERE metadata @> '{"status": "active"}'`, a GIN index allows PostgreSQL to quickly find matching documents without scanning the whole table.
+> **Why it matters:** It unlocks powerful, schema-less querying capabilities in Postgres without needing a separate NoSQL database like MongoDB.
+> **Tradeoff:** GIN indexes are significantly larger and slower to update than B-tree indexes. They should only be used when read performance on JSON/Array data is a strict requirement, as they slow down `INSERT` and `UPDATE` operations."
+
+**Q6: In system integration, when do you choose Webhooks over Polling?**
+> **Your Reply:**
+> "**Definition:** Polling is the client repeatedly asking the server for updates. Webhooks are the server pushing an HTTP POST to the client when an event occurs.
+> **How it works:** With webhooks, the client exposes a public endpoint, and the server sends a payload (usually with a signature for security) immediately upon an event.
+> **Why it matters:** Webhooks are vastly more efficient. They eliminate wasted network requests, reduce server load, and provide near real-time updates.
+> **Tradeoff:** Webhooks require the client to have a publicly reachable, secure endpoint and robust retry/idempotency logic on their side. If the client is behind a strict firewall or is a legacy system, I fall back to polling or provide an API for them to check status manually."
+
+---
