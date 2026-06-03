@@ -1,3 +1,5 @@
+### Links:
+- [Question Playbook for AI](Java_Sample_interview_With_AI_Interviewer_Playbook.md)
 ### Intro for AI agent:
 
 Here is your **highly customized, AI-optimized 2-minute intro**, built directly from your GitHub profile (`smaruf`), your fintech background at Xpert Fintech Ltd, and the specific competency matrix for the **Senior Java Developer – Backend and System Integration** role.
