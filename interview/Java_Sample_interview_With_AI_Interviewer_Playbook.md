@@ -9,16 +9,14 @@ You can literally read these out loud. They sound like a confident Senior Engine
 ### 🟢 TIER 1: Java Core
 
 **Q1: Explain how `HashMap` works internally and how it handles collisions.**
-
-**Your Reply:** 
+> **Your Reply:** 
  "`HashMap` is a hash-table-based Map providing **O(1) average** time complexity. It uses an array of buckets. When a collision happens, Java stores the entries in a 
   - **Singly Linked List**. 
  However, the critical Java 8+ optimization is that if a bucket's list grows beyond **8 nodes**, it transforms into a **Red-Black Tree**. This guarantees worst-case **O(log n)** lookup instead of O(n), protecting against HashDoS attacks. 
  - **Tradeoff:** It’s not thread-safe. I’ve seen production issues from concurrent resizing, which is why I strictly use `ConcurrentHashMap` in multi-threaded contexts. Also, custom keys must properly override `hashCode()` and `equals()`."
 
 **Q2: You need to make 3 independent, slow external API calls. Do you use `ExecutorService`, `CompletableFuture`, or Virtual Threads?**
-
-**Your Reply:** 
+> **Your Reply:** 
 "The choice depends on the workload, but for 3 independent, slow I/O calls, my go-to is **Virtual Threads** (if on Java 21+) or **`CompletableFuture`**. 
  - **How it works:** With Virtual Threads, I can use `StructuredTaskScope` to fork the 3 calls and join them. Each virtual thread is ~1KB, so I can spawn them without memory pressure, and the code reads synchronously. If I'm on an older Java version, I use `CompletableFuture.allOf()` to fire them in parallel and wait for completion without blocking platform threads.
  - **Tradeoff:** Virtual Threads don't help with CPU-bound work, and `CompletableFuture` can lead to callback complexity if chained too deeply. But for I/O-bound API calls, they are the right tools."
@@ -28,16 +26,14 @@ You can literally read these out loud. They sound like a confident Senior Engine
 ### 🟢 TIER 2: Spring Boot
 
 **Q3: You have a `@Service` with an unannotated `outer()` method that calls a `@Transactional inner()` method using `this.inner()`. Will a transaction be created?**
-
-**Your Reply:** 
+> **Your Reply:** 
  - "No, a transaction will **not** be created. 
  - **How it works:** Spring implements `@Transactional` using **AOP Proxies**. When the controller calls `outer()`, it goes through the proxy. But when `outer()` calls `this.inner()`, it’s a direct method call on the target object, **bypassing the proxy entirely**. This is the classic **Self-Invocation** problem.
  - **How to fix it:** The call must go through the proxy. The cleanest fix is to extract `inner()` into a separate `@Service` class and inject it. Alternatively, I can self-inject the service or move the `@Transactional` annotation to the `outer()` method.
  - **Tradeoff:** Self-injection can feel like a code smell. Extracting to a separate service is the best architectural choice as it enforces the Single Responsibility Principle."
 
 **Q4: How does Spring Boot Auto-Configuration actually work under the hood?**
-
-**Your Reply:** 
+> **Your Reply:** 
  - "**Definition:** It’s Spring Boot’s way of automatically configuring your application based on the jars you have added.
  - **How it works:** It’s triggered by `@EnableAutoConfiguration`. Under the hood, Spring scans a file (historically `spring.factories`, now `org.springframework.boot.autoconfigure.AutoConfiguration.imports`) for configuration classes. It then evaluates **conditional annotations** like `@ConditionalOnClass` or `@ConditionalOnMissingBean`. For example, if it sees `HikariCP` on the classpath and no existing `DataSource` bean, it auto-configures one.
  - **Why it matters:** It drastically reduces boilerplate and gets developers to a working state quickly.
@@ -238,5 +234,50 @@ Here are two high-yield behavioral questions tailored to your Senior Backend/Int
  - **Learning:** "I reinforced my belief that technical disagreements should be resolved with data and prototypes, not hierarchy or volume. It preserves team relationships and leads to better architecture."
 
 ---
+## Continue 3
+
+Let’s move to the **Final Technical Tier: Advanced Distributed Systems & Production Reality**. 
+
+These are the questions that separate a "Mid-level" developer who knows the frameworks from a "Senior" engineer who actually keeps the systems alive in production. 
+
+Here are 4 highly probable advanced questions, answered in your practical tone using the 4-part structure.
+
+---
+
+### 🟢 TIER 7: Advanced Distributed Systems & Production Debugging
+
+**Q1: "A user reports that an API request is taking 10 seconds, but it touches 5 different microservices. How do you debug this?"**
+> **Your Reply:**
+ - **Definition:** This requires **Distributed Tracing**, an observability pattern used to track a single request as it propagates across multiple service boundaries.
+ - **How it works:** At the API Gateway, I generate a unique `trace_id` and `span_id`. These are injected into HTTP headers (using the W3C Trace Context standard) and Kafka message headers. Every service logs this `trace_id` in structured JSON format. I then use a tool like **Jaeger** or **OpenTelemetry** to visualize the entire waterfall of spans.
+ - **Why it matters:** In a microservices architecture, a single user action might touch 5 services and 3 databases. Without distributed tracing, finding the exact bottleneck (e.g., a slow DB query in Service C) is like finding a needle in a haystack.
+ - **Tradeoff:** Tracing adds slight overhead to every request and generates massive amounts of data. In high-throughput systems, I must configure **sampling** (e.g., tracing only 10% of requests, or 100% of requests that exceed a latency threshold) to avoid overwhelming the tracing backend.
+
+**Q2: "Your Spring Boot service suddenly starts failing with 'Connection is not available, request timed out after 30000ms'. What is happening and how do you fix it?"**
+> **Your Reply:**
+ - **Definition:** This means your database connection pool (usually **HikariCP**) is completely exhausted. All connections are in use, and new requests are queued until they hit the `connectionTimeout`.
+ - **How it happens:** Threads block waiting for a connection. Eventually, the Tomcat/Undertow thread pool also exhausts, and the service stops accepting HTTP requests entirely, causing a cascading failure.
+ - **How to fix it:** First, I check for **connection leaks** (e.g., unclosed `@Transactional` boundaries or raw JDBC connections). Second, I check `pg_stat_statements` in Postgres for **slow queries** holding connections too long. Only after fixing those do I tune HikariCP. The optimal pool size formula is roughly `((core_count * 2) + effective_spindle_count)`. For a 4-core app, a pool size of 10-15 is usually enough.
+ - **Tradeoff:** The instinct is to just increase `maximumPoolSize`. But a larger pool increases database context switching and lock contention. The real fix is almost always query optimization, not just adding more connections.
+
+**Q3: "We are seeing massive latency spikes in our Kafka consumers every few minutes. What is likely happening, and how do you mitigate it?"**
+> **Your Reply:**
+ - **Definition:** This is almost certainly a **Consumer Group Rebalance**, which historically causes a "stop-the-world" pause where all consumers stop processing messages.
+ - **How it happens:** A rebalance triggers when a consumer crashes, a new consumer joins, or a consumer takes too long to process a batch and exceeds `max.poll.interval.ms`. The Group Coordinator revokes all partitions and reassigns them.
+ - **How to mitigate it:** 
+   1. Switch the partition assignment strategy to **`CooperativeStickyAssignor`**. This enables *incremental rebalancing*, so only the moving partitions pause, not the whole group.
+   2. Tune `max.poll.interval.ms` and `session.timeout.ms` to prevent accidental rebalances during legitimate slow processing.
+   3. Implement a `ConsumerRebalanceListener` to commit offsets cleanly in the `onPartitionsRevoked` callback.
+ - **Tradeoff:** Incremental rebalancing (Cooperative) is fantastic for latency, but it is more complex to implement correctly. You must be very careful with offset commits during the transition to avoid processing duplicates.
+
+**Q4: "How do you choose between G1GC and ZGC for a Java application?"**
+> **Your Reply:**
+ - **Definition:** They are both Garbage Collection algorithms, but optimized for different goals. G1 (Garbage-First) balances throughput and latency. ZGC is a concurrent, ultra-low-latency collector.
+ - **How they work:** G1 divides the heap into regions and pauses to collect the regions with the most garbage (targeting < 200ms pauses). ZGC uses colored pointers and load barriers to do almost all heavy lifting concurrently, achieving **sub-millisecond pauses** (usually < 1ms) regardless of heap size.
+ - **Why I choose them:** I use **G1GC** (the default since Java 9) for 90% of standard backend microservices. It’s stable and highly optimized. I only choose **ZGC** (production-ready since Java 15+) for systems with massive heaps (multi-TB) or strict latency requirements, like market data processing or real-time bidding, where a 50ms G1 pause is unacceptable.
+ - **Tradeoff:** ZGC achieves those microsecond pauses by using more CPU and memory overhead. If my application is CPU-bound rather than latency-sensitive, ZGC will actually degrade overall throughput compared to G1.
+
+---
+
 
 
