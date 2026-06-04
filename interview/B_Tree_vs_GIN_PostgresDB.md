@@ -18,7 +18,7 @@ In PostgreSQL, B-tree is the default index type for ordering and point/range loo
 | Disk I/O efficiency | Poor for large datasets        | Excellent for page-oriented storage |
 | Typical use         | In-memory data structures      | Database indexes                    |
 
-### Text-based diagrams
+### Example of Operation
 
 Binary Search Tree (fanout = 2)
 
