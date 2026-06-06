@@ -11,13 +11,67 @@ Here is your **highly customized, AI-optimized 2-minute intro**, built directly 
 ### 🎙️ Your Customized 2-Minute Intro Script
 *(Target length: ~210 words. Speak at a measured, confident pace. This will take about 1 minute 30 seconds, leaving room for natural pauses.)*
 
-> "Hi, I’m MShamsul Maruf. I’m a Senior Software Developer specializing in scalable backend systems and complex system integration, primarily using **Java** and **Spring Boot**.
+> "Hi, I’m Muhammad Shamsul Maruf. I’m a Senior Software Developer specializing in scalable backend systems and complex system integration, primarily using **Java** and **Spring Boot**.
 > 
 > Currently, at Xpert Fintech Ltd, I design and maintain high-throughput microservices. A key highlight of my recent work was architecting an **event-driven integration layer**. By applying rigorous **domain modeling** and optimizing message processing, we significantly improved data consistency and reduced cross-system latency across our distributed services. My core technical strength lies in **Java concurrency**, **Spring Data JPA** optimization, and designing robust, **idempotent REST APIs**.
 > 
-> Beyond core backend development, I bring a strong **data engineering** and **AI** perspective. I actively build tools to integrate LLM capabilities into backend workflows using Python, and I have hands-on experience with cloud infrastructure across **AWS**, **GCP**, and **Azure**. I’m also continuously expanding my stack—currently diving into **Golang** and **Kotlin**—to ensure I can choose the right tool for any architectural challenge.
+> Beyond core backend development, I bring a strong **data engineering** and **AI** perspective. I actively build tools to integrate LLM capabilities into backend workflows using **Python**, and I have hands-on experience with cloud infrastructure across **AWS**. I’m also continuously expanding my stack—currently diving into **Golang** and **Kotlin**—to ensure I can choose the right tool for any architectural challenge.
 > 
 > I’m particularly excited about this **Senior Java Developer – Backend and System Integration** role because it sits exactly at the intersection of my expertise. I’ve spent my career solving complex integration challenges in the fintech space, and I’m eager to bring my experience in building reliable, scalable messaging architectures to your team."
+
+---
+### Professional Summary – Key Points
+
+* **Senior Software Developer** focused on **scalable backend systems** and **system integration**.
+* Strong expertise in **Java** and **Spring Boot**.
+* Currently working at **Xpert Fintech Ltd** designing and maintaining **high-throughput microservices**.
+* Architected an **event-driven integration layer** for distributed systems.
+* Improved:
+
+  * Data consistency
+  * Cross-system communication
+  * Processing latency
+* Core technical strengths:
+
+  * Java Concurrency
+  * Spring Data JPA optimization
+  * REST API design
+  * Idempotent service implementation
+* Experience with:
+
+  * Microservices architecture
+  * Distributed systems
+  * Messaging and integration platforms
+* Additional expertise in:
+
+  * Data Engineering
+  * AI/LLM integration
+  * Python development
+* Hands-on cloud experience:
+
+  * Amazon Web Services (AWS)
+  
+* Expanding skills in:
+
+  * Go (Golang)
+  * Kotlin
+  * Data Engineering
+* Specialized in solving **complex fintech integration challenges**.
+* Strong background in building:
+
+  * Reliable messaging architectures
+  * Scalable backend platforms
+  * System-to-system integrations
+* Excellent fit for roles involving:
+
+  * Backend development
+  * Enterprise integration
+  * Event-driven architecture
+  * Financial systems
+
+### 30-Second Interview Version
+
+> Senior Software Developer with expertise in Java, Spring Boot, microservices, and system integration. At Xpert Fintech, I architect high-throughput distributed systems and event-driven integration platforms that improve data consistency and reduce latency. My strengths include Java concurrency, Spring Data JPA optimization, REST API design, cloud platforms (AWS, GCP), and AI/LLM integration. I have extensive experience solving complex fintech integration challenges and building reliable, scalable messaging architectures.
 
 ---
 
