@@ -1,6 +1,7 @@
 ### Links:
 - [Question Playbook for AI](Java_Sample_interview_With_AI_Interviewer_Playbook.md)
 - [Reply Analysis](Java_Sample_interview_With_AI_Interviewer_Reply_Analysis_for_Improvement.md)
+- [Checklist Before Interview](Java_Sample_Interview_Last_Preparation_with_AI.md)
 - [Typical SDLC for Production](Typical_SDLC_for_Prod.md)
 - [AI based SDLC for Production](AI_based_SDLC_for_Prod.md)
 ### Intro for AI agent:
